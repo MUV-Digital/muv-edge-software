@@ -421,7 +421,7 @@
                     "vt": "str"
                 }
             ],
-            "repeat": "60",
+            "repeat": "20",
             "crontab": "",
             "once": true,
             "onceDelay": "10",
