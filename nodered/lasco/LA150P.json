@@ -118,11 +118,11 @@
             "type": "getflows",
             "z": "2d1e46374d6a9f33",
             "name": "",
-            "x": 320,
+            "x": 300,
             "y": 80,
             "wires": [
                 [
-                    "40110j57ss6tm4g1"
+                    "ee54912b6655509d"
                 ]
             ]
         },
@@ -137,7 +137,7 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 450,
+            "x": 590,
             "y": 80,
             "wires": [
                 [
@@ -248,7 +248,7 @@
             "checkall": "true",
             "repair": false,
             "outputs": 1,
-            "x": 600,
+            "x": 740,
             "y": 80,
             "wires": [
                 [
@@ -709,7 +709,7 @@
             "loglevel": "DEBUG",
             "logconfig": "2c6b06edb20118d0",
             "sendpane": true,
-            "x": 930,
+            "x": 1070,
             "y": 80,
             "wires": [
                 []
@@ -734,7 +734,7 @@
             "from": "",
             "to": "",
             "reg": false,
-            "x": 780,
+            "x": 920,
             "y": 80,
             "wires": [
                 [
@@ -835,6 +835,29 @@
             "x": 1240,
             "y": 320,
             "wires": []
+        },
+        {
+            "id": "ee54912b6655509d",
+            "type": "switch",
+            "z": "2d1e46374d6a9f33",
+            "name": "Check BLE",
+            "property": "hardware.ble",
+            "propertyType": "global",
+            "rules": [
+                {
+                    "t": "nempty"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 1,
+            "x": 450,
+            "y": 80,
+            "wires": [
+                [
+                    "40110j57ss6tm4g1"
+                ]
+            ]
         }
     ],
     "configs": [
