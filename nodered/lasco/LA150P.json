@@ -330,7 +330,7 @@
             "repeat": "20",
             "crontab": "",
             "once": true,
-            "onceDelay": "10",
+            "onceDelay": "30",
             "topic": "",
             "payload": "",
             "payloadType": "date",
