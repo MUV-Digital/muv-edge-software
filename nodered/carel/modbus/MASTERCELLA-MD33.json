@@ -419,7 +419,7 @@
             "type": "function",
             "z": "4c298dc86bef4f64",
             "name": "Set boolean data point values",
-            "func": "if (msg.dataPoint.type === \"bool\" && typeof msg.payload[0] === \"boolean\") {\n    var payload = {};\n    payload[msg.name] = msg.payload[msg.dataPoint.offsetbit];\n\n    if (msg.dataPoint.invert) {\n        payload[msg.name] = !payload[msg.name];\n    }\n\n    msg.payload = payload;\n\n    node.send(msg);\n}\n\nnode.done();\n",
+            "func": "if (msg.dataPoint.type === \"bool\" && typeof msg.payload[0] === \"boolean\") {\n    var payload = {};\n    payload[msg.name] = msg.payload[msg.dataPoint.offsetbit];\n    msg.payload = payload;\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
             "noerr": 0,
             "initialize": "",
