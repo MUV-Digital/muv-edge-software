@@ -1281,7 +1281,7 @@
             "rules": [
                 {
                     "t": "set",
-                    "p": "simulationData.SIM-99",
+                    "p": "simulationData.SIM-97",
                     "pt": "flow",
                     "to": "Step 7",
                     "tot": "str"
