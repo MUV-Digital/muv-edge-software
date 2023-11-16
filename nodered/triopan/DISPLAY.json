@@ -785,46 +785,16 @@
             ]
         },
         {
-            "id": "b7cf7241b47ec978",
-            "type": "s7 in",
+            "id": "ai191g75oeozmhxg",
+            "type": "link out",
             "z": "8c3c2f56e95f7db8",
-            "endpoint": "7c688dbc8b696481",
-            "mode": "all",
-            "variable": "",
-            "diff": false,
-            "name": "",
-            "x": 190,
-            "y": 420,
-            "wires": [
-                [
-                    "e182b6a6318c792b"
-                ]
-            ]
-        },
-        {
-            "id": "e182b6a6318c792b",
-            "type": "delay",
-            "z": "8c3c2f56e95f7db8",
-            "name": "",
-            "pauseType": "rate",
-            "timeout": "5",
-            "timeoutUnits": "seconds",
-            "rate": "1",
-            "nbRateUnits": "1",
-            "rateUnits": "second",
-            "randomFirst": "1",
-            "randomLast": "5",
-            "randomUnits": "seconds",
-            "drop": true,
-            "allowrate": false,
-            "outputs": 1,
-            "x": 410,
-            "y": 420,
-            "wires": [
-                [
-                    "01a8c5efea90ddfb"
-                ]
-            ]
+            "name": "link out 17",
+            "mode": "link",
+            "links": [
+                "3auxvoyaf7c962sr"
+            ],
+            "x": 1065,
+            "y": 420
         },
         {
             "id": "01a8c5efea90ddfb",
@@ -838,25 +808,13 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 560,
+            "x": 460,
             "y": 420,
             "wires": [
                 [
                     "ai191g75oeozmhxg"
                 ]
             ]
-        },
-        {
-            "id": "ai191g75oeozmhxg",
-            "type": "link out",
-            "z": "8c3c2f56e95f7db8",
-            "name": "link out 17",
-            "mode": "link",
-            "links": [
-                "3auxvoyaf7c962sr"
-            ],
-            "x": 1065,
-            "y": 420
         }
     ],
     "configs": [
