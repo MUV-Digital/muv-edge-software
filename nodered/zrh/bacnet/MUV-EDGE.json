@@ -94,9 +94,7 @@
             "x": 430,
             "y": 480,
             "wires": [
-                [
-                    "fe68e44e95b49e35"
-                ]
+                []
             ]
         },
         {
@@ -1096,22 +1094,6 @@
             ]
         },
         {
-            "id": "fe68e44e95b49e35",
-            "type": "debug",
-            "z": "9c6a063567276156",
-            "name": "debug 1",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 660,
-            "y": 400,
-            "wires": []
-        },
-        {
             "id": "fe387d9271abae7f",
             "type": "debug",
             "z": "9c6a063567276156",
@@ -1123,8 +1105,8 @@
             "complete": "false",
             "statusVal": "",
             "statusType": "auto",
-            "x": 780,
-            "y": 340,
+            "x": 880,
+            "y": 360,
             "wires": []
         },
         {
@@ -1148,8 +1130,8 @@
             "topic": "",
             "payload": "",
             "payloadType": "date",
-            "x": 520,
-            "y": 340,
+            "x": 340,
+            "y": 360,
             "wires": [
                 [
                     "6713b2b74677deea"
@@ -1170,11 +1152,73 @@
             "highLimit": 0,
             "device": "eb79e7bf35494b03",
             "server": "c4a99e47daaa12c2",
-            "x": 650,
-            "y": 340,
+            "x": 490,
+            "y": 360,
             "wires": [
                 [
                     "fe387d9271abae7f"
+                ]
+            ]
+        },
+        {
+            "id": "7b34eff7b6ec2901",
+            "type": "read-single-device",
+            "z": "9c6a063567276156",
+            "name": "",
+            "x": 670,
+            "y": 400,
+            "wires": [
+                [
+                    "fe387d9271abae7f"
+                ]
+            ]
+        },
+        {
+            "id": "9f7c920e49179fb1",
+            "type": "inject",
+            "z": "9c6a063567276156",
+            "name": "",
+            "props": [
+                {
+                    "p": "payload"
+                },
+                {
+                    "p": "topic",
+                    "vt": "str"
+                }
+            ],
+            "repeat": "",
+            "crontab": "",
+            "once": false,
+            "onceDelay": 0.1,
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 340,
+            "y": 400,
+            "wires": [
+                [
+                    "9096035444f5062c"
+                ]
+            ]
+        },
+        {
+            "id": "9096035444f5062c",
+            "type": "function",
+            "z": "9c6a063567276156",
+            "name": "function 1",
+            "func": "msg.deviceId = 99; \nmsg.address = \"192.168.1.222\"; \n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 480,
+            "y": 400,
+            "wires": [
+                [
+                    "7b34eff7b6ec2901"
                 ]
             ]
         }
