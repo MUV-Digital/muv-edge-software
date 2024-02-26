@@ -81,23 +81,6 @@
             ]
         },
         {
-            "id": "a0i2p8kh02eeijn5",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "send bridge data",
-            "func": "msg.payload = \"\";\n\nmsg.sequences = flow.get(\"bridge.image.protocols\").map(dataPoint => {\n    return {\n        dataPoint: dataPoint,\n        name: dataPoint.id,\n        fc: dataPoint.fc,\n        address: dataPoint.address,\n        unitid: flow.get(\"bridge.image.controller.unitId\"),\n        quantity: global.get(\"function.typeToRegisterLength\")(dataPoint.type)\n    };\n});\n\nif (msg.sequences.length > 0) {\n    node.send(msg);\n}\n\nnode.done();\n",
-            "outputs": 1,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 430,
-            "y": 480,
-            "wires": [
-                []
-            ]
-        },
-        {
             "id": "kkne7xpvmsiwdz6y",
             "type": "comment",
             "z": "a51495243d507bef",
@@ -153,67 +136,6 @@
             "wires": []
         },
         {
-            "id": "jwl514skrecpbim5",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Set number data point values",
-            "func": "if (!msg.dataPoint.type.includes(\"bool\") || (msg.dataPoint.type.includes(\"bool\") && typeof msg.payload[0] !== \"boolean\")) {\n    msg.spec = {\n        \"options\":\n        {\n            \"byteSwap\": msg.dataPoint.type.includes(\"bool\"),\n            \"resultType\": \"keyvalue\",\n            \"singleResult\": true,\n            \"setTopic\": true,\n            \"msgProperty\": \"payload\",\n        },\n        \"items\": []\n    }\n\n    msg.spec.items = [\n        {\n            \"name\": msg.name,\n            \"type\": msg.dataPoint.type.includes(\"bool\") ? \"bool\" : msg.dataPoint.type,\n            \"length \": global.get(\"function.typeToRegisterLength\")(msg.dataPoint.type),\n            \"offset\": 0,\n            \"offsetbit\": msg.dataPoint.offsetbit,\n            \"scale\": msg.dataPoint.scale.toString(),\n            \"mask\": msg.dataPoint.mask\n        }\n    ];\n\n    node.send(msg);\n}\n\nnode.done();\n",
-            "outputs": 1,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 900,
-            "y": 480,
-            "wires": [
-                [
-                    "xv48xcuwln47r309"
-                ]
-            ]
-        },
-        {
-            "id": "xv48xcuwln47r309",
-            "type": "buffer-parser",
-            "z": "a51495243d507bef",
-            "name": "",
-            "data": "payload",
-            "dataType": "msg",
-            "specification": "spec",
-            "specificationType": "msg",
-            "items": [
-                {
-                    "type": "int16be",
-                    "name": "item1",
-                    "offset": 0,
-                    "length": 1,
-                    "offsetbit": 0,
-                    "scale": "0.1",
-                    "mask": ""
-                }
-            ],
-            "swap1": "",
-            "swap2": "",
-            "swap3": "",
-            "swap1Type": "swap",
-            "swap2Type": "swap",
-            "swap3Type": "swap",
-            "msgProperty": "payload",
-            "msgPropertyType": "str",
-            "resultType": "keyvalue",
-            "resultTypeType": "return",
-            "multipleResult": false,
-            "fanOutMultipleResult": false,
-            "setTopic": true,
-            "outputs": 1,
-            "x": 1110,
-            "y": 480,
-            "wires": [
-                [
-                    "qr37h3i07kn3n1rr"
-                ]
-            ]
-        },
-        {
             "id": "gbslf3jga0g2gysy",
             "type": "inject",
             "z": "a51495243d507bef",
@@ -227,7 +149,7 @@
                     "vt": "str"
                 }
             ],
-            "repeat": "20",
+            "repeat": "60",
             "crontab": "",
             "once": true,
             "onceDelay": "30",
@@ -246,14 +168,15 @@
             "id": "l4g2yysbv030l9zu",
             "type": "function",
             "z": "a51495243d507bef",
-            "name": "Set boolean data point values",
-            "func": "if (msg.dataPoint.type.includes(\"bool\") && typeof msg.payload[0] === \"boolean\") {\n    var payload = {};\n    payload[msg.name] = msg.payload[msg.dataPoint.offsetbit];\n    msg.payload = payload;\n    node.send(msg);\n}\n\nnode.done();\n",
+            "name": "Set data point values",
+            "func": "var bacnetPoints = []\nvar dataPointvalues = {\"payload\" :{}};\n\nfor (var propertyName in msg.payload) {\n    if (propertyName.includes(\"OBJECT_LIST\")){\n        msg.payload[propertyName].map(bacnetObject => {\n            let point = {};\n            Object.keys(bacnetObject).forEach(key => {\n                if (key.includes(\"OBJECT_NAME\")){\n                    point.id = bacnetObject[key];\n                } else if (key.includes(\"PRESENT_VALUE\")) {\n                    point.value = bacnetObject[key];\n                }\n            })\n            if(point.id && point.value){\n                bacnetPoints.push(point);\n            }\n        });\n    }\n}\n\nflow.get(\"bridge.image.protocols\").map(dataPoint => {\n    let bacnetPoint = bacnetPoints.find(element => element.id === dataPoint.id);\n    if (bacnetPoint && dataPoint.topic.includes(\"bool\"))  {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value.includes(\"ACTIVE\") ? true : false;\n    } else if (bacnetPoint) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value;\n    }\n});\n\nreturn dataPointvalues;",
             "outputs": 1,
+            "timeout": "",
             "noerr": 0,
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 910,
+            "x": 820,
             "y": 520,
             "wires": [
                 [
@@ -522,7 +445,8 @@
             "name": "Update Metrics",
             "links": [
                 "7uz1v810hwt4klzu",
-                "qr37h3i07kn3n1rr"
+                "qr37h3i07kn3n1rr",
+                "904fe2b07f50ce47"
             ],
             "x": 75,
             "y": 740,
@@ -539,6 +463,7 @@
             "name": "Set sensor value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"error\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n            msg.errorUpstreamRequired = true;\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"state\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n        msg.stateUpstreamRequired = true;\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
+            "timeout": "",
             "noerr": 0,
             "initialize": "",
             "finalize": "",
@@ -562,7 +487,7 @@
                 "5ac72aga0k5om8vd"
             ],
             "x": 1275,
-            "y": 480
+            "y": 520
         },
         {
             "id": "w893i8k9tn2krao8",
@@ -716,7 +641,7 @@
             "y": 520,
             "wires": [
                 [
-                    "a0i2p8kh02eeijn5"
+                    "4fb6bf9552d1c542"
                 ]
             ]
         },
@@ -1094,25 +1019,11 @@
             ]
         },
         {
-            "id": "1b15b9eb8d4e859f",
-            "type": "read-object-properties",
-            "z": "a51495243d507bef",
-            "name": "",
-            "x": 720,
-            "y": 1840,
-            "wires": [
-                [
-                    "63de82d1703dcede",
-                    "98756e5bb72a3685"
-                ]
-            ]
-        },
-        {
-            "id": "f2ab79c87df39de3",
+            "id": "4fb6bf9552d1c542",
             "type": "function",
             "z": "a51495243d507bef",
-            "name": "Inject Id + Type + Properties",
-            "func": "msg.deviceId = 99;\nmsg.address = \"192.168.1.222\";\nmsg.inputType = 5;\nmsg.bacnetID = 22;\n\nconst bacnetProperties = [\n  { id: 77 }, // OBJECT_NAME\n // { id: 79 }, // OBJECT_TYPE OR INPUT TYPE\n  { id: 85 }, // PRESENT_VALUE\n];\n\n\nconst requestArray = [\n  { objectId: { type: msg.inputType, instance: msg.bacnetID }, properties: bacnetProperties }\n];\n\nmsg.requestArray = requestArray        \n        \nreturn msg;",
+            "name": "Set Bacnet parameters",
+            "func": "// msg.apduTimeout = flow.get(\"bridge.image.controller.apduTimeout\");\n// msg.broadcastAddress = flow.get(\"bridge.image.controller.broadcastAddress\");\n// msg.communicationPort = flow.get(\"bridge.image.controller.tcpPort\");\n// msg.deviceId = flow.get(\"bridge.image.controller.unitId\");\nmsg.deviceId = 99;\nmsg.address = flow.get(\"bridge.image.controller.tcpHost\");\n\nreturn msg;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
@@ -1120,204 +1031,7 @@
             "finalize": "",
             "libs": [],
             "x": 400,
-            "y": 1840,
-            "wires": [
-                [
-                    "1b15b9eb8d4e859f"
-                ]
-            ]
-        },
-        {
-            "id": "a8a816e74c2d2519",
-            "type": "inject",
-            "z": "a51495243d507bef",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                },
-                {
-                    "p": "topic",
-                    "vt": "str"
-                }
-            ],
-            "repeat": "",
-            "crontab": "",
-            "once": false,
-            "onceDelay": 0.1,
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 140,
-            "y": 1840,
-            "wires": [
-                [
-                    "f2ab79c87df39de3"
-                ]
-            ]
-        },
-        {
-            "id": "63de82d1703dcede",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 27",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 1080,
-            "y": 1840,
-            "wires": []
-        },
-        {
-            "id": "98756e5bb72a3685",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Data Transformation",
-            "func": "var object = msg.payload;\n\nvar myArray = {};\n\nmyArray[\"BacnetID\"] = msg.bacnetID;\nmyArray[\"InputType\"] = msg.inputType;\n\n\nfor(var j = 0; j < object.values[0].values.length; j++){\n    \n    \n    \n    var k1 = object.values[0].values[j].id.toString();\n    \n    //str = str + k1 + \" ----- \";\n    \n    var v1 = object.values[0].values[j].value[0].value;\n    \n    var k1str = ConvertPropertyIdWithString(k1);\n    \n    myArray[k1str] = v1;\n    \n}\n\n\n//msg.payload = str;\n\nmsg.payload = myArray;\n\nreturn msg;\n\n\n\nfunction ConvertPropertyIdWithString(id){\n    \n    var convertedValue = \" PPPP \";\n    \n    if(id == 0){\n        convertedValue = \"ACKED_TRANSITIONS\";\n    }\n    \n    else if(id == 4){\n        convertedValue = \"ACTIVE_TEXT\";\n    }\n    \n    else if(id == 6){\n        convertedValue = \"ALARM_VALUE\";\n    }\n    \n    else if(id == 15){\n        convertedValue = \"CHANGE_OF_STATE_COUNT\";\n    }\n    \n    else if(id == 16){\n        convertedValue = \"CHANGE_OF _STATE_TIME\";\n    }\n    \n    else if(id == 17){\n        convertedValue = \"NOTIFICATION_CLASS\";\n    }\n    \n    else if(id == 22){\n        convertedValue = \"COV_INCREMENT\";\n    }\n\n    else if(id == 25){\n        convertedValue = \"DEADBAND\";\n    }\n\n    else if(id == 28){\n        convertedValue = \"DESCRIPTION\";\n    }\n    \n    else if(id == 31){\n        convertedValue = \"DEVICE_TYPE\";\n    }\n    \n    else if(id == 33){\n        convertedValue = \"ELAPSED_ACTIVE_TIME\";\n    }\n    \n    else if(id == 35){\n        convertedValue = \"EVENT_ENABLE\";\n    }\n    \n    else if(id == 36){\n        convertedValue = \"EVENT_STATE\";\n    }\n\n    else if(id == 45){\n        convertedValue = \"HIGH_LIMIT\";\n    }\n    \n    else if(id == 46){\n        convertedValue = \"INACTIVE_TEXT\";\n    }\n\n    else if(id == 52){\n        convertedValue = \"LIMIT_ENABLE\";\n    }\n\n    else if(id == 59){\n        convertedValue = \"LOW_LIMIT\";\n    }\n\n    else if(id == 65){\n        convertedValue = \"MAX_PRES_VALUE\";\n    }\n\n    else if(id == 69){\n        convertedValue = \"MIN_PRES_VALUE\";\n    }\n    \n    else if(id == 72){\n        convertedValue = \"NOTIFY_TYPE\";\n    }\n    \n    else if(id == 75){\n        convertedValue = \"OBJECT_IDENTIFIER\";\n    }\n    \n    else if(id == 77){\n        convertedValue = \"OBJECT_NAME\";\n    }\n    \n    else if(id == 79){\n        convertedValue = \"OBJECT_TYPE\";\n    }\n    \n    else if(id == 81){\n        convertedValue = \"OUT_OF_SERVICE\";\n    }\n    \n    else if(id == 84){\n        convertedValue = \"POLARITY\";\n    }\n    \n    else if(id == 85){\n        convertedValue = \"PRESENT_VALUE\";\n    }\n    \n    else if(id == 103){\n        convertedValue = \"RELIABILITY\";\n    }\n\n    else if(id == 106){\n        convertedValue = \"RESOLUTION\";\n    }\n    \n    else if(id == 111){\n        convertedValue = \"STATUS_FLAGS\";\n    }\n    \n    else if(id == 113){\n        convertedValue = \"TIME_DELAY\";\n    }\n    \n    else if(id == 114){\n        convertedValue = \"TIME_OF_ACTIVE_TIME_RESET\";\n    }\n    \n    else if(id == 115){\n        convertedValue = \"TIME_OF_STATE_COUNT_RESET\";\n    }\n\n    else if(id == 117){\n        convertedValue = \"UNITS\";\n    }\n\n    else if(id == 118){\n        convertedValue = \"UPDATE_INTERVAL\";\n    }\n    \n    else if(id == 130){\n        convertedValue = \"EVENT_TIME_STAMPS\";\n    }\n    \n    else if(id == 351){\n        convertedValue = \"EVENT_MESSAGE_TEXTS\";\n    }\n    \n    else if(id == 352){\n        convertedValue = \"EVENT_MESSAGE_TEXTS_CONFIGS\";\n    }\n    \n    else if(id == 353){\n        convertedValue = \"EVENT_DETECTION_ENABLE\";\n    }\n    \n    else if(id == 354){\n        convertedValue = \"EVENT_ALGORITHM_INHIBIT\";\n    }\n    \n    else if(id == 355){\n        convertedValue = \"EVENT_ALGORITHM_INHIBIT_REF\";\n    }\n    \n    else if(id == 356){\n        convertedValue = \"TIME_DELAY_NORMAL\";\n    }\n    \n    return convertedValue;\n    \n    \n}",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 880,
-            "y": 1940,
-            "wires": [
-                [
-                    "3b068278ea802094"
-                ]
-            ]
-        },
-        {
-            "id": "3b068278ea802094",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 28",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 1080,
-            "y": 1940,
-            "wires": []
-        },
-        {
-            "id": "0v0fphxvjbbveqli",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 4",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 680,
-            "y": 1700,
-            "wires": []
-        },
-        {
-            "id": "qc0aaj15qg0girih",
-            "type": "inject",
-            "z": "a51495243d507bef",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                },
-                {
-                    "p": "topic",
-                    "vt": "str"
-                }
-            ],
-            "repeat": "",
-            "crontab": "",
-            "once": false,
-            "onceDelay": 0.1,
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 140,
-            "y": 1700,
-            "wires": [
-                [
-                    "1mnl7hbpz93gtjqw"
-                ]
-            ]
-        },
-        {
-            "id": "1mnl7hbpz93gtjqw",
-            "type": "BACnet-Command",
-            "z": "a51495243d507bef",
-            "name": "1",
-            "commandType": "whoIs",
-            "timeDuration": 0,
-            "enableDisable": 0,
-            "deviceState": 0,
-            "isUtc": true,
-            "lowLimit": 0,
-            "highLimit": 0,
-            "device": "cuxd5uhceljnm9yd",
-            "server": "thkthh9g3ed7ms9v",
-            "x": 290,
-            "y": 1700,
-            "wires": [
-                [
-                    "0v0fphxvjbbveqli"
-                ]
-            ]
-        },
-        {
-            "id": "4494f2fbdd6bcf29",
-            "type": "inject",
-            "z": "a51495243d507bef",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                },
-                {
-                    "p": "topic",
-                    "vt": "str"
-                }
-            ],
-            "repeat": "",
-            "crontab": "",
-            "once": false,
-            "onceDelay": 0.1,
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 140,
-            "y": 2160,
-            "wires": [
-                [
-                    "4fb6bf9552d1c542"
-                ]
-            ]
-        },
-        {
-            "id": "4fb6bf9552d1c542",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Inject Parameters",
-            "func": "// var randNum = Math.floor(Math.random() * 5100);\n// msg.communicationPort = 47809 + randNum;\n// msg.interface = '0.0.0.0';\n// msg.broadcastAddress = '255.255.255.255';\n// msg.apduTimeout = 3000;\n// msg.reuseAddr = true;\n// msg.transportClosedDuration = 90000;\n//msg.getAllPropertiesManually = \"true\";\n\nmsg.deviceId = 99;\nmsg.address = \"192.168.1.222\";\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 370,
-            "y": 2160,
+            "y": 520,
             "wires": [
                 [
                     "ede5e2d97a9ff630"
@@ -1325,286 +1039,20 @@
             ]
         },
         {
-            "id": "177ff63bf3091b0f",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 22",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 860,
-            "y": 2160,
-            "wires": []
-        },
-        {
             "id": "ede5e2d97a9ff630",
             "type": "read-single-device",
             "z": "a51495243d507bef",
             "name": "",
             "x": 610,
-            "y": 2160,
+            "y": 520,
             "wires": [
                 [
-                    "177ff63bf3091b0f"
+                    "l4g2yysbv030l9zu"
                 ]
             ]
-        },
-        {
-            "id": "3ed9cb3c68c88c50",
-            "type": "read-single-point",
-            "z": "a51495243d507bef",
-            "name": "",
-            "x": 610,
-            "y": 2220,
-            "wires": [
-                [
-                    "56dcc0c93d7edcc8"
-                ]
-            ]
-        },
-        {
-            "id": "dfdf9cfae6db316a",
-            "type": "inject",
-            "z": "a51495243d507bef",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                },
-                {
-                    "p": "topic",
-                    "vt": "str"
-                }
-            ],
-            "repeat": "",
-            "crontab": "",
-            "once": false,
-            "onceDelay": 0.1,
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 140,
-            "y": 2220,
-            "wires": [
-                [
-                    "8b01e8719e4d6d6b"
-                ]
-            ]
-        },
-        {
-            "id": "8b01e8719e4d6d6b",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Inject Parameters",
-            "func": "// msg.communicationPort = 47811;\n// msg.interface = '0.0.0.0';\n// msg.broadcastAddress = '255.255.255.255';\n// msg.apduTimeout = 4000;\n// msg.reuseAddr = true;\n\n \n// msg.transportClosedDuration = 9000;\n\n\n// msg.inputType = 2;\n// msg.bacnetId = 103;\n// msg.address = \"192.168.10.52\";\n\nmsg.inputType = 2;\nmsg.bacnetId = 26;\nmsg.address = \"192.168.10.50\";\n\nreturn msg;",
-            "outputs": 1,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 370,
-            "y": 2220,
-            "wires": [
-                [
-                    "3ed9cb3c68c88c50"
-                ]
-            ]
-        },
-        {
-            "id": "56dcc0c93d7edcc8",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 23",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 860,
-            "y": 2220,
-            "wires": []
-        },
-        {
-            "id": "d4e184b3ed27c65c",
-            "type": "read-objects-list-within-device",
-            "z": "a51495243d507bef",
-            "name": "",
-            "x": 730,
-            "y": 2280,
-            "wires": [
-                [
-                    "e2c2a2fd6e536531"
-                ]
-            ]
-        },
-        {
-            "id": "5515866ca25b964a",
-            "type": "read-object-properties",
-            "z": "a51495243d507bef",
-            "name": "",
-            "x": 720,
-            "y": 2340,
-            "wires": [
-                [
-                    "bf874e495e86a417"
-                ]
-            ]
-        },
-        {
-            "id": "42ba49ea2bb49724",
-            "type": "inject",
-            "z": "a51495243d507bef",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                },
-                {
-                    "p": "topic",
-                    "vt": "str"
-                }
-            ],
-            "repeat": "",
-            "crontab": "",
-            "once": false,
-            "onceDelay": 0.1,
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 140,
-            "y": 2280,
-            "wires": [
-                [
-                    "d881f01805f8f779"
-                ]
-            ]
-        },
-        {
-            "id": "d881f01805f8f779",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Inject Device Id and Address",
-            "func": "msg.deviceId = 99;\nmsg.address = \"192.168.1.222\";\n\n//msg.communicationPort = 47808;\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 400,
-            "y": 2280,
-            "wires": [
-                [
-                    "d4e184b3ed27c65c"
-                ]
-            ]
-        },
-        {
-            "id": "e2c2a2fd6e536531",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 24",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 1000,
-            "y": 2280,
-            "wires": []
-        },
-        {
-            "id": "f53d617dd251dd64",
-            "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Inject Id + Type + Properties",
-            "func": "msg.deviceId = 99;\nmsg.address = \"192.168.1.222\";\nmsg.inputType = 5;\nmsg.bacnetID = 22;\n\nconst bacnetProperties = [\n  { id: 77 }, // OBJECT_NAME\n // { id: 79 }, // OBJECT_TYPE OR INPUT TYPE\n  { id: 85 }, // PRESENT_VALUE\n];\n\n\nconst requestArray = [\n  { objectId: { type: msg.inputType, instance: msg.bacnetID }, properties: bacnetProperties }\n];\n\nmsg.requestArray = requestArray        \n        \nreturn msg;",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 400,
-            "y": 2340,
-            "wires": [
-                [
-                    "5515866ca25b964a"
-                ]
-            ]
-        },
-        {
-            "id": "d8d1549a7fbecea0",
-            "type": "inject",
-            "z": "a51495243d507bef",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                },
-                {
-                    "p": "topic",
-                    "vt": "str"
-                }
-            ],
-            "repeat": "",
-            "crontab": "",
-            "once": false,
-            "onceDelay": 0.1,
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 140,
-            "y": 2340,
-            "wires": [
-                [
-                    "f53d617dd251dd64"
-                ]
-            ]
-        },
-        {
-            "id": "bf874e495e86a417",
-            "type": "debug",
-            "z": "a51495243d507bef",
-            "name": "debug 25",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 960,
-            "y": 2340,
-            "wires": []
         }
     ],
     "configs": [
-        {
-            "id": "cuxd5uhceljnm9yd",
-            "type": "BACnet-Device",
-            "z": "a51495243d507bef",
-            "name": "C-Bus Gateway",
-            "deviceAddress": "192.168.1.222"
-        },
-        {
-            "id": "thkthh9g3ed7ms9v",
-            "type": "BACnet-Client",
-            "z": "a51495243d507bef",
-            "name": "C-Bus Gateway Client",
-            "adpuTimeout": "6000",
-            "port": "47808",
-            "interface": "192.168.1.222",
-            "broadcastAddress": "192.168.1.255"
-        },
         {
             "id": "0ej5nk3u852eja5o",
             "type": "modbus-client",
