@@ -1,14 +1,14 @@
 {
-    "id": "a51495243d507bef",
+    "id": "ccf63bb125af2871",
     "label": "65d7224130a69205eb45fdc3",
     "disabled": false,
     "info": "",
     "env": [],
     "nodes": [
         {
-            "id": "8bfcnrs1y4tocsks",
+            "id": "qckao2dco367e8si",
             "type": "mqtt out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "topic": "cloud/upstream/data",
             "qos": "2",
@@ -24,9 +24,9 @@
             "wires": []
         },
         {
-            "id": "02zua250g9qxwagp",
+            "id": "4khs1w1klpx7cxay",
             "type": "inject",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Startup",
             "props": [
                 {
@@ -44,27 +44,27 @@
             "y": 80,
             "wires": [
                 [
-                    "dl7qrmz5z46h6yj9"
+                    "9f054ii8awtmwmz2"
                 ]
             ]
         },
         {
-            "id": "dl7qrmz5z46h6yj9",
+            "id": "9f054ii8awtmwmz2",
             "type": "getflows",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "x": 320,
             "y": 80,
             "wires": [
                 [
-                    "9kw8880q1d4u4gn9"
+                    "btobll7q5b20zvfh"
                 ]
             ]
         },
         {
-            "id": "9kw8880q1d4u4gn9",
+            "id": "btobll7q5b20zvfh",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Init",
             "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
             "outputs": 1,
@@ -76,14 +76,14 @@
             "y": 80,
             "wires": [
                 [
-                    "xytezcclek2uu4ko"
+                    "ztdfxgwjpzavz0ej"
                 ]
             ]
         },
         {
-            "id": "kkne7xpvmsiwdz6y",
+            "id": "qyttdt4dzsyv2kbs",
             "type": "comment",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "----- Execute Commands",
             "info": "",
             "x": 110,
@@ -91,9 +91,9 @@
             "wires": []
         },
         {
-            "id": "elnz9639en2t9vqz",
+            "id": "z2shdm55pbqeolvw",
             "type": "comment",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "---- Connections initialization",
             "info": "",
             "x": 120,
@@ -101,9 +101,9 @@
             "wires": []
         },
         {
-            "id": "xytezcclek2uu4ko",
+            "id": "ztdfxgwjpzavz0ej",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -121,14 +121,14 @@
             "y": 80,
             "wires": [
                 [
-                    "ksup5sxxr5v9elt2"
+                    "y8oo909bu4t7vzf3"
                 ]
             ]
         },
         {
-            "id": "9l3k1ckufqj5d3s5",
+            "id": "5dpj9yk11klpybay",
             "type": "comment",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "---- Protocol Read",
             "info": "",
             "x": 90,
@@ -136,9 +136,9 @@
             "wires": []
         },
         {
-            "id": "gbslf3jga0g2gysy",
+            "id": "dcmv0jl7m8y3upyw",
             "type": "inject",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Read intervall",
             "props": [
                 {
@@ -160,16 +160,16 @@
             "y": 120,
             "wires": [
                 [
-                    "9ua2bq9cfhlhyjfu"
+                    "qld9qsg78d905d9n"
                 ]
             ]
         },
         {
-            "id": "l4g2yysbv030l9zu",
+            "id": "je7evkzdawmconja",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Set data point values",
-            "func": "var bacnetPoints = []\nvar dataPointvalues = {\"payload\" :{}};\n\nfor (var propertyName in msg.payload) {\n    if (propertyName.includes(\"OBJECT_LIST\")){\n        msg.payload[propertyName].map(bacnetObject => {\n            let point = {};\n            Object.keys(bacnetObject).forEach(key => {\n                if (key.includes(\"OBJECT_NAME\")){\n                    point.id = bacnetObject[key];\n                } else if (key.includes(\"PRESENT_VALUE\")) {\n                    point.value = bacnetObject[key];\n                }\n            })\n            if(point.id && point.value){\n                bacnetPoints.push(point);\n            }\n        });\n    }\n}\n\nflow.get(\"bridge.image.protocols\").map(dataPoint => {\n    let bacnetPoint = bacnetPoints.find(element => element.id === dataPoint.id);\n    if (bacnetPoint && dataPoint.topic.includes(\"bool\"))  {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value.includes(\"ACTIVE\") ? true : false;\n    } else if (bacnetPoint) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value;\n    }\n});\n\nreturn dataPointvalues;",
+            "func": "var bacnetPoints = []\nvar dataPointvalues = {\"payload\" :{}};\n\nfor (var propertyName in msg.payload) {\n    if (propertyName.includes(\"OBJECT_LIST\")){\n        msg.payload[propertyName].map(bacnetObject => {\n            let point = {};\n            Object.keys(bacnetObject).forEach(key => {\n                if (key.includes(\"OBJECT_NAME\")){\n                    point.id = bacnetObject[key];\n                } else if (key.includes(\"PRESENT_VALUE\")) {\n                    point.value = bacnetObject[key];\n                }\n            })\n            if(point.id && point.value){\n                bacnetPoints.push(point);\n            }\n        });\n    }\n}\n\nflow.get(\"bridge.image.protocols\").map(dataPoint => {\n    let bacnetPoint = bacnetPoints.find(element => element.id === dataPoint.id);\n    if (bacnetPoint && dataPoint.topic.includes(\"bool\"))  {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value.includes(\"INACTIVE\") ? false : true;\n    } else if (bacnetPoint) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value;\n    }\n});\n\nreturn dataPointvalues;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
@@ -180,14 +180,14 @@
             "y": 520,
             "wires": [
                 [
-                    "qr37h3i07kn3n1rr"
+                    "igsqbitw8is3ddrn"
                 ]
             ]
         },
         {
-            "id": "wel7dq9ux78lrsxw",
+            "id": "uhbilx6wvp3mgd2k",
             "type": "delay",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -205,14 +205,14 @@
             "y": 1180,
             "wires": [
                 [
-                    "8bfcnrs1y4tocsks"
+                    "qckao2dco367e8si"
                 ]
             ]
         },
         {
-            "id": "putqr4to39tlbejx",
+            "id": "qpilf7k2ozf1r2m0",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "State Upstream Required?",
             "property": "stateUpstreamRequired",
             "propertyType": "msg",
@@ -228,14 +228,14 @@
             "y": 780,
             "wires": [
                 [
-                    "8bfcnrs1y4tocsks"
+                    "qckao2dco367e8si"
                 ]
             ]
         },
         {
-            "id": "ksup5sxxr5v9elt2",
+            "id": "y8oo909bu4t7vzf3",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Set channel parameters",
             "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
             "outputs": 1,
@@ -250,9 +250,9 @@
             ]
         },
         {
-            "id": "8ytk5xm4c4zxhvnq",
+            "id": "lidqcwh8mim7khzc",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Error Upstream Required?",
             "property": "errorUpstreamRequired",
             "propertyType": "msg",
@@ -268,14 +268,14 @@
             "y": 740,
             "wires": [
                 [
-                    "tegpd5k76dx7276b"
+                    "mjvy6quurft0obcp"
                 ]
             ]
         },
         {
-            "id": "tegpd5k76dx7276b",
+            "id": "mjvy6quurft0obcp",
             "type": "mqtt out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "topic": "cloud/upstream/error",
             "qos": "2",
@@ -291,9 +291,9 @@
             "wires": []
         },
         {
-            "id": "4ob0yvv2t7n25c96",
+            "id": "8gbq6qgoa92s5gsh",
             "type": "comment",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "---- Virtual Read",
             "info": "",
             "x": 80,
@@ -301,39 +301,39 @@
             "wires": []
         },
         {
-            "id": "9ua2bq9cfhlhyjfu",
+            "id": "qld9qsg78d905d9n",
             "type": "link out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "link out 14",
             "mode": "link",
             "links": [
-                "23gxn86y3qo5k6uh",
-                "lmv8uc3prs4dulol"
+                "52n52pjze0rofc6n",
+                "duawgl3uqpdwaw77"
             ],
             "x": 295,
             "y": 120
         },
         {
-            "id": "23gxn86y3qo5k6uh",
+            "id": "52n52pjze0rofc6n",
             "type": "link in",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Protocol Read",
             "links": [
-                "9ua2bq9cfhlhyjfu",
-                "79tc6iikarcz45k8"
+                "qld9qsg78d905d9n",
+                "wlgo32suo1muslk0"
             ],
             "x": 75,
             "y": 480,
             "wires": [
                 [
-                    "eqfh4prsb6v0tc89"
+                    "jchd0wdoqzwa3d6h"
                 ]
             ]
         },
         {
-            "id": "eqfh4prsb6v0tc89",
+            "id": "jchd0wdoqzwa3d6h",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -351,42 +351,42 @@
             "y": 480,
             "wires": [
                 [
-                    "rdw4dga2k5hk39qi"
+                    "hiqos6cm76btcuux"
                 ]
             ]
         },
         {
-            "id": "79tc6iikarcz45k8",
+            "id": "wlgo32suo1muslk0",
             "type": "link out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "link out 15",
             "mode": "link",
             "links": [
-                "23gxn86y3qo5k6uh"
+                "52n52pjze0rofc6n"
             ],
             "x": 1275,
             "y": 1140
         },
         {
-            "id": "lmv8uc3prs4dulol",
+            "id": "duawgl3uqpdwaw77",
             "type": "link in",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Virtual Read",
             "links": [
-                "9ua2bq9cfhlhyjfu"
+                "qld9qsg78d905d9n"
             ],
             "x": 75,
             "y": 260,
             "wires": [
                 [
-                    "mcvzifg8mgse031f"
+                    "4oj3vmkos1bl89os"
                 ]
             ]
         },
         {
-            "id": "mcvzifg8mgse031f",
+            "id": "4oj3vmkos1bl89os",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -404,14 +404,14 @@
             "y": 260,
             "wires": [
                 [
-                    "zewddyx5efmclpil"
+                    "0pzx46puggg913p9"
                 ]
             ]
         },
         {
-            "id": "61al0zy9km2oz094",
+            "id": "vntic10o3deuyr6r",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "calculate virtual values",
             "func": "const functions = {\n    \"deviceState\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        }\n        if (parameterIds.length === 0) {\n            parameterIds = flow.get(\"bridge.image.protocols\").filter(dataPoint => {\n                return dataPoint.topic.includes(\"error\")\n            }).map(dataPoint => {\n                return dataPoint.id;\n            });\n        }\n\n        const ok = Object.keys(flow.get(\"bridge.image.metrics\")).filter(key => {\n            return parameterIds.includes(key)\n        }).reduce((accumulator, id) => accumulator && (flow.get(\"bridge.image.metrics\")[id] === \"\" || flow.get(\"bridge.image.metrics\")[id] === 0 || flow.get(\"bridge.image.metrics\")[id] === false), true)\n        \n        if (ok) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = 2;\n        }\n    }\n}\n\nconst executor = (metricId, func, parameterIds) => {\n    msg.payload[metricId] = eval(\"(\" + func + \")\")(...parameterIds.map(x => flow.get(\"bridge.image.metrics\")[x]))\n}\n\nmsg.sequences.forEach(sequence => {\n    msg = sequence;\n    msg.payload = {};\n    let calc = sequence.dataPoint.calculation\n    let metricsExist = calc.ids.reduce((accumulator, currentValue) => accumulator && flow.get(\"bridge.image.metrics\").hasOwnProperty(currentValue), true)\n    if (metricsExist) {\n        if (functions.hasOwnProperty(calc.func)){\n            functions[calc.func](sequence.dataPoint.id, calc.ids)\n        } else {\n            executor(sequence.dataPoint.id, calc.func, calc.ids);\n        }\n    } else {\n        throw \"Parameter IDs: \" + calc.ids + \" is missing for calculation\";\n    }\n    node.send(msg);\n});\n\nnode.done();",
             "outputs": 1,
@@ -424,14 +424,14 @@
             "y": 260,
             "wires": [
                 [
-                    "7uz1v810hwt4klzu"
+                    "cdevabz4y0qk5w4e"
                 ]
             ]
         },
         {
-            "id": "5htygxuz2pjar5bm",
+            "id": "ddw2jdaf9urmcagm",
             "type": "comment",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "---- Update Metrics",
             "info": "",
             "x": 90,
@@ -439,60 +439,59 @@
             "wires": []
         },
         {
-            "id": "5ac72aga0k5om8vd",
+            "id": "0jiqv1auey2s7hid",
             "type": "link in",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Update Metrics",
             "links": [
-                "7uz1v810hwt4klzu",
-                "qr37h3i07kn3n1rr",
+                "igsqbitw8is3ddrn",
                 "904fe2b07f50ce47"
             ],
             "x": 75,
             "y": 740,
             "wires": [
                 [
-                    "qsb6oiqmxigzz5v0"
+                    "mfi666st0wyl7aza"
                 ]
             ]
         },
         {
-            "id": "qsb6oiqmxigzz5v0",
+            "id": "mfi666st0wyl7aza",
             "type": "function",
-            "z": "a51495243d507bef",
-            "name": "Set sensor value on bridge",
-            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"error\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n            msg.errorUpstreamRequired = true;\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"state\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n        msg.stateUpstreamRequired = true;\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "z": "ccf63bb125af2871",
+            "name": "Set multiple sensor value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    if (flow.get(\"bridge.image.protocols\").find(element => element.id === propertyName).topic.find(topic => topic === \"error\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n            msg.errorUpstreamRequired = true;\n    }\n    if (flow.get(\"bridge.image.protocols\").find(element => element.id === propertyName).topic.find(topic => topic === \"state\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n        msg.stateUpstreamRequired = true;\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 320,
+            "x": 340,
             "y": 740,
             "wires": [
                 [
-                    "putqr4to39tlbejx",
-                    "8ytk5xm4c4zxhvnq"
+                    "qpilf7k2ozf1r2m0",
+                    "lidqcwh8mim7khzc"
                 ]
             ]
         },
         {
-            "id": "qr37h3i07kn3n1rr",
+            "id": "igsqbitw8is3ddrn",
             "type": "link out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "link out 17",
             "mode": "link",
             "links": [
-                "5ac72aga0k5om8vd"
+                "0jiqv1auey2s7hid"
             ],
             "x": 1275,
             "y": 520
         },
         {
-            "id": "w893i8k9tn2krao8",
+            "id": "9qk93yp2ecbq5s7q",
             "type": "flogger",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Error",
             "logfile": "bridge.log",
             "inputchoice": "fullmsg",
@@ -509,9 +508,9 @@
             ]
         },
         {
-            "id": "cojfiqccjh3tc73s",
+            "id": "vsqs8zvw0414nbyi",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "set error",
             "func": "msg.payload = {\n    \"payload\" : msg.payload,\n    \"error\" : msg.error\n};\n\nif (msg._error){\n    msg.payload._error = msg._error;\n}\n\nreturn msg;",
             "outputs": 1,
@@ -524,14 +523,14 @@
             "y": 1520,
             "wires": [
                 [
-                    "jj5g9fsxcguvdqvt"
+                    "jmbnk99e4zo1wvtd"
                 ]
             ]
         },
         {
-            "id": "4u4cytazfadygzlb",
+            "id": "zvlqleyu02rg5t2i",
             "type": "catch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "scope": null,
             "uncaught": false,
@@ -539,14 +538,14 @@
             "y": 1520,
             "wires": [
                 [
-                    "cojfiqccjh3tc73s"
+                    "vsqs8zvw0414nbyi"
                 ]
             ]
         },
         {
-            "id": "jj5g9fsxcguvdqvt",
+            "id": "jmbnk99e4zo1wvtd",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Set log file name",
             "func": "msg.logfile = \"bridge-\" + env.get(\"NR_FLOW_NAME\") + \".log\"\n\nreturn msg;",
             "outputs": 1,
@@ -559,26 +558,26 @@
             "y": 1520,
             "wires": [
                 [
-                    "w893i8k9tn2krao8"
+                    "9qk93yp2ecbq5s7q"
                 ]
             ]
         },
         {
-            "id": "7uz1v810hwt4klzu",
+            "id": "cdevabz4y0qk5w4e",
             "type": "link out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "link out 16",
             "mode": "link",
             "links": [
-                "5ac72aga0k5om8vd"
+                "b2356a699888e4c9"
             ],
             "x": 1275,
             "y": 260
         },
         {
-            "id": "ohgtnix3z6hikbbd",
+            "id": "93sm2dbj9hcwpdd0",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "send virtual data",
             "func": "msg.sequences = flow.get(\"bridge.image.virtuals\").map(dataPoint => {\n    return {\n        dataPoint: dataPoint\n    };\n});\n\nif (msg.sequences.length > 0) {\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -591,14 +590,14 @@
             "y": 260,
             "wires": [
                 [
-                    "61al0zy9km2oz094"
+                    "vntic10o3deuyr6r"
                 ]
             ]
         },
         {
-            "id": "zewddyx5efmclpil",
+            "id": "0pzx46puggg913p9",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Config correct",
             "property": "bridge.image.virtuals",
             "propertyType": "flow",
@@ -616,14 +615,14 @@
             "y": 300,
             "wires": [
                 [
-                    "ohgtnix3z6hikbbd"
+                    "93sm2dbj9hcwpdd0"
                 ]
             ]
         },
         {
-            "id": "rdw4dga2k5hk39qi",
+            "id": "hiqos6cm76btcuux",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Config correct",
             "property": "bridge.image.protocols",
             "propertyType": "flow",
@@ -641,14 +640,14 @@
             "y": 520,
             "wires": [
                 [
-                    "4fb6bf9552d1c542"
+                    "kk9nkxsa17mrj8zs"
                 ]
             ]
         },
         {
-            "id": "10elx4q1ki0tupfi",
+            "id": "7ixxaevatsbdyubb",
             "type": "mqtt in",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Command",
             "topic": "",
             "qos": "2",
@@ -662,14 +661,14 @@
             "y": 1260,
             "wires": [
                 [
-                    "0lkf39hj9xei14hr"
+                    "sug6mihld95a65ww"
                 ]
             ]
         },
         {
-            "id": "121k6mfzxdczks2g",
+            "id": "jdurbza94u3ipw5e",
             "type": "inject",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "props": [
                 {
@@ -687,14 +686,14 @@
             "y": 1080,
             "wires": [
                 [
-                    "ttucwp8dbvxwo63a"
+                    "s1bkoomuj1g2lgs3"
                 ]
             ]
         },
         {
-            "id": "a896fo32jo9h2s7e",
+            "id": "rkawxx0toxplktu6",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Subscribe to commands for this bridge",
             "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/\" + flow.get(\"bridge\").id + \"/#\"\n}\n\nreturn msg;",
             "outputs": 1,
@@ -706,14 +705,14 @@
             "y": 1200,
             "wires": [
                 [
-                    "10elx4q1ki0tupfi"
+                    "7ixxaevatsbdyubb"
                 ]
             ]
         },
         {
-            "id": "ttucwp8dbvxwo63a",
+            "id": "s1bkoomuj1g2lgs3",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -734,17 +733,17 @@
             "y": 1140,
             "wires": [
                 [
-                    "m685l6evk932tuwg"
+                    "tmjvq2x3zui8fkk9"
                 ],
                 [
-                    "a896fo32jo9h2s7e"
+                    "rkawxx0toxplktu6"
                 ]
             ]
         },
         {
-            "id": "m685l6evk932tuwg",
+            "id": "tmjvq2x3zui8fkk9",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Error",
             "func": "node.warn(\"The bridge configuration is wrong!\")\nnode.done()",
             "outputs": 0,
@@ -757,9 +756,9 @@
             "wires": []
         },
         {
-            "id": "0lkf39hj9xei14hr",
+            "id": "sug6mihld95a65ww",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "prepare write data",
             "func": "const command = msg.payload.command;\nconst response = msg.payload.response;\nconst matchingCommand = flow.get(\"bridge.image.commands\").find(bridgeCommand => bridgeCommand.id === command.id)\nconst matchingProtocol = matchingCommand ? flow.get(\"bridge.image.protocols\").find(protocol => protocol.id === matchingCommand.protocolId) : undefined;\n\nif (matchingProtocol && matchingCommand) {\n    response.value = {\n        \"actual\": flow.get(\"bridge.image.metrics\")[matchingProtocol.id],\n        \"target\": command.value\n    }\n    msg.protocolCommand = matchingCommand;\n    msg.response = response;\n    \n    if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"boolean\") {\n        if (matchingProtocol.invert) {\n            command.value = !command.value;\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"number\") {\n        if (matchingProtocol.invert) {\n            command.value = Math.abs(command.value - 1);\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (typeof command.value === \"number\") {\n        msg.payload = {\n            \"value\": matchingProtocol.type.startsWith(\"int16\") && command.value < 0 ? 65536 + command.value * (1 / matchingProtocol.scale) : command.value * (1 / matchingProtocol.scale),\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else {\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    }\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_EXECUTION\";\n\n    return [msg, responseMessage]\n} else {\n    node.warn(\"Command configuration wrong!\");\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_CONFIG\";\n    \n    return [null, responseMessage];\n}\n",
             "outputs": 2,
@@ -772,17 +771,17 @@
             "y": 1260,
             "wires": [
                 [
-                    "alhc3poep2tdnxsf"
+                    "vv12o9dllab2l3mr"
                 ],
                 [
-                    "wp659m0msozl21z3"
+                    "r5e7wquo1ndcjb2j"
                 ]
             ]
         },
         {
-            "id": "luiiu9xrj97917b4",
+            "id": "9baqhl8tqy0qko80",
             "type": "mqtt out",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "topic": "cloud/upstream/response",
             "qos": "2",
@@ -798,9 +797,9 @@
             "wires": []
         },
         {
-            "id": "alhc3poep2tdnxsf",
+            "id": "vv12o9dllab2l3mr",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Write data",
             "func": "let writeMessage = { payload:  msg.payload };\nwriteMessage.protocolCommand = msg.protocolCommand;\n\nlet responseMessage = { payload: { response: msg.response } };\nresponseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\nresponseMessage.payload.response.status = \"OK\";\nresponseMessage.payload.response.error = \"\";\n\nreturn [writeMessage, responseMessage];",
             "outputs": 2,
@@ -813,17 +812,17 @@
             "y": 1240,
             "wires": [
                 [
-                    "7mi9eyxtvrbgu4qe"
+                    "bqx8f1xivmuh2193"
                 ],
                 [
-                    "0gwp9j2inw6kft4z"
+                    "iwbrze04l9ty19f8"
                 ]
             ]
         },
         {
-            "id": "pkm5r33l3rhzamtz",
+            "id": "ymvp23tqklb15ytm",
             "type": "debug",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Execute Command",
             "active": true,
             "tosidebar": true,
@@ -838,9 +837,9 @@
             "wires": []
         },
         {
-            "id": "7mi9eyxtvrbgu4qe",
+            "id": "bqx8f1xivmuh2193",
             "type": "switch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "property": "protocolCommand.type",
             "propertyType": "msg",
@@ -863,17 +862,17 @@
             "y": 1220,
             "wires": [
                 [
-                    "t2q0jw7n0nqmk02g"
+                    "mj26sy8w2gve4mx7"
                 ],
                 [
-                    "pkm5r33l3rhzamtz"
+                    "ymvp23tqklb15ytm"
                 ]
             ]
         },
         {
-            "id": "t2q0jw7n0nqmk02g",
+            "id": "mj26sy8w2gve4mx7",
             "type": "debug",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Command type not yet implemented",
             "active": true,
             "tosidebar": true,
@@ -888,9 +887,9 @@
             "wires": []
         },
         {
-            "id": "abe4n8b6mvvkdsra",
+            "id": "qzl4ukm08q8bebx9",
             "type": "comment",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "---- Handle errors",
             "info": "",
             "x": 80,
@@ -898,9 +897,9 @@
             "wires": []
         },
         {
-            "id": "ce3y0xg9mvf2ngz4",
+            "id": "bx5ljgwakqi836bj",
             "type": "catch",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "scope": [
                 "3v8asazcjzcmssk3"
@@ -910,14 +909,14 @@
             "y": 1320,
             "wires": [
                 [
-                    "djwm2fkcs6we3sq8"
+                    "0k7s4e87skxuwy6w"
                 ]
             ]
         },
         {
-            "id": "wp659m0msozl21z3",
+            "id": "r5e7wquo1ndcjb2j",
             "type": "delay",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -935,14 +934,14 @@
             "y": 1260,
             "wires": [
                 [
-                    "luiiu9xrj97917b4"
+                    "9baqhl8tqy0qko80"
                 ]
             ]
         },
         {
-            "id": "kkesvq99nyxgemlt",
+            "id": "wnmbykc9l0dlxx7o",
             "type": "change",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "rules": [
                 {
@@ -962,14 +961,14 @@
             "y": 1220,
             "wires": [
                 [
-                    "wp659m0msozl21z3"
+                    "r5e7wquo1ndcjb2j"
                 ]
             ]
         },
         {
-            "id": "0gwp9j2inw6kft4z",
+            "id": "iwbrze04l9ty19f8",
             "type": "delay",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -987,14 +986,14 @@
             "y": 1360,
             "wires": [
                 [
-                    "luiiu9xrj97917b4"
+                    "9baqhl8tqy0qko80"
                 ]
             ]
         },
         {
-            "id": "djwm2fkcs6we3sq8",
+            "id": "0k7s4e87skxuwy6w",
             "type": "change",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "rules": [
                 {
@@ -1014,16 +1013,16 @@
             "y": 1320,
             "wires": [
                 [
-                    "0gwp9j2inw6kft4z"
+                    "iwbrze04l9ty19f8"
                 ]
             ]
         },
         {
-            "id": "4fb6bf9552d1c542",
+            "id": "kk9nkxsa17mrj8zs",
             "type": "function",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Set Bacnet parameters",
-            "func": "// msg.apduTimeout = flow.get(\"bridge.image.controller.apduTimeout\");\n// msg.broadcastAddress = flow.get(\"bridge.image.controller.broadcastAddress\");\n// msg.communicationPort = flow.get(\"bridge.image.controller.tcpPort\");\nmsg.deviceId = flow.get(\"bridge.image.controller.unitId\");\nmsg.address = flow.get(\"bridge.image.controller.tcpHost\");\n\nreturn msg;",
+            "func": "// msg.apduTimeout = flow.get(\"bridge.image.controller.apduTimeout\");\n// msg.broadcastAddress = flow.get(\"bridge.image.controller.broadcastAddress\");\n// msg.communicationPort = flow.get(\"bridge.image.controller.tcpPort\");\nmsg.deviceId = parseInt(flow.get(\"bridge.image.controller.unitId\"));\nmsg.address = flow.get(\"bridge.image.controller.tcpHost\");\n\nreturn msg;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
@@ -1034,29 +1033,66 @@
             "y": 520,
             "wires": [
                 [
-                    "ede5e2d97a9ff630"
+                    "910ma7rz9u5mkk3j"
                 ]
             ]
         },
         {
-            "id": "ede5e2d97a9ff630",
+            "id": "910ma7rz9u5mkk3j",
             "type": "read-single-device",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "",
             "x": 610,
             "y": 520,
             "wires": [
                 [
-                    "l4g2yysbv030l9zu"
+                    "je7evkzdawmconja"
+                ]
+            ]
+        },
+        {
+            "id": "284943ff538c612f",
+            "type": "function",
+            "z": "ccf63bb125af2871",
+            "name": "Set single sensor value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"error\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n        msg.errorUpstreamRequired = true;\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"state\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n        msg.stateUpstreamRequired = true;\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 340,
+            "y": 700,
+            "wires": [
+                [
+                    "lidqcwh8mim7khzc",
+                    "qpilf7k2ozf1r2m0"
+                ]
+            ]
+        },
+        {
+            "id": "b2356a699888e4c9",
+            "type": "link in",
+            "z": "ccf63bb125af2871",
+            "name": "Update Single Metric",
+            "links": [
+                "cdevabz4y0qk5w4e"
+            ],
+            "x": 75,
+            "y": 700,
+            "wires": [
+                [
+                    "284943ff538c612f"
                 ]
             ]
         }
     ],
     "configs": [
         {
-            "id": "0ej5nk3u852eja5o",
+            "id": "u48fky0pnbt14g8z",
             "type": "modbus-client",
-            "z": "a51495243d507bef",
+            "z": "ccf63bb125af2871",
             "name": "Flexible Channel",
             "clienttype": "tcp",
             "bufferCommands": true,
