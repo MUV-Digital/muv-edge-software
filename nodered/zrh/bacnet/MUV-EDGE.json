@@ -1023,7 +1023,7 @@
             "type": "function",
             "z": "a51495243d507bef",
             "name": "Set Bacnet parameters",
-            "func": "// msg.apduTimeout = flow.get(\"bridge.image.controller.apduTimeout\");\n// msg.broadcastAddress = flow.get(\"bridge.image.controller.broadcastAddress\");\n// msg.communicationPort = flow.get(\"bridge.image.controller.tcpPort\");\n// msg.deviceId = flow.get(\"bridge.image.controller.unitId\");\nmsg.deviceId = 99;\nmsg.address = flow.get(\"bridge.image.controller.tcpHost\");\n\nreturn msg;",
+            "func": "// msg.apduTimeout = flow.get(\"bridge.image.controller.apduTimeout\");\n// msg.broadcastAddress = flow.get(\"bridge.image.controller.broadcastAddress\");\n// msg.communicationPort = flow.get(\"bridge.image.controller.tcpPort\");\nmsg.deviceId = flow.get(\"bridge.image.controller.unitId\");\nmsg.address = flow.get(\"bridge.image.controller.tcpHost\");\n\nreturn msg;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
