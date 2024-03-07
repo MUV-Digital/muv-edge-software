@@ -1,35 +1,14 @@
 {
-    "id": "e95e599795b0200b",
-    "label": "65561956115175c1ec001afa",
+    "id": "683eaf2c100223d0",
+    "label": "65e822d9bbf65abc8cdf4438",
     "disabled": false,
     "info": "",
     "env": [],
     "nodes": [
         {
-            "id": "jr4k6diics8epatg",
-            "type": "mqtt in",
-            "z": "e95e599795b0200b",
-            "name": "Command",
-            "topic": "",
-            "qos": "2",
-            "datatype": "auto-detect",
-            "broker": "de96f526d294fb46",
-            "nl": false,
-            "rap": true,
-            "rh": 0,
-            "inputs": 1,
-            "x": 120,
-            "y": 1340,
-            "wires": [
-                [
-                    "u51xbn1mklqice48"
-                ]
-            ]
-        },
-        {
-            "id": "68a82vfcskpjhbct",
+            "id": "swborvn8mw36adzm",
             "type": "mqtt out",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "",
             "topic": "cloud/upstream/data",
             "qos": "2",
@@ -40,58 +19,14 @@
             "correl": "",
             "expiry": "",
             "broker": "de96f526d294fb46",
-            "x": 1120,
-            "y": 980,
+            "x": 1140,
+            "y": 940,
             "wires": []
         },
         {
-            "id": "in1ru7jcztlfhh4k",
+            "id": "9t23dzwoh7eewq4c",
             "type": "inject",
-            "z": "e95e599795b0200b",
-            "name": "",
-            "props": [
-                {
-                    "p": "payload"
-                }
-            ],
-            "repeat": "1800",
-            "crontab": "",
-            "once": true,
-            "onceDelay": "10",
-            "topic": "",
-            "payload": "{}",
-            "payloadType": "json",
-            "x": 130,
-            "y": 1220,
-            "wires": [
-                [
-                    "nbv7i3zmo0dc3e52"
-                ]
-            ]
-        },
-        {
-            "id": "yicyx0xqvbmtidtu",
-            "type": "function",
-            "z": "e95e599795b0200b",
-            "name": "Subscribe to commands for this bridge",
-            "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/\" + flow.get(\"bridge\").id + \"/#\"\n}\n\nreturn msg;",
-            "outputs": 1,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 210,
-            "y": 1300,
-            "wires": [
-                [
-                    "jr4k6diics8epatg"
-                ]
-            ]
-        },
-        {
-            "id": "0v829zuo4nc292ut",
-            "type": "inject",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Startup",
             "props": [
                 {
@@ -109,27 +44,27 @@
             "y": 80,
             "wires": [
                 [
-                    "m9kbpkuum46l4nfr"
+                    "llna9ny64quh16wf"
                 ]
             ]
         },
         {
-            "id": "m9kbpkuum46l4nfr",
+            "id": "llna9ny64quh16wf",
             "type": "getflows",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "",
             "x": 320,
             "y": 80,
             "wires": [
                 [
-                    "d0ovfkgxjqpwqrak"
+                    "zz3nejf39xhhpwf2"
                 ]
             ]
         },
         {
-            "id": "d0ovfkgxjqpwqrak",
+            "id": "zz3nejf39xhhpwf2",
             "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Init",
             "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
             "outputs": 1,
@@ -141,60 +76,14 @@
             "y": 80,
             "wires": [
                 [
-                    "3nv4mgqrpvjd03v9"
+                    "v3lyncolqjv2z8ml"
                 ]
             ]
         },
         {
-            "id": "nbv7i3zmo0dc3e52",
-            "type": "switch",
-            "z": "e95e599795b0200b",
-            "name": "Config correct",
-            "property": "bridge.image.controller",
-            "propertyType": "flow",
-            "rules": [
-                {
-                    "t": "null"
-                },
-                {
-                    "t": "istype",
-                    "v": "object",
-                    "vt": "object"
-                }
-            ],
-            "checkall": "true",
-            "repair": false,
-            "outputs": 2,
-            "x": 140,
-            "y": 1260,
-            "wires": [
-                [
-                    "nwgk6t4iddavios4"
-                ],
-                [
-                    "yicyx0xqvbmtidtu"
-                ]
-            ]
-        },
-        {
-            "id": "nwgk6t4iddavios4",
-            "type": "function",
-            "z": "e95e599795b0200b",
-            "name": "Error",
-            "func": "node.warn(\"The bridge configuration is wrong!\")\nnode.done()",
-            "outputs": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 330,
-            "y": 1260,
-            "wires": []
-        },
-        {
-            "id": "p6z41bcmnwbj98td",
+            "id": "ryli87lc80h4mjmd",
             "type": "comment",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "----- Execute Commands",
             "info": "",
             "x": 110,
@@ -202,9 +91,9 @@
             "wires": []
         },
         {
-            "id": "omjwa7w2tdu2yjld",
+            "id": "za7tnv4domx1yxdb",
             "type": "comment",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "---- Connections initialization",
             "info": "",
             "x": 120,
@@ -212,9 +101,9 @@
             "wires": []
         },
         {
-            "id": "3nv4mgqrpvjd03v9",
+            "id": "v3lyncolqjv2z8ml",
             "type": "switch",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -232,14 +121,14 @@
             "y": 80,
             "wires": [
                 [
-                    "rmdphyw9ljabjtxv"
+                    "e9e5etihdo1ysiob"
                 ]
             ]
         },
         {
-            "id": "voqzgcker601hpmq",
+            "id": "x36gphk20klfutpf",
             "type": "comment",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "---- Protocol Read",
             "info": "",
             "x": 90,
@@ -247,9 +136,9 @@
             "wires": []
         },
         {
-            "id": "4qkzdw1ltjtobrrt",
+            "id": "vdxjug0rxmrjp41m",
             "type": "inject",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Read intervall",
             "props": [
                 {
@@ -271,39 +160,14 @@
             "y": 120,
             "wires": [
                 [
-                    "zk73fn3qh3muy9xc"
+                    "712dycismht7flni"
                 ]
             ]
         },
         {
-            "id": "vi663e30t2zsc80i",
-            "type": "delay",
-            "z": "e95e599795b0200b",
-            "name": "",
-            "pauseType": "delay",
-            "timeout": "5",
-            "timeoutUnits": "seconds",
-            "rate": "1",
-            "nbRateUnits": "1",
-            "rateUnits": "second",
-            "randomFirst": "1",
-            "randomLast": "5",
-            "randomUnits": "seconds",
-            "drop": false,
-            "allowrate": false,
-            "outputs": 1,
-            "x": 960,
-            "y": 1340,
-            "wires": [
-                [
-                    "68a82vfcskpjhbct"
-                ]
-            ]
-        },
-        {
-            "id": "8ys0v5q5uewvdulj",
+            "id": "uo5dt5l6xispoxo9",
             "type": "switch",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "State Upstream Required?",
             "property": "stateUpstreamRequired",
             "propertyType": "msg",
@@ -315,42 +179,18 @@
             "checkall": "true",
             "repair": false,
             "outputs": 1,
-            "x": 680,
-            "y": 960,
+            "x": 700,
+            "y": 920,
             "wires": [
                 [
-                    "68a82vfcskpjhbct"
+                    "swborvn8mw36adzm"
                 ]
             ]
         },
         {
-            "id": "u51xbn1mklqice48",
+            "id": "e9e5etihdo1ysiob",
             "type": "function",
-            "z": "e95e599795b0200b",
-            "name": "send write data",
-            "func": "const command = msg.payload.command;\nconst response = msg.payload.response;\nconst matchingCommand = flow.get(\"bridge.image.commands\").find(command => command.id === command.id)\nconst matchingProtocol = flow.get(\"bridge.image.protocols\").find(protocol => protocol.id === matchingCommand.protocolId)\n\nif (matchingProtocol && matchingCommand) {\n    msg.protocolId = matchingCommand.protocolId;\n    msg.response = response;\n    \n    if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"boolean\") {\n        if (matchingProtocol.invert) {\n            command.value = !command.value;\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"number\") {\n        if (matchingProtocol.invert) {\n            command.value = parseInt(command.value) * -1 * (1 / matchingProtocol.scale);\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else {\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    }\n\n    return [msg, null]\n} else {\n    node.warn(\"Command configuration wrong!\");\n    let responseMessage = { payload: { response: command.response } };\n    responseMessage.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/setpoint/write\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"Command configuration wrong!\";\n    \n    return [null, responseMessage];\n}\n",
-            "outputs": 2,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 320,
-            "y": 1340,
-            "wires": [
-                [
-                    "a3dbd1f5d175c9ae",
-                    "c9514bf732aa1082"
-                ],
-                [
-                    "0b1c2ba3d1a633a7"
-                ]
-            ]
-        },
-        {
-            "id": "rmdphyw9ljabjtxv",
-            "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Set channel parameters",
             "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
             "outputs": 1,
@@ -362,14 +202,14 @@
             "y": 80,
             "wires": [
                 [
-                    "c4dc1913c7773c6d"
+                    "pqndl56h5r42rqea"
                 ]
             ]
         },
         {
-            "id": "f24aoaivxyug18fc",
+            "id": "ean4drrowv8enf19",
             "type": "switch",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Error Upstream Required?",
             "property": "errorUpstreamRequired",
             "propertyType": "msg",
@@ -381,18 +221,18 @@
             "checkall": "true",
             "repair": false,
             "outputs": 1,
-            "x": 680,
-            "y": 920,
+            "x": 700,
+            "y": 880,
             "wires": [
                 [
-                    "r54e2wkfunr3ag7j"
+                    "jm84kmaoh1tj0ked"
                 ]
             ]
         },
         {
-            "id": "r54e2wkfunr3ag7j",
+            "id": "jm84kmaoh1tj0ked",
             "type": "mqtt out",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "",
             "topic": "cloud/upstream/error",
             "qos": "2",
@@ -403,14 +243,14 @@
             "correl": "",
             "expiry": "",
             "broker": "de96f526d294fb46",
-            "x": 1120,
-            "y": 920,
+            "x": 1140,
+            "y": 880,
             "wires": []
         },
         {
-            "id": "ifpivj7d7wtmwqjh",
+            "id": "o4rjbai0p44l3fvu",
             "type": "comment",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "---- Virtual Read",
             "info": "",
             "x": 80,
@@ -418,39 +258,39 @@
             "wires": []
         },
         {
-            "id": "zk73fn3qh3muy9xc",
+            "id": "712dycismht7flni",
             "type": "link out",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "link out 14",
             "mode": "link",
             "links": [
                 "8432wmlkzzt9soau",
-                "4b4uben23e8ibtq3"
+                "z22kde5kbmilg6cv"
             ],
             "x": 295,
             "y": 120
         },
         {
-            "id": "4b4uben23e8ibtq3",
+            "id": "z22kde5kbmilg6cv",
             "type": "link in",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Virtual Read",
             "links": [
                 "jak7xse55acrj144",
-                "zk73fn3qh3muy9xc"
+                "712dycismht7flni"
             ],
             "x": 75,
             "y": 260,
             "wires": [
                 [
-                    "h0xpzebxej5vz2s0"
+                    "cbjo09zb2jt6o5co"
                 ]
             ]
         },
         {
-            "id": "h0xpzebxej5vz2s0",
+            "id": "cbjo09zb2jt6o5co",
             "type": "switch",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -468,14 +308,14 @@
             "y": 260,
             "wires": [
                 [
-                    "cfsfy6r027czizig"
+                    "r5rowbgujmv4lube"
                 ]
             ]
         },
         {
-            "id": "gxcdv5xatj4mv1kc",
+            "id": "pb36ayhi5figarmy",
             "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "calculate virtual values",
             "func": "const functions = {\n    \"kwh\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = flow.get(\"bridge.image.metrics\")[metricId];\n        }\n        msg.payload[metricId] = msg.payload[metricId] + (flow.get(\"bridge.image.metrics\")[parameterIds[0]] / 3600);\n    },\n    \"deviceState\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        }\n        if (parameterIds.length === 0) {\n            parameterIds = flow.get(\"bridge.image.protocols\").filter(dataPoint => {\n                return dataPoint.topic.includes(\"error\")\n            }).map(dataPoint => {\n                return dataPoint.id;\n            });\n        }\n\n        const ok = Object.keys(flow.get(\"bridge.image.metrics\")).filter(key => {\n            return parameterIds.includes(key)\n        }).reduce((accumulator, id) => accumulator && (flow.get(\"bridge.image.metrics\")[id] === \"\" || flow.get(\"bridge.image.metrics\")[id] === 0 || flow.get(\"bridge.image.metrics\")[id] === false), true)\n        \n        if (ok) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = 2;\n        }\n    }\n}\n\nmsg.sequences.forEach(sequence => {\n    msg = sequence;\n    msg.payload = {};\n    let calc = sequence.dataPoint.calculation\n    let metricsExist = calc.ids.reduce((accumulator, currentValue) => accumulator && flow.get(\"bridge.image.metrics\").hasOwnProperty(currentValue), true)\n    if (metricsExist) {\n        functions[calc.func](sequence.dataPoint.id, calc.ids)\n    } else {\n        throw \"Parameter IDs: \" + calc.ids + \" is missing for calculation\";\n    }\n    node.send(msg);\n});\n\nnode.done();",
             "outputs": 1,
@@ -488,14 +328,14 @@
             "y": 260,
             "wires": [
                 [
-                    "pcppnppkyq0pazhb"
+                    "r57zbos9aeihl17a"
                 ]
             ]
         },
         {
-            "id": "cwxdx5oa6wj92ku5",
+            "id": "y077fz1xujv5u3tz",
             "type": "comment",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "---- Update Metrics",
             "info": "",
             "x": 90,
@@ -503,28 +343,29 @@
             "wires": []
         },
         {
-            "id": "1rqe7jg33rrrbw89",
+            "id": "8vixux48b94fekxr",
             "type": "link in",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Update Metrics",
             "links": [
-                "pcppnppkyq0pazhb",
+                "r57zbos9aeihl17a",
                 "kcgzi9p01m7bwfqi",
-                "1a69c0e4315c5e20",
-                "34e9257c8b3fb010"
+                "mrao1o6jtg3skhkx",
+                "o3jnyzk9wn57seyc",
+                "5d39071189ada652"
             ],
-            "x": 75,
-            "y": 920,
+            "x": 95,
+            "y": 880,
             "wires": [
                 [
-                    "8n7th2gm5eo44uzc"
+                    "kwgcnxq9j3a840pq"
                 ]
             ]
         },
         {
-            "id": "8n7th2gm5eo44uzc",
+            "id": "kwgcnxq9j3a840pq",
             "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Set sensor value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
@@ -533,19 +374,19 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 320,
-            "y": 920,
+            "x": 340,
+            "y": 880,
             "wires": [
                 [
-                    "8ys0v5q5uewvdulj",
-                    "f24aoaivxyug18fc"
+                    "uo5dt5l6xispoxo9",
+                    "ean4drrowv8enf19"
                 ]
             ]
         },
         {
-            "id": "cfm13gdwzjgeetxa",
+            "id": "nzsq8nohqimdwa73",
             "type": "flogger",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Error",
             "logfile": "bridge.log",
             "inputchoice": "fullmsg",
@@ -556,15 +397,15 @@
             "logconfig": "2c6b06edb20118d0",
             "sendpane": true,
             "x": 590,
-            "y": 1560,
+            "y": 1720,
             "wires": [
                 []
             ]
         },
         {
-            "id": "a27iajgv05xhlb6x",
+            "id": "sedi7p60ylqkucgi",
             "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "set error",
             "func": "msg.payload = {\n    \"payload\" : msg.payload,\n    \"error\" : msg.error\n};\n\nif (msg._error){\n    msg.payload._error = msg._error;\n}\n\nreturn msg;",
             "outputs": 1,
@@ -574,32 +415,17 @@
             "finalize": "",
             "libs": [],
             "x": 260,
-            "y": 1560,
+            "y": 1720,
             "wires": [
                 [
-                    "73m6q6v2gxkwotpp"
+                    "agccgu8bjuga9k99"
                 ]
             ]
         },
         {
-            "id": "4hupsd9749a2lbuj",
-            "type": "catch",
-            "z": "e95e599795b0200b",
-            "name": "",
-            "scope": null,
-            "uncaught": false,
-            "x": 120,
-            "y": 1560,
-            "wires": [
-                [
-                    "a27iajgv05xhlb6x"
-                ]
-            ]
-        },
-        {
-            "id": "73m6q6v2gxkwotpp",
+            "id": "agccgu8bjuga9k99",
             "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Set log file name",
             "func": "msg.logfile = \"bridge-\" + env.get(\"NR_FLOW_NAME\") + \".log\"\n\nreturn msg;",
             "outputs": 1,
@@ -609,29 +435,29 @@
             "finalize": "",
             "libs": [],
             "x": 430,
-            "y": 1560,
+            "y": 1720,
             "wires": [
                 [
-                    "cfm13gdwzjgeetxa"
+                    "nzsq8nohqimdwa73"
                 ]
             ]
         },
         {
-            "id": "pcppnppkyq0pazhb",
+            "id": "r57zbos9aeihl17a",
             "type": "link out",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "link out 16",
             "mode": "link",
             "links": [
-                "1rqe7jg33rrrbw89"
+                "8vixux48b94fekxr"
             ],
             "x": 1215,
             "y": 260
         },
         {
-            "id": "51ookcnt85gjrw99",
+            "id": "qas7kbw1d2rh6n5o",
             "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "send virtual data",
             "func": "msg.sequences = flow.get(\"bridge.image.virtuals\").map(dataPoint => {\n    return {\n        dataPoint: dataPoint\n    };\n});\n\nif (msg.sequences.length > 0) {\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -644,14 +470,14 @@
             "y": 260,
             "wires": [
                 [
-                    "gxcdv5xatj4mv1kc"
+                    "pb36ayhi5figarmy"
                 ]
             ]
         },
         {
-            "id": "cfsfy6r027czizig",
+            "id": "r5rowbgujmv4lube",
             "type": "switch",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Config correct",
             "property": "bridge.image.virtuals",
             "propertyType": "flow",
@@ -669,14 +495,14 @@
             "y": 300,
             "wires": [
                 [
-                    "51ookcnt85gjrw99"
+                    "qas7kbw1d2rh6n5o"
                 ]
             ]
         },
         {
-            "id": "nn4mrno7wu6cqwbx",
+            "id": "6yylzwspmqjx096i",
             "type": "exec",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "command": "fbset -g 1280 720 1280 720 4",
             "addpay": "",
             "append": "",
@@ -689,16 +515,18 @@
             "y": 420,
             "wires": [
                 [],
-                [],
                 [
-                    "kokh75ktssjmnknz"
+                    "30dcfb918bb0058c"
+                ],
+                [
+                    "1d5o7q5i6qs1ajad"
                 ]
             ]
         },
         {
-            "id": "kokh75ktssjmnknz",
+            "id": "1d5o7q5i6qs1ajad",
             "type": "exec",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1 images/clear.png",
             "addpay": "",
             "append": "",
@@ -708,19 +536,21 @@
             "oldrc": false,
             "name": "Clear Screen",
             "x": 670,
-            "y": 440,
+            "y": 500,
             "wires": [
                 [],
-                [],
                 [
-                    "zx5kktewi4x9kcdu"
+                    "30dcfb918bb0058c"
+                ],
+                [
+                    "94eosz6o64pmoaj3"
                 ]
             ]
         },
         {
-            "id": "zx5kktewi4x9kcdu",
+            "id": "94eosz6o64pmoaj3",
             "type": "exec",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "command": "pgrep fbi | xargs kill",
             "addpay": "",
             "append": "",
@@ -730,17 +560,19 @@
             "oldrc": false,
             "name": "Kill FBI",
             "x": 920,
-            "y": 460,
+            "y": 520,
             "wires": [
                 [],
-                [],
+                [
+                    "30dcfb918bb0058c"
+                ],
                 []
             ]
         },
         {
-            "id": "ymz098zw8q1pk4d0",
+            "id": "en3o1wbkeqev34or",
             "type": "exec",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1",
             "addpay": "payload",
             "append": "",
@@ -750,17 +582,19 @@
             "oldrc": false,
             "name": "Set Image",
             "x": 930,
-            "y": 580,
+            "y": 640,
             "wires": [
                 [],
-                [],
+                [
+                    "30dcfb918bb0058c"
+                ],
                 []
             ]
         },
         {
-            "id": "it5uxx0nedahqo5u",
+            "id": "nbzz2tcnfwcpllst",
             "type": "delay",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "",
             "pauseType": "delay",
             "timeout": "500",
@@ -775,18 +609,18 @@
             "allowrate": false,
             "outputs": 1,
             "x": 470,
-            "y": 540,
+            "y": 600,
             "wires": [
                 [
-                    "5h5m6ny26q0o786b",
-                    "4rg5zyn8rrn2f4ej"
+                    "zlrvf3dk0nyfwjph",
+                    "zwp2xyo4m22rc7si"
                 ]
             ]
         },
         {
-            "id": "5h5m6ny26q0o786b",
+            "id": "zlrvf3dk0nyfwjph",
             "type": "exec",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "command": "fbset -g 96 96 96 96 4",
             "addpay": "",
             "append": "",
@@ -796,17 +630,19 @@
             "oldrc": false,
             "name": "Set Image Screen",
             "x": 690,
-            "y": 500,
+            "y": 560,
             "wires": [
                 [],
-                [],
+                [
+                    "30dcfb918bb0058c"
+                ],
                 []
             ]
         },
         {
-            "id": "4rg5zyn8rrn2f4ej",
+            "id": "zwp2xyo4m22rc7si",
             "type": "delay",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "",
             "pauseType": "delay",
             "timeout": "500",
@@ -821,73 +657,17 @@
             "allowrate": false,
             "outputs": 1,
             "x": 670,
-            "y": 560,
+            "y": 620,
             "wires": [
                 [
-                    "ymz098zw8q1pk4d0"
+                    "en3o1wbkeqev34or"
                 ]
             ]
         },
         {
-            "id": "0b1c2ba3d1a633a7",
-            "type": "mqtt out",
-            "z": "e95e599795b0200b",
-            "name": "",
-            "topic": "cloud/upstream/response",
-            "qos": "2",
-            "retain": "false",
-            "respTopic": "",
-            "contentType": "",
-            "userProps": "",
-            "correl": "",
-            "expiry": "",
-            "broker": "de96f526d294fb46",
-            "x": 1010,
-            "y": 1380,
-            "wires": []
-        },
-        {
-            "id": "a3dbd1f5d175c9ae",
+            "id": "pqndl56h5r42rqea",
             "type": "function",
-            "z": "e95e599795b0200b",
-            "name": "Write data",
-            "func": "let writeMessage = { payload: { } };\nwriteMessage.payload[msg.protocolId] = msg.payload.value;\n\nlet responseMessage = { payload: { response: msg.response } };\nresponseMessage.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/setpoint/write\";\nresponseMessage.payload.response.status = \"OK\";\nresponseMessage.payload.response.error = \"\";\n\nreturn [writeMessage, responseMessage];",
-            "outputs": 2,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 630,
-            "y": 1320,
-            "wires": [
-                [
-                    "vi663e30t2zsc80i",
-                    "1a69c0e4315c5e20",
-                    "0d5b988ca09f4b12"
-                ],
-                [
-                    "0b1c2ba3d1a633a7",
-                    "55bdf4b9477d0927"
-                ]
-            ]
-        },
-        {
-            "id": "1a69c0e4315c5e20",
-            "type": "link out",
-            "z": "e95e599795b0200b",
-            "name": "link out 19",
-            "mode": "link",
-            "links": [
-                "1rqe7jg33rrrbw89"
-            ],
-            "x": 915,
-            "y": 1300
-        },
-        {
-            "id": "c4dc1913c7773c6d",
-            "type": "function",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Set init image",
             "func": "msg.payload = {};\n\nflow.get(\"bridge.image.protocols\").forEach(protocol => {\n    msg.payload[protocol.id] = \"\";\n})\n\nreturn msg;",
             "outputs": 1,
@@ -900,92 +680,62 @@
             "y": 80,
             "wires": [
                 [
-                    "34e9257c8b3fb010"
+                    "o3jnyzk9wn57seyc"
                 ]
             ]
         },
         {
-            "id": "34e9257c8b3fb010",
+            "id": "o3jnyzk9wn57seyc",
             "type": "link out",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "link out 20",
             "mode": "link",
             "links": [
-                "1rqe7jg33rrrbw89",
-                "5c0a82abd67d493f"
+                "8vixux48b94fekxr",
+                "s9ra4rnlw1kofn9m",
+                "085ec9938d398a5a"
             ],
             "x": 1215,
             "y": 80
         },
         {
-            "id": "5c0a82abd67d493f",
+            "id": "s9ra4rnlw1kofn9m",
             "type": "link in",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Clear Screen",
             "links": [
-                "34e9257c8b3fb010"
+                "o3jnyzk9wn57seyc"
             ],
             "x": 95,
             "y": 420,
             "wires": [
                 [
-                    "nn4mrno7wu6cqwbx"
+                    "6yylzwspmqjx096i"
                 ]
             ]
         },
         {
-            "id": "3c2d7dc823d38e97",
+            "id": "p7b1sh5giqgjid8m",
             "type": "link in",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "Set image",
             "links": [
-                "f3c29575389b3a95"
+                "9470o1e7mxuh87zh",
+                "eff7b3955c8daf97",
+                "4e7c17d620d09c65"
             ],
             "x": 95,
-            "y": 540,
+            "y": 600,
             "wires": [
                 [
-                    "01155caca981619f"
+                    "80n5pfljpgjdjg9l"
                 ]
             ]
         },
         {
-            "id": "c9514bf732aa1082",
-            "type": "function",
-            "z": "e95e599795b0200b",
-            "name": "Update image",
-            "func": "msg.payload = \"images/\" + msg.payload.value;\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 640,
-            "y": 1260,
-            "wires": [
-                [
-                    "f3c29575389b3a95",
-                    "e2e11387d4b3201e"
-                ]
-            ]
-        },
-        {
-            "id": "f3c29575389b3a95",
-            "type": "link out",
-            "z": "e95e599795b0200b",
-            "name": "link out 21",
-            "mode": "link",
-            "links": [
-                "3c2d7dc823d38e97"
-            ],
-            "x": 915,
-            "y": 1260
-        },
-        {
-            "id": "01155caca981619f",
+            "id": "80n5pfljpgjdjg9l",
             "type": "switch",
-            "z": "e95e599795b0200b",
+            "z": "683eaf2c100223d0",
             "name": "",
             "property": "payload",
             "propertyType": "msg",
@@ -1001,64 +751,2813 @@
             "repair": false,
             "outputs": 2,
             "x": 190,
-            "y": 540,
+            "y": 600,
             "wires": [
                 [
-                    "nn4mrno7wu6cqwbx"
+                    "6yylzwspmqjx096i"
                 ],
                 [
-                    "nn4mrno7wu6cqwbx",
-                    "it5uxx0nedahqo5u"
+                    "6yylzwspmqjx096i",
+                    "nbzz2tcnfwcpllst"
                 ]
             ]
         },
         {
-            "id": "55bdf4b9477d0927",
-            "type": "debug",
-            "z": "e95e599795b0200b",
-            "name": "debug 1",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 1000,
-            "y": 1460,
-            "wires": []
+            "id": "1okxghu82onnzjel",
+            "type": "mqtt in",
+            "z": "683eaf2c100223d0",
+            "name": "Command",
+            "topic": "",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "de96f526d294fb46",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 1,
+            "x": 130,
+            "y": 1480,
+            "wires": [
+                [
+                    "54w1b158sn2jt6wk"
+                ]
+            ]
         },
         {
-            "id": "e2e11387d4b3201e",
-            "type": "debug",
-            "z": "e95e599795b0200b",
-            "name": "debug 2",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 940,
-            "y": 1200,
-            "wires": []
-        },
-        {
-            "id": "0d5b988ca09f4b12",
-            "type": "debug",
-            "z": "e95e599795b0200b",
-            "name": "debug 3",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 1180,
+            "id": "qpplpnsyd1gm2loy",
+            "type": "inject",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "1800",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "10",
+            "topic": "",
+            "payload": "{}",
+            "payloadType": "json",
+            "x": 130,
             "y": 1300,
+            "wires": [
+                [
+                    "22vb4sjocq16dyxh"
+                ]
+            ]
+        },
+        {
+            "id": "8w88wjkr6ai19tqo",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Subscribe to commands for this bridge",
+            "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/\" + flow.get(\"bridge\").id + \"/#\"\n}\n\nreturn msg;",
+            "outputs": 1,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 310,
+            "y": 1420,
+            "wires": [
+                [
+                    "1okxghu82onnzjel"
+                ]
+            ]
+        },
+        {
+            "id": "22vb4sjocq16dyxh",
+            "type": "switch",
+            "z": "683eaf2c100223d0",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "null"
+                },
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 2,
+            "x": 160,
+            "y": 1360,
+            "wires": [
+                [
+                    "v0ci0s1b5ch6klwg"
+                ],
+                [
+                    "8w88wjkr6ai19tqo"
+                ]
+            ]
+        },
+        {
+            "id": "v0ci0s1b5ch6klwg",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Error",
+            "func": "node.warn(\"The bridge configuration is wrong!\")\nnode.done()",
+            "outputs": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 330,
+            "y": 1360,
             "wires": []
+        },
+        {
+            "id": "54w1b158sn2jt6wk",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "prepare write data",
+            "func": "const command = msg.payload.command;\nconst response = msg.payload.response;\nconst matchingCommand = flow.get(\"bridge.image.commands\").find(bridgeCommand => bridgeCommand.id === command.id)\nconst matchingProtocol = matchingCommand ? flow.get(\"bridge.image.protocols\").find(protocol => protocol.id === matchingCommand.protocolId) : undefined;\n\nif (matchingProtocol && matchingCommand) {\n    response.value = {\n        \"actual\": flow.get(\"bridge.image.metrics\")[matchingProtocol.id],\n        \"target\": command.value\n    }\n    msg.protocolCommand = matchingCommand;\n    msg.response = response;\n    \n    if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"boolean\") {\n        if (matchingProtocol.invert) {\n            command.value = !command.value;\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"number\") {\n        if (matchingProtocol.invert) {\n            command.value = Math.abs(command.value - 1);\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (typeof command.value === \"number\") {\n        msg.payload = {\n            \"value\": matchingProtocol.type.startsWith(\"int16\") && command.value < 0 ? 65536 + command.value * (1 / matchingProtocol.scale) : command.value * (1 / matchingProtocol.scale),\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else {\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    }\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_EXECUTION\";\n\n    return [msg, responseMessage]\n} else {\n    node.warn(\"Command configuration wrong!\");\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_CONFIG\";\n    \n    return [null, responseMessage];\n}\n",
+            "outputs": 2,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 370,
+            "y": 1480,
+            "wires": [
+                [
+                    "o4zv0ps3267s08io"
+                ],
+                [
+                    "r9svy839lryn7qjr"
+                ]
+            ]
+        },
+        {
+            "id": "kpfc14ctmkb28now",
+            "type": "mqtt out",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "topic": "cloud/upstream/response",
+            "qos": "2",
+            "retain": "false",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 1390,
+            "y": 1500,
+            "wires": []
+        },
+        {
+            "id": "o4zv0ps3267s08io",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Write data",
+            "func": "let writeMessage = { payload:  msg.payload };\nwriteMessage.protocolCommand = msg.protocolCommand;\n\nlet responseMessage = { payload: { response: msg.response } };\nresponseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\nresponseMessage.payload.response.status = \"OK\";\nresponseMessage.payload.response.error = \"\";\n\nreturn [writeMessage, responseMessage];",
+            "outputs": 2,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 590,
+            "y": 1460,
+            "wires": [
+                [
+                    "ijs9umdc2rlfmkgu"
+                ],
+                [
+                    "mcaoh30xhqblfrnr"
+                ]
+            ]
+        },
+        {
+            "id": "khcgsnwf1hxitbma",
+            "type": "debug",
+            "z": "683eaf2c100223d0",
+            "name": "Execute Command",
+            "active": true,
+            "tosidebar": true,
+            "console": true,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1020,
+            "y": 1280,
+            "wires": []
+        },
+        {
+            "id": "ijs9umdc2rlfmkgu",
+            "type": "switch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "property": "protocolCommand.type",
+            "propertyType": "msg",
+            "rules": [
+                {
+                    "t": "eq",
+                    "v": "virtual",
+                    "vt": "str"
+                },
+                {
+                    "t": "eq",
+                    "v": "setpoint",
+                    "vt": "str"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 2,
+            "x": 750,
+            "y": 1380,
+            "wires": [
+                [
+                    "dpin8fkofc3aoi7p"
+                ],
+                [
+                    "khcgsnwf1hxitbma",
+                    "yqf6j2rckd0tuzh1",
+                    "f2960566cfb4b9b7"
+                ]
+            ]
+        },
+        {
+            "id": "dpin8fkofc3aoi7p",
+            "type": "debug",
+            "z": "683eaf2c100223d0",
+            "name": "Command type not yet implemented",
+            "active": true,
+            "tosidebar": true,
+            "console": true,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1070,
+            "y": 1240,
+            "wires": []
+        },
+        {
+            "id": "712x3jc0dcw7z94h",
+            "type": "catch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "scope": [
+                "v0ybzti4w6s318gl"
+            ],
+            "uncaught": false,
+            "x": 610,
+            "y": 1540,
+            "wires": [
+                [
+                    "4jnvfuthoafme8ll"
+                ]
+            ]
+        },
+        {
+            "id": "r9svy839lryn7qjr",
+            "type": "delay",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "5",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1000,
+            "y": 1500,
+            "wires": [
+                [
+                    "kpfc14ctmkb28now"
+                ]
+            ]
+        },
+        {
+            "id": "oypa99ob8kz4oc1l",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "reset",
+                    "pt": "msg",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1020,
+            "y": 1460,
+            "wires": [
+                [
+                    "r9svy839lryn7qjr"
+                ]
+            ]
+        },
+        {
+            "id": "mcaoh30xhqblfrnr",
+            "type": "delay",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "5",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1000,
+            "y": 1600,
+            "wires": [
+                [
+                    "kpfc14ctmkb28now"
+                ]
+            ]
+        },
+        {
+            "id": "4jnvfuthoafme8ll",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "reset",
+                    "pt": "msg",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1020,
+            "y": 1560,
+            "wires": [
+                [
+                    "mcaoh30xhqblfrnr"
+                ]
+            ]
+        },
+        {
+            "id": "yqf6j2rckd0tuzh1",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Update image",
+            "func": "return { \"payload\": \"data/lib/ui-media/lib/images/\" + msg.payload.value };",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1020,
+            "y": 1420,
+            "wires": [
+                [
+                    "oypa99ob8kz4oc1l",
+                    "eff7b3955c8daf97"
+                ]
+            ]
+        },
+        {
+            "id": "eff7b3955c8daf97",
+            "type": "link out",
+            "z": "683eaf2c100223d0",
+            "name": "link out 21",
+            "mode": "link",
+            "links": [
+                "p7b1sh5giqgjid8m"
+            ],
+            "x": 1215,
+            "y": 1420
+        },
+        {
+            "id": "f2960566cfb4b9b7",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Update Metric",
+            "func": "const message ={ \"payload\": {} };\nif(msg.payload.value.includes(\"clear\")){\n    message.payload[msg.protocolCommand.protocolId] = \"\";\n} else {\n    message.payload[msg.protocolCommand.protocolId] = msg.payload.value;\n}\n\n\nreturn message;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1020,
+            "y": 1380,
+            "wires": [
+                [
+                    "5d39071189ada652"
+                ]
+            ]
+        },
+        {
+            "id": "5d39071189ada652",
+            "type": "link out",
+            "z": "683eaf2c100223d0",
+            "name": "link out 22",
+            "mode": "link",
+            "links": [
+                "8vixux48b94fekxr"
+            ],
+            "x": 1215,
+            "y": 1380
+        },
+        {
+            "id": "30dcfb918bb0058c",
+            "type": "debug",
+            "z": "683eaf2c100223d0",
+            "name": "Error",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1170,
+            "y": 420,
+            "wires": []
+        },
+        {
+            "id": "3423c4551f35fa30",
+            "type": "ui_text_input",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "group": "e493104d5a64e610",
+            "order": 10,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "mode": "text",
+            "delay": "0",
+            "topic": "topic",
+            "sendOnBlur": true,
+            "className": "textInput",
+            "topicType": "msg",
+            "x": 460,
+            "y": 2400,
+            "wires": [
+                [
+                    "ed04e27e878cd2a9"
+                ]
+            ]
+        },
+        {
+            "id": "4eb720d3ce645dcd",
+            "type": "ui_template",
+            "z": "683eaf2c100223d0",
+            "group": "",
+            "name": "Styles",
+            "order": 1,
+            "width": 0,
+            "height": 0,
+            "format": "<style>\n    md-list-item .md-avatar {\n        border-radius: 0% !important;\n    }\n<\\style>",
+            "storeOutMessages": true,
+            "fwdInMessages": true,
+            "resendOnRefresh": true,
+            "templateScope": "global",
+            "className": "",
+            "x": 150,
+            "y": 1900,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "94533482e6bfbacd",
+            "type": "ui_list",
+            "z": "683eaf2c100223d0",
+            "group": "e493104d5a64e610",
+            "name": "Image list",
+            "order": 2,
+            "width": "8",
+            "height": "3",
+            "lineType": "three",
+            "actionType": "click",
+            "allowHTML": false,
+            "outputs": 1,
+            "topic": "",
+            "x": 460,
+            "y": 2300,
+            "wires": [
+                [
+                    "eae0422ef635f077"
+                ]
+            ]
+        },
+        {
+            "id": "c90bd6314592fce1",
+            "type": "exec",
+            "z": "683eaf2c100223d0",
+            "command": "ls data/lib/ui-media/lib/images",
+            "addpay": "",
+            "append": "",
+            "useSpawn": "false",
+            "timer": "",
+            "winHide": false,
+            "oldrc": false,
+            "name": "",
+            "x": 290,
+            "y": 2040,
+            "wires": [
+                [
+                    "9fdbc02afa45d27e"
+                ],
+                [],
+                []
+            ]
+        },
+        {
+            "id": "085ec9938d398a5a",
+            "type": "link in",
+            "z": "683eaf2c100223d0",
+            "name": "Scan for images",
+            "links": [
+                "o3jnyzk9wn57seyc"
+            ],
+            "x": 95,
+            "y": 1980,
+            "wires": [
+                [
+                    "e2f137b22c276902"
+                ]
+            ]
+        },
+        {
+            "id": "9fdbc02afa45d27e",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Get available images",
+            "func": "var message = {\"payload\":[]};\n\nmsg.payload.split(\"\\n\").forEach(element => {\n    if(element.includes(\".png\")){\n        message.payload.push({\"title\": element.split(\".\")[0],\"icon\":\"/uimedia/images/\" + element})\n    }\n});\n\n\nreturn message;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 260,
+            "y": 2100,
+            "wires": [
+                [
+                    "94533482e6bfbacd",
+                    "8c3c3437d694d718"
+                ]
+            ]
+        },
+        {
+            "id": "43ae53ce58906f4d",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "e493104d5a64e610",
+            "order": 1,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Bild wählen...",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 470,
+            "y": 2260,
+            "wires": []
+        },
+        {
+            "id": "9ccc3e867a23651b",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "b3c2246d9a73d98f",
+            "order": 1,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Screen Oben",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 1750,
+            "y": 2500,
+            "wires": []
+        },
+        {
+            "id": "fb61367d29ebd9f6",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "e493104d5a64e610",
+            "order": 9,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Text eingeben..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 480,
+            "y": 2340,
+            "wires": []
+        },
+        {
+            "id": "b4b8f84a.7e57a8",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "Top",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LT_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "8",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_TOP",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 1290,
+            "y": 2540,
+            "wires": [
+                [
+                    "3026c3be85aa5427"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "c38666f517df56a7",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set text",
+            "func": "if (flow.get(\"LT_IMAGE\")) {\n    msg.payload = {\n        \"image\": flow.get(\"LT_IMAGE\"),\n        \"text\": msg.payload\n    }\n} else {\n    msg.payload = {\n        \"image\": \"data/lib/ui-media/lib/images/clear.png\",\n        \"text\": msg.payload\n    }\n}\n\nif(!flow.get(\"LT_ALIGN\")){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1060,
+            "y": 2540,
+            "wires": [
+                [
+                    "e10554c0d16c26d9"
+                ]
+            ]
+        },
+        {
+            "id": "eae0422ef635f077",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set selected image",
+            "func": "var image = msg.payload.icon.split(\"/\")[msg.payload.icon.split(\"/\").length -1]\nflow.set(\"LT_IMAGE\",  \"data/lib/ui-media/lib/images/\" + image);\n\nmsg.payload = flow.get(\"LT_IMAGE\");\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 670,
+            "y": 2300,
+            "wires": [
+                [
+                    "e8d1dd8f8cce161a"
+                ]
+            ]
+        },
+        {
+            "id": "e8d1dd8f8cce161a",
+            "type": "switch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "property": "LT_TEXT",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "empty"
+                },
+                {
+                    "t": "null"
+                },
+                {
+                    "t": "nempty"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 3,
+            "x": 830,
+            "y": 2300,
+            "wires": [
+                [
+                    "3026c3be85aa5427"
+                ],
+                [
+                    "3026c3be85aa5427"
+                ],
+                [
+                    "cfbcac3d0b39916a"
+                ]
+            ]
+        },
+        {
+            "id": "3026c3be85aa5427",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "data": "payload",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "data/lib/ui-media/lib/screen/LT_PREVIEW.png",
+            "parameter1Type": "str",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "write",
+            "selectedJimpFunction": {
+                "name": "write",
+                "fn": "write",
+                "description": "Write to file. NOTE: You can specify an alternative file extension type to change the type. Currently support types are jpg, png, bmp.",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "type": "str",
+                        "required": true,
+                        "hint": "Name of the file",
+                        "defaultType": "str"
+                    }
+                ]
+            },
+            "x": 1410,
+            "y": 2540,
+            "wires": [
+                [
+                    "73a4cc1dac028377"
+                ]
+            ]
+        },
+        {
+            "id": "cfbcac3d0b39916a",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "LT_TEXT",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 900,
+            "y": 2540,
+            "wires": [
+                [
+                    "c38666f517df56a7"
+                ]
+            ]
+        },
+        {
+            "id": "ed04e27e878cd2a9",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "LT_TEXT",
+                    "pt": "flow",
+                    "to": "payload",
+                    "tot": "msg"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 630,
+            "y": 2400,
+            "wires": [
+                [
+                    "cfbcac3d0b39916a"
+                ]
+            ]
+        },
+        {
+            "id": "511e79d71e820195",
+            "type": "ui_media",
+            "z": "683eaf2c100223d0",
+            "group": "b3c2246d9a73d98f",
+            "name": "LT",
+            "width": "3",
+            "height": "3",
+            "order": 2,
+            "category": "images",
+            "file": "clear.png",
+            "layout": "adjust",
+            "showcontrols": true,
+            "loop": true,
+            "onstart": false,
+            "muted": true,
+            "scope": "local",
+            "tooltip": "",
+            "x": 1730,
+            "y": 2540,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "73a4cc1dac028377",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set preview image",
+            "func": "msg.payload = 'screen/LT_PREVIEW.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1570,
+            "y": 2540,
+            "wires": [
+                [
+                    "511e79d71e820195"
+                ]
+            ]
+        },
+        {
+            "id": "7dbd9b36c7b4e74a",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "6bea9860833a2c2c",
+            "order": 1,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Bild wählen...",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 470,
+            "y": 2840,
+            "wires": []
+        },
+        {
+            "id": "8c3c3437d694d718",
+            "type": "ui_list",
+            "z": "683eaf2c100223d0",
+            "group": "6bea9860833a2c2c",
+            "name": "Image list",
+            "order": 2,
+            "width": "8",
+            "height": "3",
+            "lineType": "three",
+            "actionType": "click",
+            "allowHTML": false,
+            "outputs": 1,
+            "topic": "",
+            "x": 460,
+            "y": 2880,
+            "wires": [
+                [
+                    "493bdec5341053c3"
+                ]
+            ]
+        },
+        {
+            "id": "f595fb1e8201a0ae",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "6bea9860833a2c2c",
+            "order": 9,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Text eingeben..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 480,
+            "y": 2920,
+            "wires": []
+        },
+        {
+            "id": "d7224fbc52b589f5",
+            "type": "ui_text_input",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "group": "6bea9860833a2c2c",
+            "order": 10,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "mode": "text",
+            "delay": "0",
+            "topic": "topic",
+            "sendOnBlur": true,
+            "className": "text-input",
+            "topicType": "msg",
+            "x": 460,
+            "y": 2960,
+            "wires": [
+                [
+                    "6bca52a1fd8103d8"
+                ]
+            ]
+        },
+        {
+            "id": "af397d631fea0dae",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "b3c2246d9a73d98f",
+            "order": 3,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Screen Unten",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 1760,
+            "y": 3080,
+            "wires": []
+        },
+        {
+            "id": "419fcdc6e3683d2f",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set text",
+            "func": "if (flow.get(\"LB_IMAGE\")) {\n    msg.payload = {\n        \"image\": flow.get(\"LB_IMAGE\"),\n        \"text\": msg.payload\n    }\n} else {\n    msg.payload = {\n        \"image\": \"data/lib/ui-media/lib/images/clear.png\",\n        \"text\": msg.payload\n    }\n}\n\nif(!flow.get(\"LB_ALIGN\")){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1040,
+            "y": 3120,
+            "wires": [
+                [
+                    "8c67b63eefdf4f51"
+                ]
+            ]
+        },
+        {
+            "id": "493bdec5341053c3",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set selected image",
+            "func": "var image = msg.payload.icon.split(\"/\")[msg.payload.icon.split(\"/\").length -1]\nflow.set(\"LB_IMAGE\",  \"data/lib/ui-media/lib/images/\" + image);\n\nmsg.payload = flow.get(\"LB_IMAGE\");\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 690,
+            "y": 2880,
+            "wires": [
+                [
+                    "4f5d6d7551abbe39"
+                ]
+            ]
+        },
+        {
+            "id": "4f5d6d7551abbe39",
+            "type": "switch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "property": "LB_TEXT",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "empty"
+                },
+                {
+                    "t": "null"
+                },
+                {
+                    "t": "nempty"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 3,
+            "x": 850,
+            "y": 2880,
+            "wires": [
+                [
+                    "bcdb6f1469605b1a"
+                ],
+                [
+                    "bcdb6f1469605b1a"
+                ],
+                [
+                    "ae27187936983974"
+                ]
+            ]
+        },
+        {
+            "id": "bcdb6f1469605b1a",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "data": "payload",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "data/lib/ui-media/lib/screen/LB_PREVIEW.png",
+            "parameter1Type": "str",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "write",
+            "selectedJimpFunction": {
+                "name": "write",
+                "fn": "write",
+                "description": "Write to file. NOTE: You can specify an alternative file extension type to change the type. Currently support types are jpg, png, bmp.",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "type": "str",
+                        "required": true,
+                        "hint": "Name of the file",
+                        "defaultType": "str"
+                    }
+                ]
+            },
+            "x": 1410,
+            "y": 3120,
+            "wires": [
+                [
+                    "a97bf5b82299799d"
+                ]
+            ]
+        },
+        {
+            "id": "9336bc344f86086a",
+            "type": "ui_media",
+            "z": "683eaf2c100223d0",
+            "group": "b3c2246d9a73d98f",
+            "name": "LB",
+            "width": "3",
+            "height": "3",
+            "order": 4,
+            "category": "images",
+            "file": "clear.png",
+            "layout": "adjust",
+            "showcontrols": true,
+            "loop": true,
+            "onstart": false,
+            "muted": true,
+            "scope": "local",
+            "tooltip": "",
+            "x": 1730,
+            "y": 3120,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "a97bf5b82299799d",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set preview image",
+            "func": "msg.payload = 'screen/LB_PREVIEW.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1570,
+            "y": 3120,
+            "wires": [
+                [
+                    "9336bc344f86086a"
+                ]
+            ]
+        },
+        {
+            "id": "64668ab518f73b63",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "58153a8c38542cc3",
+            "order": 1,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Screen Oben",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 1750,
+            "y": 3400,
+            "wires": []
+        },
+        {
+            "id": "dcecf61f433394c9",
+            "type": "ui_media",
+            "z": "683eaf2c100223d0",
+            "group": "58153a8c38542cc3",
+            "name": "LT",
+            "width": "3",
+            "height": "3",
+            "order": 2,
+            "category": "images",
+            "file": "clear.png",
+            "layout": "adjust",
+            "showcontrols": true,
+            "loop": true,
+            "onstart": false,
+            "muted": true,
+            "scope": "local",
+            "tooltip": "",
+            "x": 1730,
+            "y": 3440,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "c907212e6adfd56d",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "58153a8c38542cc3",
+            "order": 3,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Screen Unten",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 1760,
+            "y": 3480,
+            "wires": []
+        },
+        {
+            "id": "e4631abd605e4304",
+            "type": "ui_media",
+            "z": "683eaf2c100223d0",
+            "group": "58153a8c38542cc3",
+            "name": "LB",
+            "width": "3",
+            "height": "3",
+            "order": 4,
+            "category": "images",
+            "file": "clear.png",
+            "layout": "adjust",
+            "showcontrols": true,
+            "loop": true,
+            "onstart": false,
+            "muted": true,
+            "scope": "local",
+            "tooltip": "",
+            "x": 1730,
+            "y": 3520,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "ecbef46e39c01d71",
+            "type": "ui_button",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "group": "b3c2246d9a73d98f",
+            "order": 4,
+            "width": "4",
+            "height": "1",
+            "passthru": false,
+            "label": "Setze Live",
+            "tooltip": "",
+            "color": "",
+            "bgcolor": "",
+            "className": "",
+            "icon": "",
+            "payload": "",
+            "payloadType": "str",
+            "topic": "topic",
+            "topicType": "msg",
+            "x": 470,
+            "y": 3480,
+            "wires": [
+                [
+                    "2c802404320b8309",
+                    "8ea4b7951f9f7e4d"
+                ]
+            ]
+        },
+        {
+            "id": "805bfcca56971d8d",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set live image",
+            "func": "msg.payload = 'screen/LT_LIVE.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1520,
+            "y": 3420,
+            "wires": [
+                [
+                    "dcecf61f433394c9",
+                    "76be5a3a32c1a1a4"
+                ]
+            ]
+        },
+        {
+            "id": "28eb4cfab297301a",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set live image",
+            "func": "msg.payload = 'screen/LB_LIVE.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1520,
+            "y": 3500,
+            "wires": [
+                [
+                    "e4631abd605e4304"
+                ]
+            ]
+        },
+        {
+            "id": "8ea4b7951f9f7e4d",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "data": "data/lib/ui-media/lib/screen/LB_PREVIEW.png",
+            "dataType": "str",
+            "ret": "img",
+            "parameter1": "data/lib/ui-media/lib/screen/LB_LIVE.png",
+            "parameter1Type": "str",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "write",
+            "selectedJimpFunction": {
+                "name": "write",
+                "fn": "write",
+                "description": "Write to file. NOTE: You can specify an alternative file extension type to change the type. Currently support types are jpg, png, bmp.",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "type": "str",
+                        "required": true,
+                        "hint": "Name of the file",
+                        "defaultType": "str"
+                    }
+                ]
+            },
+            "x": 1370,
+            "y": 3500,
+            "wires": [
+                [
+                    "28eb4cfab297301a"
+                ]
+            ]
+        },
+        {
+            "id": "2c802404320b8309",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "data": "data/lib/ui-media/lib/screen/LT_PREVIEW.png",
+            "dataType": "str",
+            "ret": "img",
+            "parameter1": "data/lib/ui-media/lib/screen/LT_LIVE.png",
+            "parameter1Type": "str",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "write",
+            "selectedJimpFunction": {
+                "name": "write",
+                "fn": "write",
+                "description": "Write to file. NOTE: You can specify an alternative file extension type to change the type. Currently support types are jpg, png, bmp.",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "type": "str",
+                        "required": true,
+                        "hint": "Name of the file",
+                        "defaultType": "str"
+                    }
+                ]
+            },
+            "x": 1370,
+            "y": 3420,
+            "wires": [
+                [
+                    "805bfcca56971d8d"
+                ]
+            ]
+        },
+        {
+            "id": "e6c55a8755eff2c5",
+            "type": "ui_dropdown",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "place": "Select option",
+            "group": "e493104d5a64e610",
+            "order": 6,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "multiple": false,
+            "options": [
+                {
+                    "label": "Oben",
+                    "value": 0,
+                    "type": "num"
+                },
+                {
+                    "label": "Mitte",
+                    "value": 1,
+                    "type": "num"
+                },
+                {
+                    "label": "Unten",
+                    "value": 2,
+                    "type": "num"
+                }
+            ],
+            "payload": "",
+            "topic": "topic",
+            "topicType": "msg",
+            "className": "",
+            "x": 460,
+            "y": 2500,
+            "wires": [
+                [
+                    "d68e943838e2f243"
+                ]
+            ]
+        },
+        {
+            "id": "abbe9796bbe9acbd",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "e493104d5a64e610",
+            "order": 5,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Text Position wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 500,
+            "y": 2460,
+            "wires": []
+        },
+        {
+            "id": "d68e943838e2f243",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set position",
+            "func": "if(msg.payload === 0){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_TOP\");\n} else if(msg.payload === 1){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n} else if(msg.payload === 2){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_BOTTOM\");\n} else {\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 610,
+            "y": 2500,
+            "wires": [
+                [
+                    "cfbcac3d0b39916a"
+                ]
+            ]
+        },
+        {
+            "id": "6bca52a1fd8103d8",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "LB_TEXT",
+                    "pt": "flow",
+                    "to": "payload",
+                    "tot": "msg"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 490,
+            "y": 3000,
+            "wires": [
+                [
+                    "ae27187936983974"
+                ]
+            ]
+        },
+        {
+            "id": "fecd87b4cbfd3f5b",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "Top",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LB_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "8",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_TOP",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 1290,
+            "y": 3120,
+            "wires": [
+                [
+                    "bcdb6f1469605b1a"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "817c94bae8bc6fc1",
+            "type": "ui_dropdown",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "place": "Select option",
+            "group": "6bea9860833a2c2c",
+            "order": 6,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "multiple": false,
+            "options": [
+                {
+                    "label": "Oben",
+                    "value": 0,
+                    "type": "num"
+                },
+                {
+                    "label": "Mitte",
+                    "value": 1,
+                    "type": "num"
+                },
+                {
+                    "label": "Unten",
+                    "value": 2,
+                    "type": "num"
+                }
+            ],
+            "payload": "",
+            "topic": "topic",
+            "topicType": "msg",
+            "className": "",
+            "x": 460,
+            "y": 3080,
+            "wires": [
+                [
+                    "fc241b3fba07aabb"
+                ]
+            ]
+        },
+        {
+            "id": "85eb059b1b335ea8",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "6bea9860833a2c2c",
+            "order": 5,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Text Position wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 500,
+            "y": 3040,
+            "wires": []
+        },
+        {
+            "id": "fc241b3fba07aabb",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set position",
+            "func": "if(msg.payload === 0){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_TOP\");\n} else if(msg.payload === 1){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n} else if(msg.payload === 2){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_BOTTOM\");\n} else {\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 610,
+            "y": 3080,
+            "wires": [
+                [
+                    "ae27187936983974"
+                ]
+            ]
+        },
+        {
+            "id": "76be5a3a32c1a1a4",
+            "type": "delay",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "1",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1740,
+            "y": 3280,
+            "wires": [
+                [
+                    "6b1c773a682b8bd0"
+                ]
+            ]
+        },
+        {
+            "id": "h7bdgc6093gw20m3",
+            "type": "catch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "scope": null,
+            "uncaught": false,
+            "x": 120,
+            "y": 1720,
+            "wires": [
+                [
+                    "sedi7p60ylqkucgi"
+                ]
+            ]
+        },
+        {
+            "id": "78af3431b03907c8",
+            "type": "ui_slider",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "group": "e493104d5a64e610",
+            "order": 4,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "outs": "end",
+            "topic": "topic",
+            "topicType": "msg",
+            "min": 0,
+            "max": "100",
+            "step": 1,
+            "className": "",
+            "x": 450,
+            "y": 2580,
+            "wires": [
+                [
+                    "1f1f5ece5aa4a4eb"
+                ]
+            ]
+        },
+        {
+            "id": "ccec4d0c1accca25",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "e493104d5a64e610",
+            "order": 3,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Helligkeit wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 490,
+            "y": 2540,
+            "wires": []
+        },
+        {
+            "id": "1f1f5ece5aa4a4eb",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set alignment",
+            "func": "flow.set(\"LT_BRIGHTNESS\", msg.payload);\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 600,
+            "y": 2580,
+            "wires": [
+                [
+                    "cfbcac3d0b39916a"
+                ]
+            ]
+        },
+        {
+            "id": "d2fe57605565df16",
+            "type": "ui_slider",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "group": "6bea9860833a2c2c",
+            "order": 4,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "outs": "end",
+            "topic": "topic",
+            "topicType": "msg",
+            "min": 0,
+            "max": "100",
+            "step": 1,
+            "className": "",
+            "x": 450,
+            "y": 3160,
+            "wires": [
+                [
+                    "5d612466eda1fc50"
+                ]
+            ]
+        },
+        {
+            "id": "4f4a0ed45e8af9f4",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "6bea9860833a2c2c",
+            "order": 3,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Helligkeit wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 490,
+            "y": 3120,
+            "wires": []
+        },
+        {
+            "id": "5d612466eda1fc50",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set alignment",
+            "func": "flow.set(\"LB_BRIGHTNESS\", msg.payload);\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 600,
+            "y": 3160,
+            "wires": [
+                [
+                    "ae27187936983974"
+                ]
+            ]
+        },
+        {
+            "id": "e2f137b22c276902",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "LB_ALIGN",
+                    "pt": "flow",
+                    "to": "VERTICAL_ALIGN_BOTTOM",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LB_BRIGHTNESS",
+                    "pt": "flow",
+                    "to": "100",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "LB_IMAGE",
+                    "pt": "flow",
+                    "to": "data/lib/ui-media/lib/images/clear.png",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LB_TEXT",
+                    "pt": "flow",
+                    "to": "",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LB_TEXT_SIZE",
+                    "pt": "flow",
+                    "to": "FONT_SANS_8_WHITE",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LT_ALIGN",
+                    "pt": "flow",
+                    "to": "VERTICAL_ALIGN_BOTTOM",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LT_BRIGHTNESS",
+                    "pt": "flow",
+                    "to": "100",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "LT_IMAGE",
+                    "pt": "flow",
+                    "to": "data/lib/ui-media/lib/images/clear.png",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LT_TEXT",
+                    "pt": "flow",
+                    "to": "",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "LT_TEXT_SIZE",
+                    "pt": "flow",
+                    "to": "FONT_SANS_8_WHITE",
+                    "tot": "str"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 250,
+            "y": 1980,
+            "wires": [
+                [
+                    "c90bd6314592fce1"
+                ]
+            ]
+        },
+        {
+            "id": "86f75360075e823a",
+            "type": "comment",
+            "z": "683eaf2c100223d0",
+            "name": "----- UI",
+            "info": "",
+            "x": 50,
+            "y": 1820,
+            "wires": []
+        },
+        {
+            "id": "8193bd65cd013574",
+            "type": "comment",
+            "z": "683eaf2c100223d0",
+            "name": "----- Styles",
+            "info": "",
+            "x": 120,
+            "y": 1860,
+            "wires": []
+        },
+        {
+            "id": "05068e6ae464d6ac",
+            "type": "comment",
+            "z": "683eaf2c100223d0",
+            "name": "----- Init",
+            "info": "",
+            "x": 110,
+            "y": 1940,
+            "wires": []
+        },
+        {
+            "id": "f407bb530b66f196",
+            "type": "comment",
+            "z": "683eaf2c100223d0",
+            "name": "----- Preview",
+            "info": "",
+            "x": 130,
+            "y": 2200,
+            "wires": []
+        },
+        {
+            "id": "11d04dd493c03b34",
+            "type": "comment",
+            "z": "683eaf2c100223d0",
+            "name": "----- Live",
+            "info": "",
+            "x": 140,
+            "y": 3340,
+            "wires": []
+        },
+        {
+            "id": "aeb93314382e04e6",
+            "type": "ui_dropdown",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "place": "Select option",
+            "group": "e493104d5a64e610",
+            "order": 8,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "multiple": false,
+            "options": [
+                {
+                    "label": "Gross",
+                    "value": 0,
+                    "type": "num"
+                },
+                {
+                    "label": "Mittel",
+                    "value": 1,
+                    "type": "num"
+                },
+                {
+                    "label": "Klein",
+                    "value": 2,
+                    "type": "num"
+                }
+            ],
+            "payload": "",
+            "topic": "topic",
+            "topicType": "msg",
+            "className": "",
+            "x": 460,
+            "y": 2660,
+            "wires": [
+                [
+                    "17b7047cbd2d1cc5"
+                ]
+            ]
+        },
+        {
+            "id": "17b7047cbd2d1cc5",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set size",
+            "func": "if(msg.payload === 0){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_32_WHITE\");\n} else if(msg.payload === 1){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_16_WHITE\");\n} else if(msg.payload === 2){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n} else {\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 600,
+            "y": 2660,
+            "wires": [
+                [
+                    "cfbcac3d0b39916a"
+                ]
+            ]
+        },
+        {
+            "id": "5739e2bfd275a28a",
+            "type": "ui_dropdown",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "place": "Select option",
+            "group": "6bea9860833a2c2c",
+            "order": 8,
+            "width": "8",
+            "height": "1",
+            "passthru": true,
+            "multiple": false,
+            "options": [
+                {
+                    "label": "Gross",
+                    "value": 0,
+                    "type": "num"
+                },
+                {
+                    "label": "Mittel",
+                    "value": 1,
+                    "type": "num"
+                },
+                {
+                    "label": "Klein",
+                    "value": 2,
+                    "type": "num"
+                }
+            ],
+            "payload": "",
+            "topic": "topic",
+            "topicType": "msg",
+            "className": "",
+            "x": 460,
+            "y": 3240,
+            "wires": [
+                [
+                    "2ee03532fcbac520"
+                ]
+            ]
+        },
+        {
+            "id": "2ee03532fcbac520",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set size",
+            "func": "if(msg.payload === 0){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_32_WHITE\");\n} else if(msg.payload === 1){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_16_WHITE\");\n} else if(msg.payload === 2){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n} else {\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n}\n\nreturn msg",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 600,
+            "y": 3240,
+            "wires": [
+                [
+                    "ae27187936983974"
+                ]
+            ]
+        },
+        {
+            "id": "3070cd94352d09d9",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "6bea9860833a2c2c",
+            "order": 7,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Text Grösse wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 500,
+            "y": 3200,
+            "wires": []
+        },
+        {
+            "id": "312fcffa17618346",
+            "type": "ui_text",
+            "z": "683eaf2c100223d0",
+            "group": "e493104d5a64e610",
+            "order": 7,
+            "width": 0,
+            "height": 0,
+            "name": "",
+            "label": "Text Grösse wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 500,
+            "y": 2620,
+            "wires": []
+        },
+        {
+            "id": "ae27187936983974",
+            "type": "change",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "LB_TEXT",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 850,
+            "y": 3120,
+            "wires": [
+                [
+                    "419fcdc6e3683d2f"
+                ]
+            ]
+        },
+        {
+            "id": "e10554c0d16c26d9",
+            "type": "switch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "property": "LT_ALIGN",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "null"
+                },
+                {
+                    "t": "eq",
+                    "v": "VERTICAL_ALIGN_TOP",
+                    "vt": "str"
+                },
+                {
+                    "t": "eq",
+                    "v": "VERTICAL_ALIGN_MIDDLE",
+                    "vt": "str"
+                },
+                {
+                    "t": "eq",
+                    "v": "VERTICAL_ALIGN_BOTTOM",
+                    "vt": "str"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 4,
+            "x": 1050,
+            "y": 2600,
+            "wires": [
+                [
+                    "909c035f8e881b42"
+                ],
+                [
+                    "b4b8f84a.7e57a8"
+                ],
+                [
+                    "0ac961b22cc550af"
+                ],
+                [
+                    "909c035f8e881b42"
+                ]
+            ]
+        },
+        {
+            "id": "0ac961b22cc550af",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "Middle",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LT_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "0",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_MIDDLE",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 1290,
+            "y": 2580,
+            "wires": [
+                [
+                    "3026c3be85aa5427"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "909c035f8e881b42",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "Bottom",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LT_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "-8",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_BOTTOM",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 1300,
+            "y": 2620,
+            "wires": [
+                [
+                    "3026c3be85aa5427"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "8c67b63eefdf4f51",
+            "type": "switch",
+            "z": "683eaf2c100223d0",
+            "name": "",
+            "property": "LB_ALIGN",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "null"
+                },
+                {
+                    "t": "eq",
+                    "v": "VERTICAL_ALIGN_TOP",
+                    "vt": "str"
+                },
+                {
+                    "t": "eq",
+                    "v": "VERTICAL_ALIGN_MIDDLE",
+                    "vt": "str"
+                },
+                {
+                    "t": "eq",
+                    "v": "VERTICAL_ALIGN_BOTTOM",
+                    "vt": "str"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 4,
+            "x": 1030,
+            "y": 3180,
+            "wires": [
+                [
+                    "199b479e236c69e5"
+                ],
+                [
+                    "fecd87b4cbfd3f5b"
+                ],
+                [
+                    "604def1d870aad4a"
+                ],
+                [
+                    "199b479e236c69e5"
+                ]
+            ]
+        },
+        {
+            "id": "604def1d870aad4a",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "Middle",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LB_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "0",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_MIDDLE",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 1290,
+            "y": 3160,
+            "wires": [
+                [
+                    "bcdb6f1469605b1a"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "199b479e236c69e5",
+            "type": "jimp-image",
+            "z": "683eaf2c100223d0",
+            "name": "Bottom",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LB_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "-8",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_BOTTOM",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 1300,
+            "y": 3200,
+            "wires": [
+                [
+                    "bcdb6f1469605b1a"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "6b1c773a682b8bd0",
+            "type": "function",
+            "z": "683eaf2c100223d0",
+            "name": "Set Image",
+            "func": "return { \"payload\": \"data/lib/ui-media/lib/screen/LT_LIVE.png\" };",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1750,
+            "y": 3320,
+            "wires": [
+                [
+                    "4e7c17d620d09c65"
+                ]
+            ]
+        },
+        {
+            "id": "4e7c17d620d09c65",
+            "type": "link out",
+            "z": "683eaf2c100223d0",
+            "name": "link out 23",
+            "mode": "link",
+            "links": [
+                "p7b1sh5giqgjid8m"
+            ],
+            "x": 1695,
+            "y": 3360
         }
     ]
 }
