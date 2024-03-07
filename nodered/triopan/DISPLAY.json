@@ -3559,5 +3559,162 @@
             "x": 1695,
             "y": 3360
         }
+    ],
+    "configs": [
+        {
+            "id": "e493104d5a64e610",
+            "type": "ui_group",
+            "z": "683eaf2c100223d0",
+            "name": "Screen Oben Konfigurieren...",
+            "tab": "c1631d06393a14e7",
+            "order": 1,
+            "disp": true,
+            "width": "10",
+            "collapse": false,
+            "className": ""
+        },
+        {
+            "id": "b3c2246d9a73d98f",
+            "type": "ui_group",
+            "z": "683eaf2c100223d0",
+            "name": "Vorschau",
+            "tab": "c1631d06393a14e7",
+            "order": 3,
+            "disp": true,
+            "width": "5",
+            "collapse": false,
+            "className": ""
+        },
+        {
+            "id": "6bea9860833a2c2c",
+            "type": "ui_group",
+            "z": "683eaf2c100223d0",
+            "name": "Screen Unten Konfigurieren...",
+            "tab": "c1631d06393a14e7",
+            "order": 2,
+            "disp": true,
+            "width": "10",
+            "collapse": false,
+            "className": ""
+        },
+        {
+            "id": "58153a8c38542cc3",
+            "type": "ui_group",
+            "z": "683eaf2c100223d0",
+            "name": "Live",
+            "tab": "c1631d06393a14e7",
+            "order": 4,
+            "disp": true,
+            "width": "5",
+            "collapse": false,
+            "className": ""
+        },
+        {
+            "id": "c1631d06393a14e7",
+            "type": "ui_tab",
+            "z": "683eaf2c100223d0",
+            "name": "Triopan AG - Panel",
+            "icon": "Triopan AG - Panel",
+            "disabled": false,
+            "hidden": true
+        },
+        {
+            "id": "b678205775d3ed19",
+            "type": "ui_base",
+            "z": "683eaf2c100223d0",
+            "theme": {
+                "name": "theme-light",
+                "lightTheme": {
+                    "default": "#0094CE",
+                    "baseColor": "#f70000",
+                    "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                    "edited": true,
+                    "reset": false
+                },
+                "darkTheme": {
+                    "default": "#097479",
+                    "baseColor": "#097479",
+                    "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                    "edited": false
+                },
+                "customTheme": {
+                    "name": "Untitled Theme 1",
+                    "default": "#4B7930",
+                    "baseColor": "#4B7930",
+                    "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                },
+                "themeState": {
+                    "base-color": {
+                        "default": "#0094CE",
+                        "value": "#f70000",
+                        "edited": true
+                    },
+                    "page-titlebar-backgroundColor": {
+                        "value": "#f70000",
+                        "edited": false
+                    },
+                    "page-backgroundColor": {
+                        "value": "#fafafa",
+                        "edited": false
+                    },
+                    "page-sidebar-backgroundColor": {
+                        "value": "#ffffff",
+                        "edited": false
+                    },
+                    "group-textColor": {
+                        "value": "#ff4444",
+                        "edited": false
+                    },
+                    "group-borderColor": {
+                        "value": "#ffffff",
+                        "edited": false
+                    },
+                    "group-backgroundColor": {
+                        "value": "#ffffff",
+                        "edited": false
+                    },
+                    "widget-textColor": {
+                        "value": "#111111",
+                        "edited": false
+                    },
+                    "widget-backgroundColor": {
+                        "value": "#f70000",
+                        "edited": false
+                    },
+                    "widget-borderColor": {
+                        "value": "#ffffff",
+                        "edited": false
+                    },
+                    "base-font": {
+                        "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                    }
+                },
+                "angularTheme": {
+                    "primary": "indigo",
+                    "accents": "blue",
+                    "warn": "red",
+                    "background": "grey",
+                    "palette": "light"
+                }
+            },
+            "site": {
+                "name": "Node-RED Dashboard",
+                "hideToolbar": "false",
+                "allowSwipe": "false",
+                "lockMenu": "false",
+                "allowTempTheme": "true",
+                "dateFormat": "DD/MM/YYYY",
+                "sizes": {
+                    "sx": 48,
+                    "sy": 48,
+                    "gx": 6,
+                    "gy": 6,
+                    "cx": 6,
+                    "cy": 6,
+                    "px": 0,
+                    "py": 0
+                }
+            }
+        }
     ]
 }
