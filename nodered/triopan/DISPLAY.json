@@ -1,14 +1,14 @@
 {
-    "id": "683eaf2c100223d0",
+    "id": "0d41bb9886a9ece2",
     "label": "65e822d9bbf65abc8cdf4438",
     "disabled": false,
     "info": "",
     "env": [],
     "nodes": [
         {
-            "id": "swborvn8mw36adzm",
+            "id": "t3byizw448fo31hf",
             "type": "mqtt out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "topic": "cloud/upstream/data",
             "qos": "2",
@@ -24,9 +24,9 @@
             "wires": []
         },
         {
-            "id": "9t23dzwoh7eewq4c",
+            "id": "lfmg2cp80z4prn5o",
             "type": "inject",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Startup",
             "props": [
                 {
@@ -44,27 +44,27 @@
             "y": 80,
             "wires": [
                 [
-                    "llna9ny64quh16wf"
+                    "bc3kl6xst7e17an7"
                 ]
             ]
         },
         {
-            "id": "llna9ny64quh16wf",
+            "id": "bc3kl6xst7e17an7",
             "type": "getflows",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "x": 320,
             "y": 80,
             "wires": [
                 [
-                    "zz3nejf39xhhpwf2"
+                    "uwo7vxosboc7b2c8"
                 ]
             ]
         },
         {
-            "id": "zz3nejf39xhhpwf2",
+            "id": "uwo7vxosboc7b2c8",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Init",
             "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
             "outputs": 1,
@@ -76,14 +76,14 @@
             "y": 80,
             "wires": [
                 [
-                    "v3lyncolqjv2z8ml"
+                    "wnq5ykr02ahsqx7g"
                 ]
             ]
         },
         {
-            "id": "ryli87lc80h4mjmd",
+            "id": "n416s85xt8dgohar",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "----- Execute Commands",
             "info": "",
             "x": 110,
@@ -91,9 +91,9 @@
             "wires": []
         },
         {
-            "id": "za7tnv4domx1yxdb",
+            "id": "qhqew0w5hxdkxkwh",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "---- Connections initialization",
             "info": "",
             "x": 120,
@@ -101,9 +101,9 @@
             "wires": []
         },
         {
-            "id": "v3lyncolqjv2z8ml",
+            "id": "wnq5ykr02ahsqx7g",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -121,14 +121,14 @@
             "y": 80,
             "wires": [
                 [
-                    "e9e5etihdo1ysiob"
+                    "eiv9gvrcjr24jbx9"
                 ]
             ]
         },
         {
-            "id": "x36gphk20klfutpf",
+            "id": "1uxtzmrrnyq53qig",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "---- Protocol Read",
             "info": "",
             "x": 90,
@@ -136,9 +136,9 @@
             "wires": []
         },
         {
-            "id": "vdxjug0rxmrjp41m",
+            "id": "r6tpjntfk0wqq69a",
             "type": "inject",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Read intervall",
             "props": [
                 {
@@ -160,14 +160,14 @@
             "y": 120,
             "wires": [
                 [
-                    "712dycismht7flni"
+                    "40bmgg2yjuwulisw"
                 ]
             ]
         },
         {
-            "id": "uo5dt5l6xispoxo9",
+            "id": "ysqfmuzh7vqz90ew",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "State Upstream Required?",
             "property": "stateUpstreamRequired",
             "propertyType": "msg",
@@ -183,14 +183,14 @@
             "y": 920,
             "wires": [
                 [
-                    "swborvn8mw36adzm"
+                    "t3byizw448fo31hf"
                 ]
             ]
         },
         {
-            "id": "e9e5etihdo1ysiob",
+            "id": "eiv9gvrcjr24jbx9",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set channel parameters",
             "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
             "outputs": 1,
@@ -202,14 +202,14 @@
             "y": 80,
             "wires": [
                 [
-                    "pqndl56h5r42rqea"
+                    "lopsnr49szzfxsk6"
                 ]
             ]
         },
         {
-            "id": "ean4drrowv8enf19",
+            "id": "0zzw02zi9pkrow7u",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Error Upstream Required?",
             "property": "errorUpstreamRequired",
             "propertyType": "msg",
@@ -225,14 +225,14 @@
             "y": 880,
             "wires": [
                 [
-                    "jm84kmaoh1tj0ked"
+                    "38dcbrngw1l2kcic"
                 ]
             ]
         },
         {
-            "id": "jm84kmaoh1tj0ked",
+            "id": "38dcbrngw1l2kcic",
             "type": "mqtt out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "topic": "cloud/upstream/error",
             "qos": "2",
@@ -248,9 +248,9 @@
             "wires": []
         },
         {
-            "id": "o4rjbai0p44l3fvu",
+            "id": "p770nzywzxlggi3h",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "---- Virtual Read",
             "info": "",
             "x": 80,
@@ -258,39 +258,39 @@
             "wires": []
         },
         {
-            "id": "712dycismht7flni",
+            "id": "40bmgg2yjuwulisw",
             "type": "link out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "link out 14",
             "mode": "link",
             "links": [
                 "8432wmlkzzt9soau",
-                "z22kde5kbmilg6cv"
+                "pusvlsjcdjbltils"
             ],
             "x": 295,
             "y": 120
         },
         {
-            "id": "z22kde5kbmilg6cv",
+            "id": "pusvlsjcdjbltils",
             "type": "link in",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Virtual Read",
             "links": [
                 "jak7xse55acrj144",
-                "712dycismht7flni"
+                "40bmgg2yjuwulisw"
             ],
             "x": 75,
             "y": 260,
             "wires": [
                 [
-                    "cbjo09zb2jt6o5co"
+                    "sa8f2d75zrsov7ts"
                 ]
             ]
         },
         {
-            "id": "cbjo09zb2jt6o5co",
+            "id": "sa8f2d75zrsov7ts",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -308,14 +308,14 @@
             "y": 260,
             "wires": [
                 [
-                    "r5rowbgujmv4lube"
+                    "h81u5zabuerb3ign"
                 ]
             ]
         },
         {
-            "id": "pb36ayhi5figarmy",
+            "id": "oru4it16qn1iofel",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "calculate virtual values",
             "func": "const functions = {\n    \"kwh\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = flow.get(\"bridge.image.metrics\")[metricId];\n        }\n        msg.payload[metricId] = msg.payload[metricId] + (flow.get(\"bridge.image.metrics\")[parameterIds[0]] / 3600);\n    },\n    \"deviceState\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        }\n        if (parameterIds.length === 0) {\n            parameterIds = flow.get(\"bridge.image.protocols\").filter(dataPoint => {\n                return dataPoint.topic.includes(\"error\")\n            }).map(dataPoint => {\n                return dataPoint.id;\n            });\n        }\n\n        const ok = Object.keys(flow.get(\"bridge.image.metrics\")).filter(key => {\n            return parameterIds.includes(key)\n        }).reduce((accumulator, id) => accumulator && (flow.get(\"bridge.image.metrics\")[id] === \"\" || flow.get(\"bridge.image.metrics\")[id] === 0 || flow.get(\"bridge.image.metrics\")[id] === false), true)\n        \n        if (ok) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = 2;\n        }\n    }\n}\n\nmsg.sequences.forEach(sequence => {\n    msg = sequence;\n    msg.payload = {};\n    let calc = sequence.dataPoint.calculation\n    let metricsExist = calc.ids.reduce((accumulator, currentValue) => accumulator && flow.get(\"bridge.image.metrics\").hasOwnProperty(currentValue), true)\n    if (metricsExist) {\n        functions[calc.func](sequence.dataPoint.id, calc.ids)\n    } else {\n        throw \"Parameter IDs: \" + calc.ids + \" is missing for calculation\";\n    }\n    node.send(msg);\n});\n\nnode.done();",
             "outputs": 1,
@@ -328,14 +328,14 @@
             "y": 260,
             "wires": [
                 [
-                    "r57zbos9aeihl17a"
+                    "75ctbqeeqsqu7vzv"
                 ]
             ]
         },
         {
-            "id": "y077fz1xujv5u3tz",
+            "id": "rmtx2kxayx1trp1r",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "---- Update Metrics",
             "info": "",
             "x": 90,
@@ -343,29 +343,29 @@
             "wires": []
         },
         {
-            "id": "8vixux48b94fekxr",
+            "id": "4bk4jzh6bc415fdn",
             "type": "link in",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Update Metrics",
             "links": [
-                "r57zbos9aeihl17a",
+                "75ctbqeeqsqu7vzv",
                 "kcgzi9p01m7bwfqi",
                 "mrao1o6jtg3skhkx",
-                "o3jnyzk9wn57seyc",
-                "5d39071189ada652"
+                "4c8ot9i9gag3b8xf",
+                "3janl8qfjqhcvxzg"
             ],
             "x": 95,
             "y": 880,
             "wires": [
                 [
-                    "kwgcnxq9j3a840pq"
+                    "d6ea8e0cu954i131"
                 ]
             ]
         },
         {
-            "id": "kwgcnxq9j3a840pq",
+            "id": "d6ea8e0cu954i131",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set sensor value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
@@ -378,15 +378,15 @@
             "y": 880,
             "wires": [
                 [
-                    "uo5dt5l6xispoxo9",
-                    "ean4drrowv8enf19"
+                    "ysqfmuzh7vqz90ew",
+                    "0zzw02zi9pkrow7u"
                 ]
             ]
         },
         {
-            "id": "nzsq8nohqimdwa73",
+            "id": "nwn1v8pupppdjbgr",
             "type": "flogger",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Error",
             "logfile": "bridge.log",
             "inputchoice": "fullmsg",
@@ -403,9 +403,9 @@
             ]
         },
         {
-            "id": "sedi7p60ylqkucgi",
+            "id": "6o4ilujmcrs6rpfu",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "set error",
             "func": "msg.payload = {\n    \"payload\" : msg.payload,\n    \"error\" : msg.error\n};\n\nif (msg._error){\n    msg.payload._error = msg._error;\n}\n\nreturn msg;",
             "outputs": 1,
@@ -418,14 +418,14 @@
             "y": 1720,
             "wires": [
                 [
-                    "agccgu8bjuga9k99"
+                    "dmu5pckn2bb9wmd7"
                 ]
             ]
         },
         {
-            "id": "agccgu8bjuga9k99",
+            "id": "dmu5pckn2bb9wmd7",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set log file name",
             "func": "msg.logfile = \"bridge-\" + env.get(\"NR_FLOW_NAME\") + \".log\"\n\nreturn msg;",
             "outputs": 1,
@@ -438,26 +438,26 @@
             "y": 1720,
             "wires": [
                 [
-                    "nzsq8nohqimdwa73"
+                    "nwn1v8pupppdjbgr"
                 ]
             ]
         },
         {
-            "id": "r57zbos9aeihl17a",
+            "id": "75ctbqeeqsqu7vzv",
             "type": "link out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "link out 16",
             "mode": "link",
             "links": [
-                "8vixux48b94fekxr"
+                "4bk4jzh6bc415fdn"
             ],
             "x": 1215,
             "y": 260
         },
         {
-            "id": "qas7kbw1d2rh6n5o",
+            "id": "2vf4ctomj3bvs690",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "send virtual data",
             "func": "msg.sequences = flow.get(\"bridge.image.virtuals\").map(dataPoint => {\n    return {\n        dataPoint: dataPoint\n    };\n});\n\nif (msg.sequences.length > 0) {\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -470,14 +470,14 @@
             "y": 260,
             "wires": [
                 [
-                    "pb36ayhi5figarmy"
+                    "oru4it16qn1iofel"
                 ]
             ]
         },
         {
-            "id": "r5rowbgujmv4lube",
+            "id": "h81u5zabuerb3ign",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Config correct",
             "property": "bridge.image.virtuals",
             "propertyType": "flow",
@@ -495,14 +495,14 @@
             "y": 300,
             "wires": [
                 [
-                    "qas7kbw1d2rh6n5o"
+                    "2vf4ctomj3bvs690"
                 ]
             ]
         },
         {
-            "id": "6yylzwspmqjx096i",
+            "id": "cs6dh9ln96u49hrr",
             "type": "exec",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "command": "fbset -g 1280 720 1280 720 4",
             "addpay": "",
             "append": "",
@@ -516,18 +516,18 @@
             "wires": [
                 [],
                 [
-                    "30dcfb918bb0058c"
+                    "zybze7nrw10ai60c"
                 ],
                 [
-                    "1d5o7q5i6qs1ajad"
+                    "cj9y87ret2st53s7"
                 ]
             ]
         },
         {
-            "id": "1d5o7q5i6qs1ajad",
+            "id": "cj9y87ret2st53s7",
             "type": "exec",
-            "z": "683eaf2c100223d0",
-            "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1 images/clear.png",
+            "z": "0d41bb9886a9ece2",
+            "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1 data/lib/ui-media/lib/images/clear.png",
             "addpay": "",
             "append": "",
             "useSpawn": "false",
@@ -540,17 +540,17 @@
             "wires": [
                 [],
                 [
-                    "30dcfb918bb0058c"
+                    "zybze7nrw10ai60c"
                 ],
                 [
-                    "94eosz6o64pmoaj3"
+                    "ldw12fond9ua507c"
                 ]
             ]
         },
         {
-            "id": "94eosz6o64pmoaj3",
+            "id": "ldw12fond9ua507c",
             "type": "exec",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "command": "pgrep fbi | xargs kill",
             "addpay": "",
             "append": "",
@@ -564,15 +564,15 @@
             "wires": [
                 [],
                 [
-                    "30dcfb918bb0058c"
+                    "zybze7nrw10ai60c"
                 ],
                 []
             ]
         },
         {
-            "id": "en3o1wbkeqev34or",
+            "id": "gy4x94lh9hti4mri",
             "type": "exec",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1",
             "addpay": "payload",
             "append": "",
@@ -586,15 +586,15 @@
             "wires": [
                 [],
                 [
-                    "30dcfb918bb0058c"
+                    "zybze7nrw10ai60c"
                 ],
                 []
             ]
         },
         {
-            "id": "nbzz2tcnfwcpllst",
+            "id": "rfbwkfv2yhc0gbj5",
             "type": "delay",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "pauseType": "delay",
             "timeout": "500",
@@ -612,15 +612,15 @@
             "y": 600,
             "wires": [
                 [
-                    "zlrvf3dk0nyfwjph",
-                    "zwp2xyo4m22rc7si"
+                    "jfrqpu4ub9490795",
+                    "t1216lub16xrlmop"
                 ]
             ]
         },
         {
-            "id": "zlrvf3dk0nyfwjph",
+            "id": "jfrqpu4ub9490795",
             "type": "exec",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "command": "fbset -g 96 96 96 96 4",
             "addpay": "",
             "append": "",
@@ -634,15 +634,15 @@
             "wires": [
                 [],
                 [
-                    "30dcfb918bb0058c"
+                    "zybze7nrw10ai60c"
                 ],
                 []
             ]
         },
         {
-            "id": "zwp2xyo4m22rc7si",
+            "id": "t1216lub16xrlmop",
             "type": "delay",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "pauseType": "delay",
             "timeout": "500",
@@ -660,14 +660,14 @@
             "y": 620,
             "wires": [
                 [
-                    "en3o1wbkeqev34or"
+                    "gy4x94lh9hti4mri"
                 ]
             ]
         },
         {
-            "id": "pqndl56h5r42rqea",
+            "id": "lopsnr49szzfxsk6",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set init image",
             "func": "msg.payload = {};\n\nflow.get(\"bridge.image.protocols\").forEach(protocol => {\n    msg.payload[protocol.id] = \"\";\n})\n\nreturn msg;",
             "outputs": 1,
@@ -680,62 +680,62 @@
             "y": 80,
             "wires": [
                 [
-                    "o3jnyzk9wn57seyc"
+                    "4c8ot9i9gag3b8xf"
                 ]
             ]
         },
         {
-            "id": "o3jnyzk9wn57seyc",
+            "id": "4c8ot9i9gag3b8xf",
             "type": "link out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "link out 20",
             "mode": "link",
             "links": [
-                "8vixux48b94fekxr",
-                "s9ra4rnlw1kofn9m",
-                "085ec9938d398a5a"
+                "4bk4jzh6bc415fdn",
+                "7cxgls698jjjwsnv",
+                "evhlbtjcb2l346tf"
             ],
             "x": 1215,
             "y": 80
         },
         {
-            "id": "s9ra4rnlw1kofn9m",
+            "id": "7cxgls698jjjwsnv",
             "type": "link in",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Clear Screen",
             "links": [
-                "o3jnyzk9wn57seyc"
+                "4c8ot9i9gag3b8xf"
             ],
             "x": 95,
             "y": 420,
             "wires": [
                 [
-                    "6yylzwspmqjx096i"
+                    "cs6dh9ln96u49hrr"
                 ]
             ]
         },
         {
-            "id": "p7b1sh5giqgjid8m",
+            "id": "3wq2gsosigq176os",
             "type": "link in",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set image",
             "links": [
                 "9470o1e7mxuh87zh",
-                "eff7b3955c8daf97",
-                "4e7c17d620d09c65"
+                "d28yt3brk5yfajgz",
+                "5b039hssl0xff9m8"
             ],
             "x": 95,
             "y": 600,
             "wires": [
                 [
-                    "80n5pfljpgjdjg9l"
+                    "xbmt27htmjgifyq4"
                 ]
             ]
         },
         {
-            "id": "80n5pfljpgjdjg9l",
+            "id": "xbmt27htmjgifyq4",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "property": "payload",
             "propertyType": "msg",
@@ -754,18 +754,18 @@
             "y": 600,
             "wires": [
                 [
-                    "6yylzwspmqjx096i"
+                    "cs6dh9ln96u49hrr"
                 ],
                 [
-                    "6yylzwspmqjx096i",
-                    "nbzz2tcnfwcpllst"
+                    "cs6dh9ln96u49hrr",
+                    "rfbwkfv2yhc0gbj5"
                 ]
             ]
         },
         {
-            "id": "1okxghu82onnzjel",
+            "id": "z0faq5bq9kpjafoh",
             "type": "mqtt in",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Command",
             "topic": "",
             "qos": "2",
@@ -779,14 +779,14 @@
             "y": 1480,
             "wires": [
                 [
-                    "54w1b158sn2jt6wk"
+                    "st19sxc3a7sus2mf"
                 ]
             ]
         },
         {
-            "id": "qpplpnsyd1gm2loy",
+            "id": "h8wka465m3xnzact",
             "type": "inject",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "props": [
                 {
@@ -804,14 +804,14 @@
             "y": 1300,
             "wires": [
                 [
-                    "22vb4sjocq16dyxh"
+                    "u0phcj410iryei3y"
                 ]
             ]
         },
         {
-            "id": "8w88wjkr6ai19tqo",
+            "id": "muos22w4boo774sf",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Subscribe to commands for this bridge",
             "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/\" + flow.get(\"bridge\").id + \"/#\"\n}\n\nreturn msg;",
             "outputs": 1,
@@ -823,14 +823,14 @@
             "y": 1420,
             "wires": [
                 [
-                    "1okxghu82onnzjel"
+                    "z0faq5bq9kpjafoh"
                 ]
             ]
         },
         {
-            "id": "22vb4sjocq16dyxh",
+            "id": "u0phcj410iryei3y",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -851,17 +851,17 @@
             "y": 1360,
             "wires": [
                 [
-                    "v0ci0s1b5ch6klwg"
+                    "f0i5ovo5edlqzicu"
                 ],
                 [
-                    "8w88wjkr6ai19tqo"
+                    "muos22w4boo774sf"
                 ]
             ]
         },
         {
-            "id": "v0ci0s1b5ch6klwg",
+            "id": "f0i5ovo5edlqzicu",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Error",
             "func": "node.warn(\"The bridge configuration is wrong!\")\nnode.done()",
             "outputs": 0,
@@ -874,9 +874,9 @@
             "wires": []
         },
         {
-            "id": "54w1b158sn2jt6wk",
+            "id": "st19sxc3a7sus2mf",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "prepare write data",
             "func": "const command = msg.payload.command;\nconst response = msg.payload.response;\nconst matchingCommand = flow.get(\"bridge.image.commands\").find(bridgeCommand => bridgeCommand.id === command.id)\nconst matchingProtocol = matchingCommand ? flow.get(\"bridge.image.protocols\").find(protocol => protocol.id === matchingCommand.protocolId) : undefined;\n\nif (matchingProtocol && matchingCommand) {\n    response.value = {\n        \"actual\": flow.get(\"bridge.image.metrics\")[matchingProtocol.id],\n        \"target\": command.value\n    }\n    msg.protocolCommand = matchingCommand;\n    msg.response = response;\n    \n    if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"boolean\") {\n        if (matchingProtocol.invert) {\n            command.value = !command.value;\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"number\") {\n        if (matchingProtocol.invert) {\n            command.value = Math.abs(command.value - 1);\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (typeof command.value === \"number\") {\n        msg.payload = {\n            \"value\": matchingProtocol.type.startsWith(\"int16\") && command.value < 0 ? 65536 + command.value * (1 / matchingProtocol.scale) : command.value * (1 / matchingProtocol.scale),\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else {\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    }\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_EXECUTION\";\n\n    return [msg, responseMessage]\n} else {\n    node.warn(\"Command configuration wrong!\");\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_CONFIG\";\n    \n    return [null, responseMessage];\n}\n",
             "outputs": 2,
@@ -889,17 +889,17 @@
             "y": 1480,
             "wires": [
                 [
-                    "o4zv0ps3267s08io"
+                    "z8x0hojcg2b4cq09"
                 ],
                 [
-                    "r9svy839lryn7qjr"
+                    "vz39nmxzbeel4237"
                 ]
             ]
         },
         {
-            "id": "kpfc14ctmkb28now",
+            "id": "s20yzvbfn3acebcp",
             "type": "mqtt out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "topic": "cloud/upstream/response",
             "qos": "2",
@@ -915,9 +915,9 @@
             "wires": []
         },
         {
-            "id": "o4zv0ps3267s08io",
+            "id": "z8x0hojcg2b4cq09",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Write data",
             "func": "let writeMessage = { payload:  msg.payload };\nwriteMessage.protocolCommand = msg.protocolCommand;\n\nlet responseMessage = { payload: { response: msg.response } };\nresponseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\nresponseMessage.payload.response.status = \"OK\";\nresponseMessage.payload.response.error = \"\";\n\nreturn [writeMessage, responseMessage];",
             "outputs": 2,
@@ -930,17 +930,17 @@
             "y": 1460,
             "wires": [
                 [
-                    "ijs9umdc2rlfmkgu"
+                    "uv6pqcks6cb154ac"
                 ],
                 [
-                    "mcaoh30xhqblfrnr"
+                    "kw7fr11itb874yp2"
                 ]
             ]
         },
         {
-            "id": "khcgsnwf1hxitbma",
+            "id": "9pb0jqx8b1l5sq73",
             "type": "debug",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Execute Command",
             "active": true,
             "tosidebar": true,
@@ -955,9 +955,9 @@
             "wires": []
         },
         {
-            "id": "ijs9umdc2rlfmkgu",
+            "id": "uv6pqcks6cb154ac",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "property": "protocolCommand.type",
             "propertyType": "msg",
@@ -980,19 +980,19 @@
             "y": 1380,
             "wires": [
                 [
-                    "dpin8fkofc3aoi7p"
+                    "m9j6f5310gyxwdul"
                 ],
                 [
-                    "khcgsnwf1hxitbma",
-                    "yqf6j2rckd0tuzh1",
-                    "f2960566cfb4b9b7"
+                    "9pb0jqx8b1l5sq73",
+                    "sg72o984nqilv9ze",
+                    "38d0bjxt623uteqr"
                 ]
             ]
         },
         {
-            "id": "dpin8fkofc3aoi7p",
+            "id": "m9j6f5310gyxwdul",
             "type": "debug",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Command type not yet implemented",
             "active": true,
             "tosidebar": true,
@@ -1007,9 +1007,9 @@
             "wires": []
         },
         {
-            "id": "712x3jc0dcw7z94h",
+            "id": "ttdlz61wxv28x1t0",
             "type": "catch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "scope": [
                 "v0ybzti4w6s318gl"
@@ -1019,14 +1019,14 @@
             "y": 1540,
             "wires": [
                 [
-                    "4jnvfuthoafme8ll"
+                    "ssah3wzku4vcsz35"
                 ]
             ]
         },
         {
-            "id": "r9svy839lryn7qjr",
+            "id": "vz39nmxzbeel4237",
             "type": "delay",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -1044,14 +1044,14 @@
             "y": 1500,
             "wires": [
                 [
-                    "kpfc14ctmkb28now"
+                    "s20yzvbfn3acebcp"
                 ]
             ]
         },
         {
-            "id": "oypa99ob8kz4oc1l",
+            "id": "pza5dgs0epx558fc",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -1071,14 +1071,14 @@
             "y": 1460,
             "wires": [
                 [
-                    "r9svy839lryn7qjr"
+                    "vz39nmxzbeel4237"
                 ]
             ]
         },
         {
-            "id": "mcaoh30xhqblfrnr",
+            "id": "kw7fr11itb874yp2",
             "type": "delay",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -1096,14 +1096,14 @@
             "y": 1600,
             "wires": [
                 [
-                    "kpfc14ctmkb28now"
+                    "s20yzvbfn3acebcp"
                 ]
             ]
         },
         {
-            "id": "4jnvfuthoafme8ll",
+            "id": "ssah3wzku4vcsz35",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -1123,14 +1123,14 @@
             "y": 1560,
             "wires": [
                 [
-                    "mcaoh30xhqblfrnr"
+                    "kw7fr11itb874yp2"
                 ]
             ]
         },
         {
-            "id": "yqf6j2rckd0tuzh1",
+            "id": "sg72o984nqilv9ze",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Update image",
             "func": "return { \"payload\": \"data/lib/ui-media/lib/images/\" + msg.payload.value };",
             "outputs": 1,
@@ -1143,27 +1143,27 @@
             "y": 1420,
             "wires": [
                 [
-                    "oypa99ob8kz4oc1l",
-                    "eff7b3955c8daf97"
+                    "pza5dgs0epx558fc",
+                    "d28yt3brk5yfajgz"
                 ]
             ]
         },
         {
-            "id": "eff7b3955c8daf97",
+            "id": "d28yt3brk5yfajgz",
             "type": "link out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "link out 21",
             "mode": "link",
             "links": [
-                "p7b1sh5giqgjid8m"
+                "3wq2gsosigq176os"
             ],
             "x": 1215,
             "y": 1420
         },
         {
-            "id": "f2960566cfb4b9b7",
+            "id": "38d0bjxt623uteqr",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Update Metric",
             "func": "const message ={ \"payload\": {} };\nif(msg.payload.value.includes(\"clear\")){\n    message.payload[msg.protocolCommand.protocolId] = \"\";\n} else {\n    message.payload[msg.protocolCommand.protocolId] = msg.payload.value;\n}\n\n\nreturn message;",
             "outputs": 1,
@@ -1176,26 +1176,26 @@
             "y": 1380,
             "wires": [
                 [
-                    "5d39071189ada652"
+                    "3janl8qfjqhcvxzg"
                 ]
             ]
         },
         {
-            "id": "5d39071189ada652",
+            "id": "3janl8qfjqhcvxzg",
             "type": "link out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "link out 22",
             "mode": "link",
             "links": [
-                "8vixux48b94fekxr"
+                "4bk4jzh6bc415fdn"
             ],
             "x": 1215,
             "y": 1380
         },
         {
-            "id": "30dcfb918bb0058c",
+            "id": "zybze7nrw10ai60c",
             "type": "debug",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Error",
             "active": true,
             "tosidebar": true,
@@ -1210,13 +1210,13 @@
             "wires": []
         },
         {
-            "id": "3423c4551f35fa30",
+            "id": "kyk5hh8jo00lxelz",
             "type": "ui_text_input",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
-            "group": "e493104d5a64e610",
+            "group": "0hsk0qox3qehdv59",
             "order": 10,
             "width": "8",
             "height": "1",
@@ -1231,14 +1231,14 @@
             "y": 2400,
             "wires": [
                 [
-                    "ed04e27e878cd2a9"
+                    "k33yv2y4cxba70z9"
                 ]
             ]
         },
         {
-            "id": "4eb720d3ce645dcd",
+            "id": "5711x0ckp5ldr1zu",
             "type": "ui_template",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "group": "",
             "name": "Styles",
             "order": 1,
@@ -1257,10 +1257,10 @@
             ]
         },
         {
-            "id": "94533482e6bfbacd",
+            "id": "l0u8ecppjb8ua3if",
             "type": "ui_list",
-            "z": "683eaf2c100223d0",
-            "group": "e493104d5a64e610",
+            "z": "0d41bb9886a9ece2",
+            "group": "0hsk0qox3qehdv59",
             "name": "Image list",
             "order": 2,
             "width": "8",
@@ -1274,14 +1274,14 @@
             "y": 2300,
             "wires": [
                 [
-                    "eae0422ef635f077"
+                    "3j85thngeykt5nc7"
                 ]
             ]
         },
         {
-            "id": "c90bd6314592fce1",
+            "id": "fze5pr6sg9dc5yqc",
             "type": "exec",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "command": "ls data/lib/ui-media/lib/images",
             "addpay": "",
             "append": "",
@@ -1291,35 +1291,35 @@
             "oldrc": false,
             "name": "",
             "x": 290,
-            "y": 2040,
+            "y": 2060,
             "wires": [
                 [
-                    "9fdbc02afa45d27e"
+                    "7v3du02pazshntxu"
                 ],
                 [],
                 []
             ]
         },
         {
-            "id": "085ec9938d398a5a",
+            "id": "evhlbtjcb2l346tf",
             "type": "link in",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Scan for images",
             "links": [
-                "o3jnyzk9wn57seyc"
+                "4c8ot9i9gag3b8xf"
             ],
             "x": 95,
             "y": 1980,
             "wires": [
                 [
-                    "e2f137b22c276902"
+                    "vspwc8u8natcuy68"
                 ]
             ]
         },
         {
-            "id": "9fdbc02afa45d27e",
+            "id": "7v3du02pazshntxu",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Get available images",
             "func": "var message = {\"payload\":[]};\n\nmsg.payload.split(\"\\n\").forEach(element => {\n    if(element.includes(\".png\")){\n        message.payload.push({\"title\": element.split(\".\")[0],\"icon\":\"/uimedia/images/\" + element})\n    }\n});\n\n\nreturn message;",
             "outputs": 1,
@@ -1329,19 +1329,19 @@
             "finalize": "",
             "libs": [],
             "x": 260,
-            "y": 2100,
+            "y": 2120,
             "wires": [
                 [
-                    "94533482e6bfbacd",
-                    "8c3c3437d694d718"
+                    "l0u8ecppjb8ua3if",
+                    "m7rdvr71f44m6u3k"
                 ]
             ]
         },
         {
-            "id": "43ae53ce58906f4d",
+            "id": "j2tleq4xsjc2wpgs",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "e493104d5a64e610",
+            "z": "0d41bb9886a9ece2",
+            "group": "0hsk0qox3qehdv59",
             "order": 1,
             "width": 0,
             "height": 0,
@@ -1359,10 +1359,10 @@
             "wires": []
         },
         {
-            "id": "9ccc3e867a23651b",
+            "id": "8tdyqwsmx7a53xo8",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "b3c2246d9a73d98f",
+            "z": "0d41bb9886a9ece2",
+            "group": "bfdo8xf7hqh8jiq0",
             "order": 1,
             "width": 0,
             "height": 0,
@@ -1375,15 +1375,15 @@
             "font": "Arial,Arial,Helvetica,sans-serif",
             "fontSize": 16,
             "color": "#000000",
-            "x": 1750,
+            "x": 1910,
             "y": 2500,
             "wires": []
         },
         {
-            "id": "fb61367d29ebd9f6",
+            "id": "bk4czeo3z1gsgavd",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "e493104d5a64e610",
+            "z": "0d41bb9886a9ece2",
+            "group": "0hsk0qox3qehdv59",
             "order": 9,
             "width": 0,
             "height": 0,
@@ -1401,9 +1401,9 @@
             "wires": []
         },
         {
-            "id": "b4b8f84a.7e57a8",
+            "id": "wlvh0z417ihhqkjq",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Top",
             "data": "payload.image",
             "dataType": "msg",
@@ -1489,15 +1489,15 @@
             "y": 2540,
             "wires": [
                 [
-                    "3026c3be85aa5427"
+                    "tnu8qn422bh3b9w0"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "c38666f517df56a7",
+            "id": "t0734lhrsw1nd45a",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set text",
             "func": "if (flow.get(\"LT_IMAGE\")) {\n    msg.payload = {\n        \"image\": flow.get(\"LT_IMAGE\"),\n        \"text\": msg.payload\n    }\n} else {\n    msg.payload = {\n        \"image\": \"data/lib/ui-media/lib/images/clear.png\",\n        \"text\": msg.payload\n    }\n}\n\nif(!flow.get(\"LT_ALIGN\")){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -1510,14 +1510,14 @@
             "y": 2540,
             "wires": [
                 [
-                    "e10554c0d16c26d9"
+                    "w4xj5p405j2l5tli"
                 ]
             ]
         },
         {
-            "id": "eae0422ef635f077",
+            "id": "3j85thngeykt5nc7",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set selected image",
             "func": "var image = msg.payload.icon.split(\"/\")[msg.payload.icon.split(\"/\").length -1]\nflow.set(\"LT_IMAGE\",  \"data/lib/ui-media/lib/images/\" + image);\n\nmsg.payload = flow.get(\"LT_IMAGE\");\n\nreturn msg;",
             "outputs": 1,
@@ -1530,14 +1530,14 @@
             "y": 2300,
             "wires": [
                 [
-                    "e8d1dd8f8cce161a"
+                    "rxgx8ddwn6zzmoih"
                 ]
             ]
         },
         {
-            "id": "e8d1dd8f8cce161a",
+            "id": "rxgx8ddwn6zzmoih",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "property": "LT_TEXT",
             "propertyType": "flow",
@@ -1559,20 +1559,20 @@
             "y": 2300,
             "wires": [
                 [
-                    "3026c3be85aa5427"
+                    "tnu8qn422bh3b9w0"
                 ],
                 [
-                    "3026c3be85aa5427"
+                    "tnu8qn422bh3b9w0"
                 ],
                 [
-                    "cfbcac3d0b39916a"
+                    "gv0y2jvovbrj7q7f"
                 ]
             ]
         },
         {
-            "id": "3026c3be85aa5427",
+            "id": "tnu8qn422bh3b9w0",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -1615,14 +1615,14 @@
             "y": 2540,
             "wires": [
                 [
-                    "73a4cc1dac028377"
+                    "50036d4b4af9a114"
                 ]
             ]
         },
         {
-            "id": "cfbcac3d0b39916a",
+            "id": "gv0y2jvovbrj7q7f",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -1642,14 +1642,14 @@
             "y": 2540,
             "wires": [
                 [
-                    "c38666f517df56a7"
+                    "t0734lhrsw1nd45a"
                 ]
             ]
         },
         {
-            "id": "ed04e27e878cd2a9",
+            "id": "k33yv2y4cxba70z9",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -1669,15 +1669,15 @@
             "y": 2400,
             "wires": [
                 [
-                    "cfbcac3d0b39916a"
+                    "gv0y2jvovbrj7q7f"
                 ]
             ]
         },
         {
-            "id": "511e79d71e820195",
+            "id": "36hf2b4wvpu5q8sx",
             "type": "ui_media",
-            "z": "683eaf2c100223d0",
-            "group": "b3c2246d9a73d98f",
+            "z": "0d41bb9886a9ece2",
+            "group": "bfdo8xf7hqh8jiq0",
             "name": "LT",
             "width": "3",
             "height": "3",
@@ -1691,16 +1691,16 @@
             "muted": true,
             "scope": "local",
             "tooltip": "",
-            "x": 1730,
+            "x": 1890,
             "y": 2540,
             "wires": [
                 []
             ]
         },
         {
-            "id": "73a4cc1dac028377",
+            "id": "y2ygc6jpa817noac",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set preview image",
             "func": "msg.payload = 'screen/LT_PREVIEW.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -1709,19 +1709,19 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1570,
+            "x": 1730,
             "y": 2540,
             "wires": [
                 [
-                    "511e79d71e820195"
+                    "36hf2b4wvpu5q8sx"
                 ]
             ]
         },
         {
-            "id": "7dbd9b36c7b4e74a",
+            "id": "lmns7lh97mb8wq7p",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "6bea9860833a2c2c",
+            "z": "0d41bb9886a9ece2",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 1,
             "width": 0,
             "height": 0,
@@ -1739,10 +1739,10 @@
             "wires": []
         },
         {
-            "id": "8c3c3437d694d718",
+            "id": "m7rdvr71f44m6u3k",
             "type": "ui_list",
-            "z": "683eaf2c100223d0",
-            "group": "6bea9860833a2c2c",
+            "z": "0d41bb9886a9ece2",
+            "group": "r5hz8d3gk9ctrbxg",
             "name": "Image list",
             "order": 2,
             "width": "8",
@@ -1756,15 +1756,15 @@
             "y": 2880,
             "wires": [
                 [
-                    "493bdec5341053c3"
+                    "pbdm0qd9745ui0gr"
                 ]
             ]
         },
         {
-            "id": "f595fb1e8201a0ae",
+            "id": "fsn3h4ftselwdceo",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "6bea9860833a2c2c",
+            "z": "0d41bb9886a9ece2",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 9,
             "width": 0,
             "height": 0,
@@ -1782,13 +1782,13 @@
             "wires": []
         },
         {
-            "id": "d7224fbc52b589f5",
+            "id": "rqwakn7ppd7wdjt3",
             "type": "ui_text_input",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
-            "group": "6bea9860833a2c2c",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 10,
             "width": "8",
             "height": "1",
@@ -1803,15 +1803,15 @@
             "y": 2960,
             "wires": [
                 [
-                    "6bca52a1fd8103d8"
+                    "szeolbaqcb063to9"
                 ]
             ]
         },
         {
-            "id": "af397d631fea0dae",
+            "id": "cz7lgj94c6q8w5xi",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "b3c2246d9a73d98f",
+            "z": "0d41bb9886a9ece2",
+            "group": "bfdo8xf7hqh8jiq0",
             "order": 3,
             "width": 0,
             "height": 0,
@@ -1824,14 +1824,14 @@
             "font": "Arial,Arial,Helvetica,sans-serif",
             "fontSize": 16,
             "color": "#000000",
-            "x": 1760,
+            "x": 1920,
             "y": 3080,
             "wires": []
         },
         {
-            "id": "419fcdc6e3683d2f",
+            "id": "fx20wedab9ut29ap",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set text",
             "func": "if (flow.get(\"LB_IMAGE\")) {\n    msg.payload = {\n        \"image\": flow.get(\"LB_IMAGE\"),\n        \"text\": msg.payload\n    }\n} else {\n    msg.payload = {\n        \"image\": \"data/lib/ui-media/lib/images/clear.png\",\n        \"text\": msg.payload\n    }\n}\n\nif(!flow.get(\"LB_ALIGN\")){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\n\nreturn msg;",
             "outputs": 1,
@@ -1844,14 +1844,14 @@
             "y": 3120,
             "wires": [
                 [
-                    "8c67b63eefdf4f51"
+                    "gu5j5v5kkq34vigm"
                 ]
             ]
         },
         {
-            "id": "493bdec5341053c3",
+            "id": "pbdm0qd9745ui0gr",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set selected image",
             "func": "var image = msg.payload.icon.split(\"/\")[msg.payload.icon.split(\"/\").length -1]\nflow.set(\"LB_IMAGE\",  \"data/lib/ui-media/lib/images/\" + image);\n\nmsg.payload = flow.get(\"LB_IMAGE\");\n\nreturn msg;",
             "outputs": 1,
@@ -1864,14 +1864,14 @@
             "y": 2880,
             "wires": [
                 [
-                    "4f5d6d7551abbe39"
+                    "nftyab4bjcd9p6q6"
                 ]
             ]
         },
         {
-            "id": "4f5d6d7551abbe39",
+            "id": "nftyab4bjcd9p6q6",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "property": "LB_TEXT",
             "propertyType": "flow",
@@ -1893,20 +1893,20 @@
             "y": 2880,
             "wires": [
                 [
-                    "bcdb6f1469605b1a"
+                    "f2eimfcmvygg08mz"
                 ],
                 [
-                    "bcdb6f1469605b1a"
+                    "f2eimfcmvygg08mz"
                 ],
                 [
-                    "ae27187936983974"
+                    "58y4apw6ofttegri"
                 ]
             ]
         },
         {
-            "id": "bcdb6f1469605b1a",
+            "id": "f2eimfcmvygg08mz",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -1949,15 +1949,15 @@
             "y": 3120,
             "wires": [
                 [
-                    "a97bf5b82299799d"
+                    "54c31fe65817ac96"
                 ]
             ]
         },
         {
-            "id": "9336bc344f86086a",
+            "id": "x74xa52hy0wh106z",
             "type": "ui_media",
-            "z": "683eaf2c100223d0",
-            "group": "b3c2246d9a73d98f",
+            "z": "0d41bb9886a9ece2",
+            "group": "bfdo8xf7hqh8jiq0",
             "name": "LB",
             "width": "3",
             "height": "3",
@@ -1971,16 +1971,16 @@
             "muted": true,
             "scope": "local",
             "tooltip": "",
-            "x": 1730,
+            "x": 1890,
             "y": 3120,
             "wires": [
                 []
             ]
         },
         {
-            "id": "a97bf5b82299799d",
+            "id": "bz13i6smbb049hm7",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set preview image",
             "func": "msg.payload = 'screen/LB_PREVIEW.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -1989,19 +1989,19 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1570,
+            "x": 1730,
             "y": 3120,
             "wires": [
                 [
-                    "9336bc344f86086a"
+                    "x74xa52hy0wh106z"
                 ]
             ]
         },
         {
-            "id": "64668ab518f73b63",
+            "id": "yox7psczw7iu1wfa",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "58153a8c38542cc3",
+            "z": "0d41bb9886a9ece2",
+            "group": "5eiuybosqqk5s26q",
             "order": 1,
             "width": 0,
             "height": 0,
@@ -2019,10 +2019,10 @@
             "wires": []
         },
         {
-            "id": "dcecf61f433394c9",
+            "id": "pfxv309azs17duoj",
             "type": "ui_media",
-            "z": "683eaf2c100223d0",
-            "group": "58153a8c38542cc3",
+            "z": "0d41bb9886a9ece2",
+            "group": "5eiuybosqqk5s26q",
             "name": "LT",
             "width": "3",
             "height": "3",
@@ -2043,10 +2043,10 @@
             ]
         },
         {
-            "id": "c907212e6adfd56d",
+            "id": "a4dehlopchzokg5l",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "58153a8c38542cc3",
+            "z": "0d41bb9886a9ece2",
+            "group": "5eiuybosqqk5s26q",
             "order": 3,
             "width": 0,
             "height": 0,
@@ -2064,10 +2064,10 @@
             "wires": []
         },
         {
-            "id": "e4631abd605e4304",
+            "id": "375ndn506jkmkf49",
             "type": "ui_media",
-            "z": "683eaf2c100223d0",
-            "group": "58153a8c38542cc3",
+            "z": "0d41bb9886a9ece2",
+            "group": "5eiuybosqqk5s26q",
             "name": "LB",
             "width": "3",
             "height": "3",
@@ -2088,11 +2088,11 @@
             ]
         },
         {
-            "id": "ecbef46e39c01d71",
+            "id": "y8z5r4mgdqjns1hj",
             "type": "ui_button",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
-            "group": "b3c2246d9a73d98f",
+            "group": "bfdo8xf7hqh8jiq0",
             "order": 4,
             "width": "4",
             "height": "1",
@@ -2111,15 +2111,15 @@
             "y": 3480,
             "wires": [
                 [
-                    "2c802404320b8309",
-                    "8ea4b7951f9f7e4d"
+                    "uouvldfxq9gb7yxh",
+                    "z6yzhihaxlacwfr3"
                 ]
             ]
         },
         {
-            "id": "805bfcca56971d8d",
+            "id": "8k3fx6k0yyjrvw4s",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set live image",
             "func": "msg.payload = 'screen/LT_LIVE.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -2132,15 +2132,15 @@
             "y": 3420,
             "wires": [
                 [
-                    "dcecf61f433394c9",
-                    "76be5a3a32c1a1a4"
+                    "pfxv309azs17duoj",
+                    "7ifsceaoh36aqt76"
                 ]
             ]
         },
         {
-            "id": "28eb4cfab297301a",
+            "id": "l5hputsq5z0nqg94",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set live image",
             "func": "msg.payload = 'screen/LB_LIVE.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -2153,14 +2153,14 @@
             "y": 3500,
             "wires": [
                 [
-                    "e4631abd605e4304"
+                    "375ndn506jkmkf49"
                 ]
             ]
         },
         {
-            "id": "8ea4b7951f9f7e4d",
+            "id": "uouvldfxq9gb7yxh",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "data": "data/lib/ui-media/lib/screen/LB_PREVIEW.png",
             "dataType": "str",
@@ -2203,14 +2203,14 @@
             "y": 3500,
             "wires": [
                 [
-                    "28eb4cfab297301a"
+                    "l5hputsq5z0nqg94"
                 ]
             ]
         },
         {
-            "id": "2c802404320b8309",
+            "id": "z6yzhihaxlacwfr3",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "data": "data/lib/ui-media/lib/screen/LT_PREVIEW.png",
             "dataType": "str",
@@ -2253,19 +2253,19 @@
             "y": 3420,
             "wires": [
                 [
-                    "805bfcca56971d8d"
+                    "8k3fx6k0yyjrvw4s"
                 ]
             ]
         },
         {
-            "id": "e6c55a8755eff2c5",
+            "id": "derqfmiyw3c3odr0",
             "type": "ui_dropdown",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
             "place": "Select option",
-            "group": "e493104d5a64e610",
+            "group": "0hsk0qox3qehdv59",
             "order": 6,
             "width": "8",
             "height": "1",
@@ -2296,15 +2296,15 @@
             "y": 2500,
             "wires": [
                 [
-                    "d68e943838e2f243"
+                    "8ayx18730dzyauhz"
                 ]
             ]
         },
         {
-            "id": "abbe9796bbe9acbd",
+            "id": "wz5v52b9zbyt4lbx",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "e493104d5a64e610",
+            "z": "0d41bb9886a9ece2",
+            "group": "0hsk0qox3qehdv59",
             "order": 5,
             "width": 0,
             "height": 0,
@@ -2322,9 +2322,9 @@
             "wires": []
         },
         {
-            "id": "d68e943838e2f243",
+            "id": "8ayx18730dzyauhz",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set position",
             "func": "if(msg.payload === 0){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_TOP\");\n} else if(msg.payload === 1){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n} else if(msg.payload === 2){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_BOTTOM\");\n} else {\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -2337,14 +2337,14 @@
             "y": 2500,
             "wires": [
                 [
-                    "cfbcac3d0b39916a"
+                    "gv0y2jvovbrj7q7f"
                 ]
             ]
         },
         {
-            "id": "6bca52a1fd8103d8",
+            "id": "szeolbaqcb063to9",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -2364,14 +2364,14 @@
             "y": 3000,
             "wires": [
                 [
-                    "ae27187936983974"
+                    "58y4apw6ofttegri"
                 ]
             ]
         },
         {
-            "id": "fecd87b4cbfd3f5b",
+            "id": "y23hwvyronk8g5yb",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Top",
             "data": "payload.image",
             "dataType": "msg",
@@ -2457,20 +2457,20 @@
             "y": 3120,
             "wires": [
                 [
-                    "bcdb6f1469605b1a"
+                    "f2eimfcmvygg08mz"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "817c94bae8bc6fc1",
+            "id": "de4z8665zu3907nm",
             "type": "ui_dropdown",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
             "place": "Select option",
-            "group": "6bea9860833a2c2c",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 6,
             "width": "8",
             "height": "1",
@@ -2501,15 +2501,15 @@
             "y": 3080,
             "wires": [
                 [
-                    "fc241b3fba07aabb"
+                    "nb8511ia8uufk07l"
                 ]
             ]
         },
         {
-            "id": "85eb059b1b335ea8",
+            "id": "xsmy8hojwtfqwmfn",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "6bea9860833a2c2c",
+            "z": "0d41bb9886a9ece2",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 5,
             "width": 0,
             "height": 0,
@@ -2527,9 +2527,9 @@
             "wires": []
         },
         {
-            "id": "fc241b3fba07aabb",
+            "id": "nb8511ia8uufk07l",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set position",
             "func": "if(msg.payload === 0){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_TOP\");\n} else if(msg.payload === 1){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n} else if(msg.payload === 2){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_BOTTOM\");\n} else {\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -2542,14 +2542,14 @@
             "y": 3080,
             "wires": [
                 [
-                    "ae27187936983974"
+                    "58y4apw6ofttegri"
                 ]
             ]
         },
         {
-            "id": "76be5a3a32c1a1a4",
+            "id": "7ifsceaoh36aqt76",
             "type": "delay",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "pauseType": "delay",
             "timeout": "1",
@@ -2567,14 +2567,14 @@
             "y": 3280,
             "wires": [
                 [
-                    "6b1c773a682b8bd0"
+                    "rb94lv68e4qmqdes"
                 ]
             ]
         },
         {
-            "id": "h7bdgc6093gw20m3",
+            "id": "emsw9u2zydsjr8sr",
             "type": "catch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "scope": null,
             "uncaught": false,
@@ -2582,18 +2582,18 @@
             "y": 1720,
             "wires": [
                 [
-                    "sedi7p60ylqkucgi"
+                    "6o4ilujmcrs6rpfu"
                 ]
             ]
         },
         {
-            "id": "78af3431b03907c8",
+            "id": "9kvuo6jdslcugxsf",
             "type": "ui_slider",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
-            "group": "e493104d5a64e610",
+            "group": "0hsk0qox3qehdv59",
             "order": 4,
             "width": "8",
             "height": "1",
@@ -2609,15 +2609,15 @@
             "y": 2580,
             "wires": [
                 [
-                    "1f1f5ece5aa4a4eb"
+                    "288jfd7zc55n2y8f"
                 ]
             ]
         },
         {
-            "id": "ccec4d0c1accca25",
+            "id": "k3ll3oy617bfvjnx",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "e493104d5a64e610",
+            "z": "0d41bb9886a9ece2",
+            "group": "0hsk0qox3qehdv59",
             "order": 3,
             "width": 0,
             "height": 0,
@@ -2635,11 +2635,11 @@
             "wires": []
         },
         {
-            "id": "1f1f5ece5aa4a4eb",
+            "id": "288jfd7zc55n2y8f",
             "type": "function",
-            "z": "683eaf2c100223d0",
-            "name": "Set alignment",
-            "func": "flow.set(\"LT_BRIGHTNESS\", msg.payload);\n\nreturn msg;",
+            "z": "0d41bb9886a9ece2",
+            "name": "Set brightness",
+            "func": "function factor(percentage) {\n  // Convert percentage value to decimal\n  const decimalPercentage = percentage / 100;\n\n  // Calculate range between numbers\n  const range = 2;\n\n  // Calculate result by adding first number in array to the product of the percentage value and the range\n  const result = -1 + (decimalPercentage * range);\n\n  // Return result rounded to the nearest hundredth\n  return Math.round(result * 100) / 100;\n}\n\nflow.set(\"LT_BRIGHTNESS\", factor(msg.payload));\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -2650,18 +2650,18 @@
             "y": 2580,
             "wires": [
                 [
-                    "cfbcac3d0b39916a"
+                    "gv0y2jvovbrj7q7f"
                 ]
             ]
         },
         {
-            "id": "d2fe57605565df16",
+            "id": "fw4okjjkg856z94t",
             "type": "ui_slider",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
-            "group": "6bea9860833a2c2c",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 4,
             "width": "8",
             "height": "1",
@@ -2677,15 +2677,15 @@
             "y": 3160,
             "wires": [
                 [
-                    "5d612466eda1fc50"
+                    "l6cxym0xlh003912"
                 ]
             ]
         },
         {
-            "id": "4f4a0ed45e8af9f4",
+            "id": "0fuy48aw1y4asosd",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "6bea9860833a2c2c",
+            "z": "0d41bb9886a9ece2",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 3,
             "width": 0,
             "height": 0,
@@ -2703,11 +2703,11 @@
             "wires": []
         },
         {
-            "id": "5d612466eda1fc50",
+            "id": "l6cxym0xlh003912",
             "type": "function",
-            "z": "683eaf2c100223d0",
-            "name": "Set alignment",
-            "func": "flow.set(\"LB_BRIGHTNESS\", msg.payload);\n\nreturn msg;",
+            "z": "0d41bb9886a9ece2",
+            "name": "Set birghtness",
+            "func": "function factor(percentage) {\n  // Convert percentage value to decimal\n  const decimalPercentage = percentage / 100;\n\n  // Calculate range between numbers\n  const range = 2;\n\n  // Calculate result by adding first number in array to the product of the percentage value and the range\n  const result = -1 + (decimalPercentage * range);\n\n  // Return result rounded to the nearest hundredth\n  return Math.round(result * 100) / 100;\n}\n\nflow.set(\"LB_BRIGHTNESS\", factor(msg.payload));\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -2718,14 +2718,14 @@
             "y": 3160,
             "wires": [
                 [
-                    "ae27187936983974"
+                    "58y4apw6ofttegri"
                 ]
             ]
         },
         {
-            "id": "e2f137b22c276902",
+            "id": "vspwc8u8natcuy68",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -2739,7 +2739,7 @@
                     "t": "set",
                     "p": "LB_BRIGHTNESS",
                     "pt": "flow",
-                    "to": "100",
+                    "to": "1.0",
                     "tot": "num"
                 },
                 {
@@ -2774,7 +2774,7 @@
                     "t": "set",
                     "p": "LT_BRIGHTNESS",
                     "pt": "flow",
-                    "to": "100",
+                    "to": "1.0",
                     "tot": "num"
                 },
                 {
@@ -2797,6 +2797,13 @@
                     "pt": "flow",
                     "to": "FONT_SANS_8_WHITE",
                     "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"image\":\"data/lib/ui-media/lib/images/clear.png\",\"text\":\"\"}",
+                    "tot": "json"
                 }
             ],
             "action": "",
@@ -2804,18 +2811,19 @@
             "from": "",
             "to": "",
             "reg": false,
-            "x": 250,
+            "x": 240,
             "y": 1980,
             "wires": [
                 [
-                    "c90bd6314592fce1"
+                    "083c99b5f0373e9e",
+                    "6152fa2f0c37e5a0"
                 ]
             ]
         },
         {
-            "id": "86f75360075e823a",
+            "id": "qswga47mkj5fradc",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "----- UI",
             "info": "",
             "x": 50,
@@ -2823,9 +2831,9 @@
             "wires": []
         },
         {
-            "id": "8193bd65cd013574",
+            "id": "fxx1py1930l9jynq",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "----- Styles",
             "info": "",
             "x": 120,
@@ -2833,9 +2841,9 @@
             "wires": []
         },
         {
-            "id": "05068e6ae464d6ac",
+            "id": "ckmocady5b4y9br5",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "----- Init",
             "info": "",
             "x": 110,
@@ -2843,9 +2851,9 @@
             "wires": []
         },
         {
-            "id": "f407bb530b66f196",
+            "id": "t0b6kh338qkwt5qn",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "----- Preview",
             "info": "",
             "x": 130,
@@ -2853,9 +2861,9 @@
             "wires": []
         },
         {
-            "id": "11d04dd493c03b34",
+            "id": "0woj6px1f4z0fw3t",
             "type": "comment",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "----- Live",
             "info": "",
             "x": 140,
@@ -2863,14 +2871,14 @@
             "wires": []
         },
         {
-            "id": "aeb93314382e04e6",
+            "id": "s8wzci0ilvbwe0fe",
             "type": "ui_dropdown",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
             "place": "Select option",
-            "group": "e493104d5a64e610",
+            "group": "0hsk0qox3qehdv59",
             "order": 8,
             "width": "8",
             "height": "1",
@@ -2901,14 +2909,14 @@
             "y": 2660,
             "wires": [
                 [
-                    "17b7047cbd2d1cc5"
+                    "bhfi2yefzy3mb35a"
                 ]
             ]
         },
         {
-            "id": "17b7047cbd2d1cc5",
+            "id": "bhfi2yefzy3mb35a",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set size",
             "func": "if(msg.payload === 0){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_32_WHITE\");\n} else if(msg.payload === 1){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_16_WHITE\");\n} else if(msg.payload === 2){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n} else {\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -2921,19 +2929,19 @@
             "y": 2660,
             "wires": [
                 [
-                    "cfbcac3d0b39916a"
+                    "gv0y2jvovbrj7q7f"
                 ]
             ]
         },
         {
-            "id": "5739e2bfd275a28a",
+            "id": "f4n3emgzxnxv2qb3",
             "type": "ui_dropdown",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "label": "",
             "tooltip": "",
             "place": "Select option",
-            "group": "6bea9860833a2c2c",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 8,
             "width": "8",
             "height": "1",
@@ -2964,14 +2972,14 @@
             "y": 3240,
             "wires": [
                 [
-                    "2ee03532fcbac520"
+                    "23sf8i9ctj9gsaau"
                 ]
             ]
         },
         {
-            "id": "2ee03532fcbac520",
+            "id": "23sf8i9ctj9gsaau",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set size",
             "func": "if(msg.payload === 0){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_32_WHITE\");\n} else if(msg.payload === 1){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_16_WHITE\");\n} else if(msg.payload === 2){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n} else {\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n}\n\nreturn msg",
             "outputs": 1,
@@ -2984,15 +2992,15 @@
             "y": 3240,
             "wires": [
                 [
-                    "ae27187936983974"
+                    "58y4apw6ofttegri"
                 ]
             ]
         },
         {
-            "id": "3070cd94352d09d9",
+            "id": "jmgdfjaxjs7x3cgh",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "6bea9860833a2c2c",
+            "z": "0d41bb9886a9ece2",
+            "group": "r5hz8d3gk9ctrbxg",
             "order": 7,
             "width": 0,
             "height": 0,
@@ -3010,10 +3018,10 @@
             "wires": []
         },
         {
-            "id": "312fcffa17618346",
+            "id": "9gu2aa7suk4868ph",
             "type": "ui_text",
-            "z": "683eaf2c100223d0",
-            "group": "e493104d5a64e610",
+            "z": "0d41bb9886a9ece2",
+            "group": "0hsk0qox3qehdv59",
             "order": 7,
             "width": 0,
             "height": 0,
@@ -3031,9 +3039,9 @@
             "wires": []
         },
         {
-            "id": "ae27187936983974",
+            "id": "58y4apw6ofttegri",
             "type": "change",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "rules": [
                 {
@@ -3053,14 +3061,14 @@
             "y": 3120,
             "wires": [
                 [
-                    "419fcdc6e3683d2f"
+                    "fx20wedab9ut29ap"
                 ]
             ]
         },
         {
-            "id": "e10554c0d16c26d9",
+            "id": "w4xj5p405j2l5tli",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "property": "LT_ALIGN",
             "propertyType": "flow",
@@ -3091,23 +3099,23 @@
             "y": 2600,
             "wires": [
                 [
-                    "909c035f8e881b42"
+                    "76n4wdf9htfde4aa"
                 ],
                 [
-                    "b4b8f84a.7e57a8"
+                    "wlvh0z417ihhqkjq"
                 ],
                 [
-                    "0ac961b22cc550af"
+                    "76tz4gc51yv86sf5"
                 ],
                 [
-                    "909c035f8e881b42"
+                    "76n4wdf9htfde4aa"
                 ]
             ]
         },
         {
-            "id": "0ac961b22cc550af",
+            "id": "76tz4gc51yv86sf5",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Middle",
             "data": "payload.image",
             "dataType": "msg",
@@ -3193,15 +3201,15 @@
             "y": 2580,
             "wires": [
                 [
-                    "3026c3be85aa5427"
+                    "tnu8qn422bh3b9w0"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "909c035f8e881b42",
+            "id": "76n4wdf9htfde4aa",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Bottom",
             "data": "payload.image",
             "dataType": "msg",
@@ -3287,15 +3295,15 @@
             "y": 2620,
             "wires": [
                 [
-                    "3026c3be85aa5427"
+                    "tnu8qn422bh3b9w0"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "8c67b63eefdf4f51",
+            "id": "gu5j5v5kkq34vigm",
             "type": "switch",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "",
             "property": "LB_ALIGN",
             "propertyType": "flow",
@@ -3326,23 +3334,23 @@
             "y": 3180,
             "wires": [
                 [
-                    "199b479e236c69e5"
+                    "sknzdk54cmpqegp4"
                 ],
                 [
-                    "fecd87b4cbfd3f5b"
+                    "y23hwvyronk8g5yb"
                 ],
                 [
-                    "604def1d870aad4a"
+                    "jidtx80rt2iku542"
                 ],
                 [
-                    "199b479e236c69e5"
+                    "sknzdk54cmpqegp4"
                 ]
             ]
         },
         {
-            "id": "604def1d870aad4a",
+            "id": "jidtx80rt2iku542",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Middle",
             "data": "payload.image",
             "dataType": "msg",
@@ -3428,15 +3436,15 @@
             "y": 3160,
             "wires": [
                 [
-                    "bcdb6f1469605b1a"
+                    "f2eimfcmvygg08mz"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "199b479e236c69e5",
+            "id": "sknzdk54cmpqegp4",
             "type": "jimp-image",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Bottom",
             "data": "payload.image",
             "dataType": "msg",
@@ -3522,15 +3530,15 @@
             "y": 3200,
             "wires": [
                 [
-                    "bcdb6f1469605b1a"
+                    "f2eimfcmvygg08mz"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "6b1c773a682b8bd0",
+            "id": "rb94lv68e4qmqdes",
             "type": "function",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Set Image",
             "func": "return { \"payload\": \"data/lib/ui-media/lib/screen/LT_LIVE.png\" };",
             "outputs": 1,
@@ -3543,30 +3551,414 @@
             "y": 3320,
             "wires": [
                 [
-                    "4e7c17d620d09c65"
+                    "5b039hssl0xff9m8"
                 ]
             ]
         },
         {
-            "id": "4e7c17d620d09c65",
+            "id": "5b039hssl0xff9m8",
             "type": "link out",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "link out 23",
             "mode": "link",
             "links": [
-                "p7b1sh5giqgjid8m"
+                "3wq2gsosigq176os"
             ],
             "x": 1695,
             "y": 3360
+        },
+        {
+            "id": "083c99b5f0373e9e",
+            "type": "jimp-image",
+            "z": "0d41bb9886a9ece2",
+            "name": "Bottom",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LT_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "-8",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_BOTTOM",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 420,
+            "y": 1960,
+            "wires": [
+                [
+                    "7626c0266ec17a96"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "7626c0266ec17a96",
+            "type": "jimp-image",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "data": "payload",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "data/lib/ui-media/lib/screen/LT_PREVIEW.png",
+            "parameter1Type": "str",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "write",
+            "selectedJimpFunction": {
+                "name": "write",
+                "fn": "write",
+                "description": "Write to file. NOTE: You can specify an alternative file extension type to change the type. Currently support types are jpg, png, bmp.",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "type": "str",
+                        "required": true,
+                        "hint": "Name of the file",
+                        "defaultType": "str"
+                    }
+                ]
+            },
+            "x": 550,
+            "y": 1960,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "6152fa2f0c37e5a0",
+            "type": "jimp-image",
+            "z": "0d41bb9886a9ece2",
+            "name": "Bottom",
+            "data": "payload.image",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LB_TEXT_SIZE",
+            "parameter1Type": "flow",
+            "parameter2": "0",
+            "parameter2Type": "num",
+            "parameter3": "-8",
+            "parameter3Type": "num",
+            "parameter4": "payload.text",
+            "parameter4Type": "msg",
+            "parameter5": "HORIZONTAL_ALIGN_CENTER",
+            "parameter5Type": "AlignX",
+            "parameter6": "VERTICAL_ALIGN_BOTTOM",
+            "parameter6Type": "AlignY",
+            "parameter7": "",
+            "parameter7Type": "auto",
+            "parameter8": "",
+            "parameter8Type": "auto",
+            "sendProperty": "payload",
+            "parameterCount": 8,
+            "jimpFunction": "print2",
+            "selectedJimpFunction": {
+                "name": "print aligned",
+                "fn": "print",
+                "description": "Print text to the image",
+                "parameters": [
+                    {
+                        "name": "font",
+                        "type": "jimpFont|str",
+                        "required": true,
+                        "hint": "font to print. NOTE: This can be one of the presets or the path to a fnt file"
+                    },
+                    {
+                        "name": "x",
+                        "type": "num",
+                        "required": true,
+                        "hint": "x coordinate to print text"
+                    },
+                    {
+                        "name": "y",
+                        "type": "num",
+                        "required": true,
+                        "hint": "y coordinate to print text"
+                    },
+                    {
+                        "name": "text",
+                        "group": "options",
+                        "type": "str",
+                        "required": true,
+                        "hint": "text to print"
+                    },
+                    {
+                        "name": "alignmentX",
+                        "group": "options",
+                        "type": "AlignX",
+                        "required": false,
+                        "hint": "X Alignment"
+                    },
+                    {
+                        "name": "alignmentY",
+                        "group": "options",
+                        "type": "AlignY",
+                        "required": false,
+                        "hint": "Y Alignment"
+                    },
+                    {
+                        "name": "maxWidth",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "wrap text at maxWidth"
+                    },
+                    {
+                        "name": "maxHeight",
+                        "type": "auto|num",
+                        "required": false,
+                        "hint": "max height"
+                    }
+                ]
+            },
+            "x": 420,
+            "y": 2000,
+            "wires": [
+                [
+                    "952c91d7d343483e"
+                ]
+            ],
+            "icon": "font-awesome/fa-image"
+        },
+        {
+            "id": "952c91d7d343483e",
+            "type": "jimp-image",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "data": "payload",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "data/lib/ui-media/lib/screen/LB_PREVIEW.png",
+            "parameter1Type": "str",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "write",
+            "selectedJimpFunction": {
+                "name": "write",
+                "fn": "write",
+                "description": "Write to file. NOTE: You can specify an alternative file extension type to change the type. Currently support types are jpg, png, bmp.",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "type": "str",
+                        "required": true,
+                        "hint": "Name of the file",
+                        "defaultType": "str"
+                    }
+                ]
+            },
+            "x": 550,
+            "y": 2000,
+            "wires": [
+                [
+                    "fze5pr6sg9dc5yqc"
+                ]
+            ]
+        },
+        {
+            "id": "50036d4b4af9a114",
+            "type": "jimp-image",
+            "z": "0d41bb9886a9ece2",
+            "name": "brightness",
+            "data": "payload",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LT_BRIGHTNESS",
+            "parameter1Type": "flow",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "brightness",
+            "selectedJimpFunction": {
+                "name": "brightness",
+                "fn": "brightness",
+                "description": "adjust the brightness",
+                "parameters": [
+                    {
+                        "name": "val",
+                        "type": "num",
+                        "required": true,
+                        "hint": "adjust the brightness by a value -1.0 to 1.0"
+                    }
+                ]
+            },
+            "x": 1550,
+            "y": 2540,
+            "wires": [
+                [
+                    "y2ygc6jpa817noac"
+                ]
+            ]
+        },
+        {
+            "id": "54c31fe65817ac96",
+            "type": "jimp-image",
+            "z": "0d41bb9886a9ece2",
+            "name": "brightness",
+            "data": "payload",
+            "dataType": "msg",
+            "ret": "img",
+            "parameter1": "LB_BRIGHTNESS",
+            "parameter1Type": "flow",
+            "parameter2": "",
+            "parameter2Type": "msg",
+            "parameter3": "",
+            "parameter3Type": "msg",
+            "parameter4": "",
+            "parameter4Type": "msg",
+            "parameter5": "",
+            "parameter5Type": "msg",
+            "parameter6": "",
+            "parameter6Type": "msg",
+            "parameter7": "",
+            "parameter7Type": "msg",
+            "parameter8": "",
+            "parameter8Type": "msg",
+            "sendProperty": "payload",
+            "sendPropertyType": "msg",
+            "parameterCount": 1,
+            "jimpFunction": "brightness",
+            "selectedJimpFunction": {
+                "name": "brightness",
+                "fn": "brightness",
+                "description": "adjust the brightness",
+                "parameters": [
+                    {
+                        "name": "val",
+                        "type": "num",
+                        "required": true,
+                        "hint": "adjust the brightness by a value -1.0 to 1.0"
+                    }
+                ]
+            },
+            "x": 1550,
+            "y": 3120,
+            "wires": [
+                [
+                    "bz13i6smbb049hm7"
+                ]
+            ]
         }
     ],
     "configs": [
         {
-            "id": "e493104d5a64e610",
+            "id": "0hsk0qox3qehdv59",
             "type": "ui_group",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Screen Oben Konfigurieren...",
-            "tab": "c1631d06393a14e7",
+            "tab": "za916y776lt9scse",
             "order": 1,
             "disp": true,
             "width": "10",
@@ -3574,11 +3966,11 @@
             "className": ""
         },
         {
-            "id": "b3c2246d9a73d98f",
+            "id": "bfdo8xf7hqh8jiq0",
             "type": "ui_group",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Vorschau",
-            "tab": "c1631d06393a14e7",
+            "tab": "za916y776lt9scse",
             "order": 3,
             "disp": true,
             "width": "5",
@@ -3586,11 +3978,11 @@
             "className": ""
         },
         {
-            "id": "6bea9860833a2c2c",
+            "id": "r5hz8d3gk9ctrbxg",
             "type": "ui_group",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Screen Unten Konfigurieren...",
-            "tab": "c1631d06393a14e7",
+            "tab": "za916y776lt9scse",
             "order": 2,
             "disp": true,
             "width": "10",
@@ -3598,11 +3990,11 @@
             "className": ""
         },
         {
-            "id": "58153a8c38542cc3",
+            "id": "5eiuybosqqk5s26q",
             "type": "ui_group",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Live",
-            "tab": "c1631d06393a14e7",
+            "tab": "za916y776lt9scse",
             "order": 4,
             "disp": true,
             "width": "5",
@@ -3610,18 +4002,18 @@
             "className": ""
         },
         {
-            "id": "c1631d06393a14e7",
+            "id": "za916y776lt9scse",
             "type": "ui_tab",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "name": "Triopan AG - Panel",
             "icon": "Triopan AG - Panel",
             "disabled": false,
             "hidden": true
         },
         {
-            "id": "b678205775d3ed19",
+            "id": "b895q9bdz2fcz4v7",
             "type": "ui_base",
-            "z": "683eaf2c100223d0",
+            "z": "0d41bb9886a9ece2",
             "theme": {
                 "name": "theme-light",
                 "lightTheme": {
