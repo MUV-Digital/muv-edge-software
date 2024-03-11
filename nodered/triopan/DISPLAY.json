@@ -4180,6 +4180,18 @@
             "hidden": false
         },
         {
+            "id": "e2bd4249b8d43ea4",
+            "type": "ui_group",
+            "z": "0d41bb9886a9ece2",
+            "name": "Bildschirm Konfiguration",
+            "tab": "7cd1bf74f5f9232a",
+            "order": 5,
+            "disp": true,
+            "width": "12",
+            "collapse": false,
+            "className": ""
+        },
+        {
             "id": "def749cfcc38736e",
             "type": "ui_spacer",
             "z": "0d41bb9886a9ece2",
