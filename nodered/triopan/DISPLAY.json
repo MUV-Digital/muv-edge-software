@@ -1335,7 +1335,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 480,
-            "y": 2340,
+            "y": 2360,
             "wires": []
         },
         {
@@ -1673,7 +1673,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 470,
-            "y": 2840,
+            "y": 2760,
             "wires": []
         },
         {
@@ -1691,7 +1691,7 @@
             "outputs": 1,
             "topic": "",
             "x": 460,
-            "y": 2880,
+            "y": 2800,
             "wires": [
                 [
                     "pbdm0qd9745ui0gr"
@@ -1716,7 +1716,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 480,
-            "y": 2920,
+            "y": 2860,
             "wires": []
         },
         {
@@ -1738,7 +1738,7 @@
             "className": "text-input",
             "topicType": "msg",
             "x": 460,
-            "y": 2960,
+            "y": 2900,
             "wires": [
                 [
                     "szeolbaqcb063to9"
@@ -1763,7 +1763,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 1920,
-            "y": 3080,
+            "y": 3000,
             "wires": []
         },
         {
@@ -1779,7 +1779,7 @@
             "finalize": "",
             "libs": [],
             "x": 1040,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 [
                     "gu5j5v5kkq34vigm"
@@ -1799,7 +1799,7 @@
             "finalize": "",
             "libs": [],
             "x": 690,
-            "y": 2880,
+            "y": 2800,
             "wires": [
                 [
                     "nftyab4bjcd9p6q6"
@@ -1828,7 +1828,7 @@
             "repair": false,
             "outputs": 3,
             "x": 850,
-            "y": 2880,
+            "y": 2800,
             "wires": [
                 [
                     "f2eimfcmvygg08mz"
@@ -1884,7 +1884,7 @@
                 ]
             },
             "x": 1410,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 [
                     "54c31fe65817ac96"
@@ -1910,7 +1910,7 @@
             "scope": "local",
             "tooltip": "",
             "x": 1890,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 []
             ]
@@ -1928,7 +1928,7 @@
             "finalize": "",
             "libs": [],
             "x": 1730,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 [
                     "x74xa52hy0wh106z"
@@ -1952,8 +1952,8 @@
             "font": "Arial,Arial,Helvetica,sans-serif",
             "fontSize": 16,
             "color": "#000000",
-            "x": 1790,
-            "y": 3640,
+            "x": 1810,
+            "y": 3740,
             "wires": []
         },
         {
@@ -1974,8 +1974,8 @@
             "muted": true,
             "scope": "local",
             "tooltip": "",
-            "x": 1770,
-            "y": 3680,
+            "x": 1790,
+            "y": 3780,
             "wires": [
                 []
             ]
@@ -1997,8 +1997,8 @@
             "font": "Arial,Arial,Helvetica,sans-serif",
             "fontSize": 16,
             "color": "#000000",
-            "x": 1780,
-            "y": 3860,
+            "x": 1800,
+            "y": 3960,
             "wires": []
         },
         {
@@ -2019,8 +2019,8 @@
             "muted": true,
             "scope": "local",
             "tooltip": "",
-            "x": 1750,
-            "y": 3900,
+            "x": 1770,
+            "y": 4000,
             "wires": [
                 []
             ]
@@ -2045,8 +2045,8 @@
             "payloadType": "str",
             "topic": "topic",
             "topicType": "msg",
-            "x": 470,
-            "y": 3480,
+            "x": 490,
+            "y": 3580,
             "wires": [
                 [
                     "uouvldfxq9gb7yxh",
@@ -2067,8 +2067,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1560,
-            "y": 3680,
+            "x": 1580,
+            "y": 3780,
             "wires": [
                 [
                     "pfxv309azs17duoj"
@@ -2087,8 +2087,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1560,
-            "y": 3900,
+            "x": 1580,
+            "y": 4000,
             "wires": [
                 [
                     "375ndn506jkmkf49"
@@ -2137,8 +2137,8 @@
                     }
                 ]
             },
-            "x": 1410,
-            "y": 3900,
+            "x": 1430,
+            "y": 4000,
             "wires": [
                 [
                     "l5hputsq5z0nqg94"
@@ -2187,8 +2187,8 @@
                     }
                 ]
             },
-            "x": 1410,
-            "y": 3680,
+            "x": 1430,
+            "y": 3780,
             "wires": [
                 [
                     "8k3fx6k0yyjrvw4s"
@@ -2202,7 +2202,7 @@
             "name": "",
             "label": "",
             "tooltip": "",
-            "place": "Select option",
+            "place": "Position wählen",
             "group": "0hsk0qox3qehdv59",
             "order": 6,
             "width": "8",
@@ -2298,8 +2298,8 @@
             "from": "",
             "to": "",
             "reg": false,
-            "x": 490,
-            "y": 3000,
+            "x": 630,
+            "y": 2900,
             "wires": [
                 [
                     "58y4apw6ofttegri"
@@ -2392,7 +2392,7 @@
                 ]
             },
             "x": 1290,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 [
                     "f2eimfcmvygg08mz"
@@ -2407,7 +2407,7 @@
             "name": "",
             "label": "",
             "tooltip": "",
-            "place": "Select option",
+            "place": "Position wählen",
             "group": "r5hz8d3gk9ctrbxg",
             "order": 6,
             "width": "8",
@@ -2436,7 +2436,7 @@
             "topicType": "msg",
             "className": "",
             "x": 460,
-            "y": 3080,
+            "y": 3000,
             "wires": [
                 [
                     "nb8511ia8uufk07l"
@@ -2461,7 +2461,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 500,
-            "y": 3040,
+            "y": 2960,
             "wires": []
         },
         {
@@ -2477,7 +2477,7 @@
             "finalize": "",
             "libs": [],
             "x": 610,
-            "y": 3080,
+            "y": 3000,
             "wires": [
                 [
                     "58y4apw6ofttegri"
@@ -2501,8 +2501,8 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 1420,
-            "y": 3480,
+            "x": 1440,
+            "y": 3580,
             "wires": [
                 [
                     "rb94lv68e4qmqdes",
@@ -2522,142 +2522,6 @@
             "wires": [
                 [
                     "6o4ilujmcrs6rpfu"
-                ]
-            ]
-        },
-        {
-            "id": "9kvuo6jdslcugxsf",
-            "type": "ui_slider",
-            "z": "0d41bb9886a9ece2",
-            "name": "",
-            "label": "",
-            "tooltip": "",
-            "group": "0hsk0qox3qehdv59",
-            "order": 4,
-            "width": "8",
-            "height": "1",
-            "passthru": true,
-            "outs": "end",
-            "topic": "topic",
-            "topicType": "msg",
-            "min": 0,
-            "max": "100",
-            "step": 1,
-            "className": "",
-            "x": 450,
-            "y": 2580,
-            "wires": [
-                [
-                    "288jfd7zc55n2y8f"
-                ]
-            ]
-        },
-        {
-            "id": "k3ll3oy617bfvjnx",
-            "type": "ui_text",
-            "z": "0d41bb9886a9ece2",
-            "group": "0hsk0qox3qehdv59",
-            "order": 3,
-            "width": 0,
-            "height": 0,
-            "name": "",
-            "label": "Helligkeit wählen..",
-            "format": "{{msg.payload}}",
-            "layout": "row-spread",
-            "className": "",
-            "style": true,
-            "font": "Arial,Arial,Helvetica,sans-serif",
-            "fontSize": 16,
-            "color": "#000000",
-            "x": 490,
-            "y": 2540,
-            "wires": []
-        },
-        {
-            "id": "288jfd7zc55n2y8f",
-            "type": "function",
-            "z": "0d41bb9886a9ece2",
-            "name": "Set brightness",
-            "func": "function factor(percentage) {\n  // Convert percentage value to decimal\n  const decimalPercentage = percentage / 100;\n\n  // Calculate range between numbers\n  const range = 2;\n\n  // Calculate result by adding first number in array to the product of the percentage value and the range\n  const result = -1 + (decimalPercentage * range);\n\n  // Return result rounded to the nearest hundredth\n  return Math.round(result * 100) / 100;\n}\n\nflow.set(\"LT_BRIGHTNESS\", factor(msg.payload));\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 600,
-            "y": 2580,
-            "wires": [
-                [
-                    "gv0y2jvovbrj7q7f"
-                ]
-            ]
-        },
-        {
-            "id": "fw4okjjkg856z94t",
-            "type": "ui_slider",
-            "z": "0d41bb9886a9ece2",
-            "name": "",
-            "label": "",
-            "tooltip": "",
-            "group": "r5hz8d3gk9ctrbxg",
-            "order": 4,
-            "width": "8",
-            "height": "1",
-            "passthru": true,
-            "outs": "end",
-            "topic": "topic",
-            "topicType": "msg",
-            "min": 0,
-            "max": "100",
-            "step": 1,
-            "className": "",
-            "x": 450,
-            "y": 3160,
-            "wires": [
-                [
-                    "l6cxym0xlh003912"
-                ]
-            ]
-        },
-        {
-            "id": "0fuy48aw1y4asosd",
-            "type": "ui_text",
-            "z": "0d41bb9886a9ece2",
-            "group": "r5hz8d3gk9ctrbxg",
-            "order": 3,
-            "width": 0,
-            "height": 0,
-            "name": "",
-            "label": "Helligkeit wählen..",
-            "format": "{{msg.payload}}",
-            "layout": "row-spread",
-            "className": "",
-            "style": true,
-            "font": "Arial,Arial,Helvetica,sans-serif",
-            "fontSize": 16,
-            "color": "#000000",
-            "x": 490,
-            "y": 3120,
-            "wires": []
-        },
-        {
-            "id": "l6cxym0xlh003912",
-            "type": "function",
-            "z": "0d41bb9886a9ece2",
-            "name": "Set birghtness",
-            "func": "function factor(percentage) {\n  // Convert percentage value to decimal\n  const decimalPercentage = percentage / 100;\n\n  // Calculate range between numbers\n  const range = 2;\n\n  // Calculate result by adding first number in array to the product of the percentage value and the range\n  const result = -1 + (decimalPercentage * range);\n\n  // Return result rounded to the nearest hundredth\n  return Math.round(result * 100) / 100;\n}\n\nflow.set(\"LB_BRIGHTNESS\", factor(msg.payload));\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 600,
-            "y": 3160,
-            "wires": [
-                [
-                    "58y4apw6ofttegri"
                 ]
             ]
         },
@@ -2806,7 +2670,7 @@
             "name": "----- Live",
             "info": "",
             "x": 140,
-            "y": 3340,
+            "y": 3480,
             "wires": []
         },
         {
@@ -2816,7 +2680,7 @@
             "name": "",
             "label": "",
             "tooltip": "",
-            "place": "Select option",
+            "place": "Grösse wählen",
             "group": "0hsk0qox3qehdv59",
             "order": 8,
             "width": "8",
@@ -2845,7 +2709,7 @@
             "topicType": "msg",
             "className": "",
             "x": 460,
-            "y": 2660,
+            "y": 2600,
             "wires": [
                 [
                     "bhfi2yefzy3mb35a"
@@ -2865,7 +2729,7 @@
             "finalize": "",
             "libs": [],
             "x": 600,
-            "y": 2660,
+            "y": 2600,
             "wires": [
                 [
                     "gv0y2jvovbrj7q7f"
@@ -2879,7 +2743,7 @@
             "name": "",
             "label": "",
             "tooltip": "",
-            "place": "Select option",
+            "place": "Grösse wählen",
             "group": "r5hz8d3gk9ctrbxg",
             "order": 8,
             "width": "8",
@@ -2908,7 +2772,7 @@
             "topicType": "msg",
             "className": "",
             "x": 460,
-            "y": 3240,
+            "y": 3100,
             "wires": [
                 [
                     "23sf8i9ctj9gsaau"
@@ -2928,7 +2792,7 @@
             "finalize": "",
             "libs": [],
             "x": 600,
-            "y": 3240,
+            "y": 3100,
             "wires": [
                 [
                     "58y4apw6ofttegri"
@@ -2953,7 +2817,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 500,
-            "y": 3200,
+            "y": 3060,
             "wires": []
         },
         {
@@ -2974,7 +2838,7 @@
             "fontSize": 16,
             "color": "#000000",
             "x": 500,
-            "y": 2620,
+            "y": 2560,
             "wires": []
         },
         {
@@ -2997,7 +2861,7 @@
             "to": "",
             "reg": false,
             "x": 850,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 [
                     "fx20wedab9ut29ap"
@@ -3270,7 +3134,7 @@
             "repair": false,
             "outputs": 4,
             "x": 1030,
-            "y": 3180,
+            "y": 3100,
             "wires": [
                 [
                     "sknzdk54cmpqegp4"
@@ -3372,7 +3236,7 @@
                 ]
             },
             "x": 1290,
-            "y": 3160,
+            "y": 3080,
             "wires": [
                 [
                     "f2eimfcmvygg08mz"
@@ -3466,7 +3330,7 @@
                 ]
             },
             "x": 1300,
-            "y": 3200,
+            "y": 3120,
             "wires": [
                 [
                     "f2eimfcmvygg08mz"
@@ -3486,8 +3350,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1630,
-            "y": 3480,
+            "x": 1650,
+            "y": 3580,
             "wires": [
                 [
                     "5b039hssl0xff9m8"
@@ -3503,8 +3367,8 @@
             "links": [
                 "3wq2gsosigq176os"
             ],
-            "x": 1575,
-            "y": 3520
+            "x": 1595,
+            "y": 3620
         },
         {
             "id": "083c99b5f0373e9e",
@@ -3883,37 +3747,11 @@
                 ]
             },
             "x": 1550,
-            "y": 3120,
+            "y": 3040,
             "wires": [
                 [
                     "bz13i6smbb049hm7"
                 ]
-            ]
-        },
-        {
-            "id": "fa822f077637451a",
-            "type": "ui_button",
-            "z": "0d41bb9886a9ece2",
-            "name": "",
-            "group": "0cb3784b3070ade0",
-            "order": 0,
-            "width": 0,
-            "height": 0,
-            "passthru": false,
-            "label": "button",
-            "tooltip": "",
-            "color": "",
-            "bgcolor": "",
-            "className": "",
-            "icon": "",
-            "payload": "",
-            "payloadType": "str",
-            "topic": "topic",
-            "topicType": "msg",
-            "x": 450,
-            "y": 4180,
-            "wires": [
-                []
             ]
         },
         {
@@ -3928,8 +3766,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1640,
-            "y": 3560,
+            "x": 1660,
+            "y": 3660,
             "wires": [
                 [
                     "a6171a9eb480a006"
@@ -3945,8 +3783,8 @@
             "links": [
                 "4bk4jzh6bc415fdn"
             ],
-            "x": 1575,
-            "y": 3600
+            "x": 1595,
+            "y": 3700
         },
         {
             "id": "38dcbrngw1l2kcic",
@@ -3974,8 +3812,8 @@
             "links": [
                 "78f83247d8d74f28"
             ],
-            "x": 515,
-            "y": 3680,
+            "x": 535,
+            "y": 3780,
             "wires": [
                 [
                     "z6yzhihaxlacwfr3",
@@ -3989,10 +3827,11 @@
             "z": "0d41bb9886a9ece2",
             "name": "Reset LT",
             "links": [
-                "c96fa53c9bbbbe5c"
+                "c96fa53c9bbbbe5c",
+                "d19eaf2cf33d2dfc"
             ],
             "x": 645,
-            "y": 2700,
+            "y": 2640,
             "wires": [
                 [
                     "gv0y2jvovbrj7q7f"
@@ -4005,10 +3844,11 @@
             "z": "0d41bb9886a9ece2",
             "name": "Reset LB",
             "links": [
-                "c96fa53c9bbbbe5c"
+                "c96fa53c9bbbbe5c",
+                "d19eaf2cf33d2dfc"
             ],
             "x": 645,
-            "y": 3280,
+            "y": 3140,
             "wires": [
                 [
                     "58y4apw6ofttegri"
@@ -4064,6 +3904,280 @@
                     "78f83247d8d74f28"
                 ]
             ]
+        },
+        {
+            "id": "9kvuo6jdslcugxsf",
+            "type": "ui_slider",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "label": "",
+            "tooltip": "",
+            "group": "e2bd4249b8d43ea4",
+            "order": 4,
+            "width": "12",
+            "height": "1",
+            "passthru": true,
+            "outs": "end",
+            "topic": "topic",
+            "topicType": "msg",
+            "min": 0,
+            "max": "100",
+            "step": 1,
+            "className": "brightness-slider",
+            "x": 450,
+            "y": 3380,
+            "wires": [
+                [
+                    "288jfd7zc55n2y8f"
+                ]
+            ]
+        },
+        {
+            "id": "k3ll3oy617bfvjnx",
+            "type": "ui_text",
+            "z": "0d41bb9886a9ece2",
+            "group": "e2bd4249b8d43ea4",
+            "order": 1,
+            "width": "12",
+            "height": "1",
+            "name": "",
+            "label": "Automatik wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 490,
+            "y": 3260,
+            "wires": []
+        },
+        {
+            "id": "288jfd7zc55n2y8f",
+            "type": "function",
+            "z": "0d41bb9886a9ece2",
+            "name": "Set brightness",
+            "func": "function factor(percentage) {\n  // Convert percentage value to decimal\n  const decimalPercentage = percentage / 100;\n\n  // Calculate range between numbers\n  const range = 2;\n\n  // Calculate result by adding first number in array to the product of the percentage value and the range\n  const result = -1 + (decimalPercentage * range);\n\n  // Return result rounded to the nearest hundredth\n  return Math.round(result * 100) / 100;\n}\n\nflow.set(\"LT_BRIGHTNESS\", factor(msg.payload));\nflow.set(\"LB_BRIGHTNESS\", factor(msg.payload));\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 600,
+            "y": 3380,
+            "wires": [
+                [
+                    "d19eaf2cf33d2dfc"
+                ]
+            ]
+        },
+        {
+            "id": "d19eaf2cf33d2dfc",
+            "type": "link out",
+            "z": "0d41bb9886a9ece2",
+            "name": "link out 27",
+            "mode": "link",
+            "links": [
+                "2a4b050aa67fb254",
+                "68df704a45e2d7f3"
+            ],
+            "x": 735,
+            "y": 3380
+        },
+        {
+            "id": "7eaca8cdecc0579e",
+            "type": "ui_switch",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "label": "Automatisch",
+            "tooltip": "",
+            "group": "e2bd4249b8d43ea4",
+            "order": 2,
+            "width": "4",
+            "height": "1",
+            "passthru": true,
+            "decouple": "false",
+            "topic": "topic",
+            "topicType": "msg",
+            "style": "",
+            "onvalue": "true",
+            "onvalueType": "bool",
+            "onicon": "",
+            "oncolor": "",
+            "offvalue": "false",
+            "offvalueType": "bool",
+            "officon": "",
+            "offcolor": "",
+            "animate": false,
+            "className": "",
+            "x": 470,
+            "y": 3300,
+            "wires": [
+                [
+                    "1aa3b9fdb4b00ead"
+                ]
+            ]
+        },
+        {
+            "id": "1aa3b9fdb4b00ead",
+            "type": "change",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "LT_BRIGHTNESS_AUTO",
+                    "pt": "flow",
+                    "to": "payload",
+                    "tot": "msg"
+                },
+                {
+                    "t": "set",
+                    "p": "LB_BRIGHTNESS_AUTO",
+                    "pt": "flow",
+                    "to": "payload",
+                    "tot": "msg"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 640,
+            "y": 3300,
+            "wires": [
+                [
+                    "584799ae1380fb16"
+                ]
+            ]
+        },
+        {
+            "id": "75b10471210ea476",
+            "type": "ui_text",
+            "z": "0d41bb9886a9ece2",
+            "group": "e2bd4249b8d43ea4",
+            "order": 3,
+            "width": "12",
+            "height": "1",
+            "name": "",
+            "label": "Helligkeit wählen..",
+            "format": "{{msg.payload}}",
+            "layout": "row-spread",
+            "className": "brightness-slider",
+            "style": true,
+            "font": "Arial,Arial,Helvetica,sans-serif",
+            "fontSize": 16,
+            "color": "#000000",
+            "x": 490,
+            "y": 3340,
+            "wires": []
+        },
+        {
+            "id": "584799ae1380fb16",
+            "type": "switch",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "property": "payload",
+            "propertyType": "msg",
+            "rules": [
+                {
+                    "t": "true"
+                },
+                {
+                    "t": "false"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 2,
+            "x": 790,
+            "y": 3300,
+            "wires": [
+                [
+                    "5104cdae1217e2d2"
+                ],
+                [
+                    "13625e725f8f5b0c"
+                ]
+            ]
+        },
+        {
+            "id": "5104cdae1217e2d2",
+            "type": "change",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "hidden",
+                    "tot": "str"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 940,
+            "y": 3280,
+            "wires": [
+                [
+                    "ae0468bbce141deb"
+                ]
+            ]
+        },
+        {
+            "id": "13625e725f8f5b0c",
+            "type": "change",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "visible",
+                    "tot": "str"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 940,
+            "y": 3320,
+            "wires": [
+                [
+                    "ae0468bbce141deb"
+                ]
+            ]
+        },
+        {
+            "id": "ae0468bbce141deb",
+            "type": "ui_template",
+            "z": "0d41bb9886a9ece2",
+            "group": "e2bd4249b8d43ea4",
+            "name": "",
+            "order": 4,
+            "width": 0,
+            "height": 0,
+            "format": "<style>\n    .brightness-slider {\n        visibility: {{msg.payload}};\n    }\n</style>",
+            "storeOutMessages": true,
+            "fwdInMessages": true,
+            "resendOnRefresh": true,
+            "templateScope": "local",
+            "className": "",
+            "x": 1120,
+            "y": 3300,
+            "wires": [
+                []
+            ]
         }
     ],
     "configs": [
@@ -4071,7 +4185,7 @@
             "id": "0hsk0qox3qehdv59",
             "type": "ui_group",
             "z": "0d41bb9886a9ece2",
-            "name": "Screen Oben Konfigurieren...",
+            "name": "Screen Oben",
             "tab": "za916y776lt9scse",
             "order": 1,
             "disp": true,
@@ -4095,7 +4209,7 @@
             "id": "r5hz8d3gk9ctrbxg",
             "type": "ui_group",
             "z": "0d41bb9886a9ece2",
-            "name": "Screen Unten Konfigurieren...",
+            "name": "Screen Unten",
             "tab": "za916y776lt9scse",
             "order": 2,
             "disp": true,
@@ -4214,12 +4328,12 @@
                 "sizes": {
                     "sx": 48,
                     "sy": 48,
-                    "gx": 6,
-                    "gy": 6,
+                    "gx": 12,
+                    "gy": 12,
                     "cx": 6,
                     "cy": 6,
-                    "px": 0,
-                    "py": 0
+                    "px": 12,
+                    "py": 12
                 }
             }
         },
@@ -4232,18 +4346,6 @@
             "order": 2,
             "disabled": false,
             "hidden": false
-        },
-        {
-            "id": "0cb3784b3070ade0",
-            "type": "ui_group",
-            "z": "0d41bb9886a9ece2",
-            "name": "Befehl",
-            "tab": "7cd1bf74f5f9232a",
-            "order": 1,
-            "disp": true,
-            "width": "6",
-            "collapse": false,
-            "className": ""
         }
     ]
 }
