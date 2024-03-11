@@ -19,8 +19,8 @@
             "correl": "",
             "expiry": "",
             "broker": "de96f526d294fb46",
-            "x": 1140,
-            "y": 940,
+            "x": 1060,
+            "y": 880,
             "wires": []
         },
         {
@@ -165,29 +165,6 @@
             ]
         },
         {
-            "id": "ysqfmuzh7vqz90ew",
-            "type": "switch",
-            "z": "0d41bb9886a9ece2",
-            "name": "State Upstream Required?",
-            "property": "stateUpstreamRequired",
-            "propertyType": "msg",
-            "rules": [
-                {
-                    "t": "true"
-                }
-            ],
-            "checkall": "true",
-            "repair": false,
-            "outputs": 1,
-            "x": 700,
-            "y": 920,
-            "wires": [
-                [
-                    "t3byizw448fo31hf"
-                ]
-            ]
-        },
-        {
             "id": "eiv9gvrcjr24jbx9",
             "type": "function",
             "z": "0d41bb9886a9ece2",
@@ -205,47 +182,6 @@
                     "lopsnr49szzfxsk6"
                 ]
             ]
-        },
-        {
-            "id": "0zzw02zi9pkrow7u",
-            "type": "switch",
-            "z": "0d41bb9886a9ece2",
-            "name": "Error Upstream Required?",
-            "property": "errorUpstreamRequired",
-            "propertyType": "msg",
-            "rules": [
-                {
-                    "t": "true"
-                }
-            ],
-            "checkall": "true",
-            "repair": false,
-            "outputs": 1,
-            "x": 700,
-            "y": 880,
-            "wires": [
-                [
-                    "38dcbrngw1l2kcic"
-                ]
-            ]
-        },
-        {
-            "id": "38dcbrngw1l2kcic",
-            "type": "mqtt out",
-            "z": "0d41bb9886a9ece2",
-            "name": "",
-            "topic": "cloud/upstream/error",
-            "qos": "2",
-            "retain": "false",
-            "respTopic": "",
-            "contentType": "",
-            "userProps": "",
-            "correl": "",
-            "expiry": "",
-            "broker": "de96f526d294fb46",
-            "x": 1140,
-            "y": 880,
-            "wires": []
         },
         {
             "id": "p770nzywzxlggi3h",
@@ -352,7 +288,8 @@
                 "kcgzi9p01m7bwfqi",
                 "mrao1o6jtg3skhkx",
                 "4c8ot9i9gag3b8xf",
-                "3janl8qfjqhcvxzg"
+                "3janl8qfjqhcvxzg",
+                "a6171a9eb480a006"
             ],
             "x": 95,
             "y": 880,
@@ -378,8 +315,7 @@
             "y": 880,
             "wires": [
                 [
-                    "ysqfmuzh7vqz90ew",
-                    "0zzw02zi9pkrow7u"
+                    "t3byizw448fo31hf"
                 ]
             ]
         },
@@ -511,7 +447,7 @@
             "winHide": false,
             "oldrc": false,
             "name": "Set Fullscreen",
-            "x": 480,
+            "x": 580,
             "y": 420,
             "wires": [
                 [],
@@ -535,7 +471,7 @@
             "winHide": false,
             "oldrc": false,
             "name": "Clear Screen",
-            "x": 670,
+            "x": 770,
             "y": 500,
             "wires": [
                 [],
@@ -559,7 +495,7 @@
             "winHide": false,
             "oldrc": false,
             "name": "Kill FBI",
-            "x": 920,
+            "x": 1020,
             "y": 520,
             "wires": [
                 [],
@@ -581,7 +517,7 @@
             "winHide": false,
             "oldrc": false,
             "name": "Set Image",
-            "x": 930,
+            "x": 1030,
             "y": 640,
             "wires": [
                 [],
@@ -608,7 +544,7 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 470,
+            "x": 570,
             "y": 600,
             "wires": [
                 [
@@ -629,7 +565,7 @@
             "winHide": false,
             "oldrc": false,
             "name": "Set Image Screen",
-            "x": 690,
+            "x": 790,
             "y": 560,
             "wires": [
                 [],
@@ -656,7 +592,7 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 670,
+            "x": 770,
             "y": 620,
             "wires": [
                 [
@@ -750,7 +686,7 @@
             "checkall": "true",
             "repair": false,
             "outputs": 2,
-            "x": 190,
+            "x": 390,
             "y": 600,
             "wires": [
                 [
@@ -911,7 +847,7 @@
             "expiry": "",
             "broker": "de96f526d294fb46",
             "x": 1390,
-            "y": 1500,
+            "y": 1540,
             "wires": []
         },
         {
@@ -1016,7 +952,7 @@
             ],
             "uncaught": false,
             "x": 610,
-            "y": 1540,
+            "y": 1580,
             "wires": [
                 [
                     "ssah3wzku4vcsz35"
@@ -1041,7 +977,7 @@
             "allowrate": false,
             "outputs": 1,
             "x": 1000,
-            "y": 1500,
+            "y": 1540,
             "wires": [
                 [
                     "s20yzvbfn3acebcp"
@@ -1093,7 +1029,7 @@
             "allowrate": false,
             "outputs": 1,
             "x": 1000,
-            "y": 1600,
+            "y": 1640,
             "wires": [
                 [
                     "s20yzvbfn3acebcp"
@@ -1120,7 +1056,7 @@
             "to": "",
             "reg": false,
             "x": 1020,
-            "y": 1560,
+            "y": 1600,
             "wires": [
                 [
                     "kw7fr11itb874yp2"
@@ -1132,7 +1068,7 @@
             "type": "function",
             "z": "0d41bb9886a9ece2",
             "name": "Update image",
-            "func": "return { \"payload\": \"data/lib/ui-media/lib/images/\" + msg.payload.value };",
+            "func": "const message = { \"payload\": \"data/lib/ui-media/lib/images/\" + msg.payload.value }\nflow.set(\"LT_IMAGE\", message.payload);\n\nreturn message;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -1144,7 +1080,9 @@
             "wires": [
                 [
                     "pza5dgs0epx558fc",
-                    "d28yt3brk5yfajgz"
+                    "d28yt3brk5yfajgz",
+                    "c96fa53c9bbbbe5c",
+                    "286016b07446186d"
                 ]
             ]
         },
@@ -1157,7 +1095,7 @@
             "links": [
                 "3wq2gsosigq176os"
             ],
-            "x": 1215,
+            "x": 1485,
             "y": 1420
         },
         {
@@ -1189,7 +1127,7 @@
             "links": [
                 "4bk4jzh6bc415fdn"
             ],
-            "x": 1215,
+            "x": 1485,
             "y": 1380
         },
         {
@@ -1205,7 +1143,7 @@
             "targetType": "msg",
             "statusVal": "",
             "statusType": "auto",
-            "x": 1170,
+            "x": 1270,
             "y": 420,
             "wires": []
         },
@@ -1244,7 +1182,7 @@
             "order": 1,
             "width": 0,
             "height": 0,
-            "format": "<style>\n    md-list-item .md-avatar {\n        border-radius: 0% !important;\n    }\n<\\style>",
+            "format": "<script id=\"logo-script\" type=\"text/javascript\">\n    $(function () {\n        const logoId = 'logo-div';\n        var toolbar = $('.md-toolbar-tools');\n        if(!toolbar.length) return;\n        if($(\"#\" + logoId).length > 0) return;\n\n        var div = $('<div/>');\n        div[0].style.margin = '10px 10px 10px auto';\n        div.attr('id', logoId);\n\n        var logo = new Image();\n        logo.src = 'https://triopan.ch/images/logo.png'\n        logo.height = 32;\n        \n        div.append(logo);\n        toolbar.append(div);\n    });\n    $('link[rel=\"shortcut icon\"]').attr('href', 'https://triopan.ch/images/logo.png');\n    $('link[rel=\"icon\"]').attr('href', 'https://triopan.ch/images/logo.png');\n</script>\n<style>\n    md-list-item .md-avatar {\n        border-radius: 0% !important;\n    }\n<\\style>",
             "storeOutMessages": true,
             "fwdInMessages": true,
             "resendOnRefresh": true,
@@ -2014,8 +1952,8 @@
             "font": "Arial,Arial,Helvetica,sans-serif",
             "fontSize": 16,
             "color": "#000000",
-            "x": 1750,
-            "y": 3400,
+            "x": 1790,
+            "y": 3640,
             "wires": []
         },
         {
@@ -2036,8 +1974,8 @@
             "muted": true,
             "scope": "local",
             "tooltip": "",
-            "x": 1730,
-            "y": 3440,
+            "x": 1770,
+            "y": 3680,
             "wires": [
                 []
             ]
@@ -2059,8 +1997,8 @@
             "font": "Arial,Arial,Helvetica,sans-serif",
             "fontSize": 16,
             "color": "#000000",
-            "x": 1760,
-            "y": 3480,
+            "x": 1780,
+            "y": 3860,
             "wires": []
         },
         {
@@ -2081,8 +2019,8 @@
             "muted": true,
             "scope": "local",
             "tooltip": "",
-            "x": 1730,
-            "y": 3520,
+            "x": 1750,
+            "y": 3900,
             "wires": [
                 []
             ]
@@ -2097,7 +2035,7 @@
             "width": "4",
             "height": "1",
             "passthru": false,
-            "label": "Setze Live",
+            "label": "Live setzen",
             "tooltip": "",
             "color": "",
             "bgcolor": "",
@@ -2112,7 +2050,8 @@
             "wires": [
                 [
                     "uouvldfxq9gb7yxh",
-                    "z6yzhihaxlacwfr3"
+                    "z6yzhihaxlacwfr3",
+                    "7ifsceaoh36aqt76"
                 ]
             ]
         },
@@ -2128,12 +2067,11 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1520,
-            "y": 3420,
+            "x": 1560,
+            "y": 3680,
             "wires": [
                 [
-                    "pfxv309azs17duoj",
-                    "7ifsceaoh36aqt76"
+                    "pfxv309azs17duoj"
                 ]
             ]
         },
@@ -2149,8 +2087,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1520,
-            "y": 3500,
+            "x": 1560,
+            "y": 3900,
             "wires": [
                 [
                     "375ndn506jkmkf49"
@@ -2199,8 +2137,8 @@
                     }
                 ]
             },
-            "x": 1370,
-            "y": 3500,
+            "x": 1410,
+            "y": 3900,
             "wires": [
                 [
                     "l5hputsq5z0nqg94"
@@ -2249,8 +2187,8 @@
                     }
                 ]
             },
-            "x": 1370,
-            "y": 3420,
+            "x": 1410,
+            "y": 3680,
             "wires": [
                 [
                     "8k3fx6k0yyjrvw4s"
@@ -2563,11 +2501,12 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 1740,
-            "y": 3280,
+            "x": 1420,
+            "y": 3480,
             "wires": [
                 [
-                    "rb94lv68e4qmqdes"
+                    "rb94lv68e4qmqdes",
+                    "9376aa97c0fde3d3"
                 ]
             ]
         },
@@ -3547,8 +3486,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1750,
-            "y": 3320,
+            "x": 1630,
+            "y": 3480,
             "wires": [
                 [
                     "5b039hssl0xff9m8"
@@ -3564,8 +3503,8 @@
             "links": [
                 "3wq2gsosigq176os"
             ],
-            "x": 1695,
-            "y": 3360
+            "x": 1575,
+            "y": 3520
         },
         {
             "id": "083c99b5f0373e9e",
@@ -3950,6 +3889,181 @@
                     "bz13i6smbb049hm7"
                 ]
             ]
+        },
+        {
+            "id": "fa822f077637451a",
+            "type": "ui_button",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "group": "0cb3784b3070ade0",
+            "order": 0,
+            "width": 0,
+            "height": 0,
+            "passthru": false,
+            "label": "button",
+            "tooltip": "",
+            "color": "",
+            "bgcolor": "",
+            "className": "",
+            "icon": "",
+            "payload": "",
+            "payloadType": "str",
+            "topic": "topic",
+            "topicType": "msg",
+            "x": 450,
+            "y": 4180,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "9376aa97c0fde3d3",
+            "type": "function",
+            "z": "0d41bb9886a9ece2",
+            "name": "Update Metric",
+            "func": "const LT_IMAGE = flow.get(\"LT_IMAGE\").split(\"/\")[flow.get(\"LT_IMAGE\").split(\"/\").length -1];\n\nconst message ={ \"payload\": {} };\nif(LT_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-0\"] = \"\";\n} else {\n    message.payload[\"IMAGE-0\"] = LT_IMAGE;\n}\n\n\nreturn message;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1640,
+            "y": 3560,
+            "wires": [
+                [
+                    "a6171a9eb480a006"
+                ]
+            ]
+        },
+        {
+            "id": "a6171a9eb480a006",
+            "type": "link out",
+            "z": "0d41bb9886a9ece2",
+            "name": "link out 24",
+            "mode": "link",
+            "links": [
+                "4bk4jzh6bc415fdn"
+            ],
+            "x": 1575,
+            "y": 3600
+        },
+        {
+            "id": "38dcbrngw1l2kcic",
+            "type": "mqtt out",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "topic": "cloud/upstream/error",
+            "qos": "2",
+            "retain": "false",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 1060,
+            "y": 840,
+            "wires": []
+        },
+        {
+            "id": "1e859df495c04e10",
+            "type": "link in",
+            "z": "0d41bb9886a9ece2",
+            "name": "Reset dashboard",
+            "links": [
+                "78f83247d8d74f28"
+            ],
+            "x": 515,
+            "y": 3680,
+            "wires": [
+                [
+                    "z6yzhihaxlacwfr3",
+                    "uouvldfxq9gb7yxh"
+                ]
+            ]
+        },
+        {
+            "id": "2a4b050aa67fb254",
+            "type": "link in",
+            "z": "0d41bb9886a9ece2",
+            "name": "Reset LT",
+            "links": [
+                "c96fa53c9bbbbe5c"
+            ],
+            "x": 645,
+            "y": 2700,
+            "wires": [
+                [
+                    "gv0y2jvovbrj7q7f"
+                ]
+            ]
+        },
+        {
+            "id": "68df704a45e2d7f3",
+            "type": "link in",
+            "z": "0d41bb9886a9ece2",
+            "name": "Reset LB",
+            "links": [
+                "c96fa53c9bbbbe5c"
+            ],
+            "x": 645,
+            "y": 3280,
+            "wires": [
+                [
+                    "58y4apw6ofttegri"
+                ]
+            ]
+        },
+        {
+            "id": "c96fa53c9bbbbe5c",
+            "type": "link out",
+            "z": "0d41bb9886a9ece2",
+            "name": "link out 25",
+            "mode": "link",
+            "links": [
+                "2a4b050aa67fb254",
+                "68df704a45e2d7f3"
+            ],
+            "x": 1485,
+            "y": 1460
+        },
+        {
+            "id": "78f83247d8d74f28",
+            "type": "link out",
+            "z": "0d41bb9886a9ece2",
+            "name": "link out 26",
+            "mode": "link",
+            "links": [
+                "1e859df495c04e10"
+            ],
+            "x": 1485,
+            "y": 1500
+        },
+        {
+            "id": "286016b07446186d",
+            "type": "delay",
+            "z": "0d41bb9886a9ece2",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "1",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1380,
+            "y": 1500,
+            "wires": [
+                [
+                    "78f83247d8d74f28"
+                ]
+            ]
         }
     ],
     "configs": [
@@ -4005,10 +4119,11 @@
             "id": "za916y776lt9scse",
             "type": "ui_tab",
             "z": "0d41bb9886a9ece2",
-            "name": "Triopan AG - Panel",
-            "icon": "Triopan AG - Panel",
+            "name": "Anzeige",
+            "icon": "dashboard",
+            "order": 1,
             "disabled": false,
-            "hidden": true
+            "hidden": false
         },
         {
             "id": "b895q9bdz2fcz4v7",
@@ -4090,10 +4205,10 @@
                 }
             },
             "site": {
-                "name": "Node-RED Dashboard",
+                "name": "Triopan AG",
                 "hideToolbar": "false",
-                "allowSwipe": "false",
-                "lockMenu": "false",
+                "allowSwipe": "true",
+                "lockMenu": "true",
                 "allowTempTheme": "true",
                 "dateFormat": "DD/MM/YYYY",
                 "sizes": {
@@ -4107,6 +4222,28 @@
                     "py": 0
                 }
             }
+        },
+        {
+            "id": "7cd1bf74f5f9232a",
+            "type": "ui_tab",
+            "z": "0d41bb9886a9ece2",
+            "name": "Steuerung",
+            "icon": "fa-cogs",
+            "order": 2,
+            "disabled": false,
+            "hidden": false
+        },
+        {
+            "id": "0cb3784b3070ade0",
+            "type": "ui_group",
+            "z": "0d41bb9886a9ece2",
+            "name": "Befehl",
+            "tab": "7cd1bf74f5f9232a",
+            "order": 1,
+            "disp": true,
+            "width": "6",
+            "collapse": false,
+            "className": ""
         }
     ]
 }
