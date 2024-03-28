@@ -1,14 +1,14 @@
 {
-    "id": "37867cb6ba9fe124",
+    "id": "738fc52c69b89618",
     "label": "65e822d9bbf65abc8cdf4438",
     "disabled": false,
     "info": "",
     "env": [],
     "nodes": [
         {
-            "id": "7qulfagcffhedh4z",
+            "id": "xpcszazc35e4f6yy",
             "type": "mqtt out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "topic": "cloud/upstream/data",
             "qos": "2",
@@ -24,9 +24,9 @@
             "wires": []
         },
         {
-            "id": "2s2gh73qnr4v8j9a",
+            "id": "8edbpsae7u6zgauj",
             "type": "inject",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Startup",
             "props": [
                 {
@@ -44,27 +44,27 @@
             "y": 80,
             "wires": [
                 [
-                    "whz2q2mrcpef99s3"
+                    "g9e7uq3a3ecsf1js"
                 ]
             ]
         },
         {
-            "id": "whz2q2mrcpef99s3",
+            "id": "g9e7uq3a3ecsf1js",
             "type": "getflows",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "x": 320,
             "y": 80,
             "wires": [
                 [
-                    "lh888wq18xtovfaa"
+                    "s0y746vwnvb7fy0k"
                 ]
             ]
         },
         {
-            "id": "lh888wq18xtovfaa",
+            "id": "s0y746vwnvb7fy0k",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Init",
             "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
             "outputs": 1,
@@ -76,14 +76,14 @@
             "y": 80,
             "wires": [
                 [
-                    "zlvkbiycpl5b7swr"
+                    "ipe9yz86qbka08fj"
                 ]
             ]
         },
         {
-            "id": "azhxriz7bir44lbd",
+            "id": "i4gw2e74k0t8zss4",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "----- Execute Commands",
             "info": "",
             "x": 110,
@@ -91,9 +91,9 @@
             "wires": []
         },
         {
-            "id": "slpqqmvwsalsuhk6",
+            "id": "hxuhcmpah5uiqyec",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "---- Connections initialization",
             "info": "",
             "x": 120,
@@ -101,9 +101,9 @@
             "wires": []
         },
         {
-            "id": "zlvkbiycpl5b7swr",
+            "id": "ipe9yz86qbka08fj",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -121,14 +121,14 @@
             "y": 80,
             "wires": [
                 [
-                    "rw6u7dx08b4dcvmu"
+                    "1pr6bvwfm6l9xqph"
                 ]
             ]
         },
         {
-            "id": "0dh6ehw6c7un5oh4",
+            "id": "otx3taq36kvzn96y",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "---- Set Screen Image",
             "info": "",
             "x": 100,
@@ -136,9 +136,9 @@
             "wires": []
         },
         {
-            "id": "pv4wvuojhi85qyv6",
+            "id": "nudyj461301fszcr",
             "type": "inject",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Read intervall",
             "props": [
                 {
@@ -160,14 +160,14 @@
             "y": 120,
             "wires": [
                 [
-                    "gso7vhmer94kpqgx"
+                    "8ruj3n02pnshzi3m"
                 ]
             ]
         },
         {
-            "id": "rw6u7dx08b4dcvmu",
+            "id": "1pr6bvwfm6l9xqph",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set channel parameters",
             "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
             "outputs": 1,
@@ -179,15 +179,15 @@
             "y": 80,
             "wires": [
                 [
-                    "es8ipsb6m823u4bm",
-                    "4pl0c8dn47nkben6"
+                    "0vff8imqj7qxst7u",
+                    "2pjvz5r9fk1awwyk"
                 ]
             ]
         },
         {
-            "id": "m8pt1vn3prthvims",
+            "id": "b2zzxff921pvbvqa",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "---- Virtual Read",
             "info": "",
             "x": 80,
@@ -195,39 +195,39 @@
             "wires": []
         },
         {
-            "id": "gso7vhmer94kpqgx",
+            "id": "8ruj3n02pnshzi3m",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 14",
             "mode": "link",
             "links": [
                 "8432wmlkzzt9soau",
-                "eg6k9sgqkgw7ffkc"
+                "64rm9hoa9d15x843"
             ],
             "x": 295,
             "y": 120
         },
         {
-            "id": "eg6k9sgqkgw7ffkc",
+            "id": "64rm9hoa9d15x843",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Virtual Read",
             "links": [
                 "jak7xse55acrj144",
-                "gso7vhmer94kpqgx"
+                "8ruj3n02pnshzi3m"
             ],
             "x": 75,
             "y": 260,
             "wires": [
                 [
-                    "59idir4evm94w9uu"
+                    "61h44ov39cuha41i"
                 ]
             ]
         },
         {
-            "id": "59idir4evm94w9uu",
+            "id": "61h44ov39cuha41i",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -245,14 +245,14 @@
             "y": 260,
             "wires": [
                 [
-                    "5gembtoxw8wy3egf"
+                    "mgsaaag64avzzsxh"
                 ]
             ]
         },
         {
-            "id": "kcfo6775cmokgtsd",
+            "id": "ztjz1pek6y7o920z",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "calculate virtual values",
             "func": "const functions = {\n    \"kwh\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = flow.get(\"bridge.image.metrics\")[metricId];\n        }\n        msg.payload[metricId] = msg.payload[metricId] + (flow.get(\"bridge.image.metrics\")[parameterIds[0]] / 3600);\n    },\n    \"deviceState\": (metricId, parameterIds) => {\n        if (!flow.get(\"bridge.image.metrics\").hasOwnProperty(metricId)) {\n            msg.payload[metricId] = 0;\n        }\n        if (parameterIds.length === 0) {\n            parameterIds = flow.get(\"bridge.image.protocols\").filter(dataPoint => {\n                return dataPoint.topic.includes(\"error\")\n            }).map(dataPoint => {\n                return dataPoint.id;\n            });\n        }\n\n        const ok = Object.keys(flow.get(\"bridge.image.metrics\")).filter(key => {\n            return parameterIds.includes(key)\n        }).reduce((accumulator, id) => accumulator && (flow.get(\"bridge.image.metrics\")[id] === \"\" || flow.get(\"bridge.image.metrics\")[id] === 0 || flow.get(\"bridge.image.metrics\")[id] === false), true)\n        \n        if (ok) {\n            msg.payload[metricId] = 0;\n        } else {\n            msg.payload[metricId] = 2;\n        }\n    }\n}\n\nmsg.sequences.forEach(sequence => {\n    msg = sequence;\n    msg.payload = {};\n    let calc = sequence.dataPoint.calculation\n    let metricsExist = calc.ids.reduce((accumulator, currentValue) => accumulator && flow.get(\"bridge.image.metrics\").hasOwnProperty(currentValue), true)\n    if (metricsExist) {\n        functions[calc.func](sequence.dataPoint.id, calc.ids)\n    } else {\n        throw \"Parameter IDs: \" + calc.ids + \" is missing for calculation\";\n    }\n    node.send(msg);\n});\n\nnode.done();",
             "outputs": 1,
@@ -265,14 +265,14 @@
             "y": 260,
             "wires": [
                 [
-                    "ey4osg4fxneqmxfr"
+                    "mqjfc9j7byxdvml1"
                 ]
             ]
         },
         {
-            "id": "r049e8dzacwoyn9g",
+            "id": "3pvzd4xbxq1nt424",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "---- Update Image Metrics",
             "info": "",
             "x": 110,
@@ -280,28 +280,28 @@
             "wires": []
         },
         {
-            "id": "pbyr8gy7swxfg0ob",
+            "id": "v3915g7n96m9d9xw",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Update LED Metrics",
             "links": [
-                "9hqvsuojp7h8f24m",
-                "x1753ghbigpl5xkg",
-                "b3oldcoq1o94m392",
-                "ey4osg4fxneqmxfr"
+                "f0naqmv0ov8t8h22",
+                "g42mrgzvwcefc1xz",
+                "b2li3m8vkns9e9nt",
+                "mqjfc9j7byxdvml1"
             ],
             "x": 115,
             "y": 1180,
             "wires": [
                 [
-                    "2festab8oq29qtnv"
+                    "izgbgo7v52pehn1j"
                 ]
             ]
         },
         {
-            "id": "2festab8oq29qtnv",
+            "id": "izgbgo7v52pehn1j",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set LED value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
@@ -314,14 +314,14 @@
             "y": 1180,
             "wires": [
                 [
-                    "7qulfagcffhedh4z"
+                    "xpcszazc35e4f6yy"
                 ]
             ]
         },
         {
-            "id": "q2vz1bwv73dnxlv1",
+            "id": "ka8h9oubio1xkzkk",
             "type": "flogger",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Error",
             "logfile": "bridge.log",
             "inputchoice": "fullmsg",
@@ -338,9 +338,9 @@
             ]
         },
         {
-            "id": "r8g6nboy6juwnsgg",
+            "id": "um3fgpqb4l5a3ndj",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "set error",
             "func": "msg.payload = {\n    \"payload\" : msg.payload,\n    \"error\" : msg.error\n};\n\nif (msg._error){\n    msg.payload._error = msg._error;\n}\n\nreturn msg;",
             "outputs": 1,
@@ -353,14 +353,14 @@
             "y": 2260,
             "wires": [
                 [
-                    "moe1yakl9pe7ejnt"
+                    "r9n1stc8qitd90sx"
                 ]
             ]
         },
         {
-            "id": "moe1yakl9pe7ejnt",
+            "id": "r9n1stc8qitd90sx",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set log file name",
             "func": "msg.logfile = \"bridge-\" + env.get(\"NR_FLOW_NAME\") + \".log\"\n\nreturn msg;",
             "outputs": 1,
@@ -373,26 +373,26 @@
             "y": 2260,
             "wires": [
                 [
-                    "q2vz1bwv73dnxlv1"
+                    "ka8h9oubio1xkzkk"
                 ]
             ]
         },
         {
-            "id": "ey4osg4fxneqmxfr",
+            "id": "mqjfc9j7byxdvml1",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 16",
             "mode": "link",
             "links": [
-                "pbyr8gy7swxfg0ob"
+                "v3915g7n96m9d9xw"
             ],
             "x": 1215,
             "y": 260
         },
         {
-            "id": "9k1ira7nh1yxv7mi",
+            "id": "6gan9cr149cku648",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "send virtual data",
             "func": "msg.sequences = flow.get(\"bridge.image.virtuals\").map(dataPoint => {\n    return {\n        dataPoint: dataPoint\n    };\n});\n\nif (msg.sequences.length > 0) {\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -405,14 +405,14 @@
             "y": 260,
             "wires": [
                 [
-                    "kcfo6775cmokgtsd"
+                    "ztjz1pek6y7o920z"
                 ]
             ]
         },
         {
-            "id": "5gembtoxw8wy3egf",
+            "id": "mgsaaag64avzzsxh",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Config correct",
             "property": "bridge.image.virtuals",
             "propertyType": "flow",
@@ -430,14 +430,14 @@
             "y": 300,
             "wires": [
                 [
-                    "9k1ira7nh1yxv7mi"
+                    "6gan9cr149cku648"
                 ]
             ]
         },
         {
-            "id": "e89k5vd8urlvyj5u",
+            "id": "2e7wltv56lnugi17",
             "type": "exec",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "command": "fbset -g 1280 720 1280 720 4",
             "addpay": "",
             "append": "",
@@ -451,17 +451,17 @@
             "wires": [
                 [],
                 [
-                    "ctjcvb0d3bna13pm"
+                    "nxs60nrsdicvwlpp"
                 ],
                 [
-                    "2hqmyjhnvbu47e30"
+                    "4xl850b00lperrxb"
                 ]
             ]
         },
         {
-            "id": "2hqmyjhnvbu47e30",
+            "id": "4xl850b00lperrxb",
             "type": "exec",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1 data/lib/ui-media/lib/images/clear.png",
             "addpay": "",
             "append": "",
@@ -475,17 +475,17 @@
             "wires": [
                 [],
                 [
-                    "ctjcvb0d3bna13pm"
+                    "nxs60nrsdicvwlpp"
                 ],
                 [
-                    "9cw2rsur3pxl5zlx"
+                    "g9s5pvwo4a93azs8"
                 ]
             ]
         },
         {
-            "id": "9cw2rsur3pxl5zlx",
+            "id": "g9s5pvwo4a93azs8",
             "type": "exec",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "command": "pgrep fbi | xargs kill",
             "addpay": "",
             "append": "",
@@ -499,15 +499,15 @@
             "wires": [
                 [],
                 [
-                    "ctjcvb0d3bna13pm"
+                    "nxs60nrsdicvwlpp"
                 ],
                 []
             ]
         },
         {
-            "id": "zmkj4qjnfsafpn9t",
+            "id": "c55u9l0869f4l69h",
             "type": "exec",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "command": "fbi -a -d /dev/fb0 --noverbose -T 1 -1",
             "addpay": "payload",
             "append": "",
@@ -521,15 +521,15 @@
             "wires": [
                 [],
                 [
-                    "ctjcvb0d3bna13pm"
+                    "nxs60nrsdicvwlpp"
                 ],
                 []
             ]
         },
         {
-            "id": "cft5wpxbillm4cf4",
+            "id": "tnu5exxs2okdr2hq",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "500",
@@ -547,15 +547,15 @@
             "y": 900,
             "wires": [
                 [
-                    "osobvjld7zmy5sco",
-                    "k8kn0utgtoqkas2x"
+                    "g5j3pfuzpec6hfa7",
+                    "z4czf1p0jqapje9z"
                 ]
             ]
         },
         {
-            "id": "osobvjld7zmy5sco",
+            "id": "g5j3pfuzpec6hfa7",
             "type": "exec",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "command": "fbset -g 96 224 96 224 4",
             "addpay": "",
             "append": "",
@@ -569,15 +569,15 @@
             "wires": [
                 [],
                 [
-                    "ctjcvb0d3bna13pm"
+                    "nxs60nrsdicvwlpp"
                 ],
                 []
             ]
         },
         {
-            "id": "k8kn0utgtoqkas2x",
+            "id": "z4czf1p0jqapje9z",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "500",
@@ -595,16 +595,16 @@
             "y": 920,
             "wires": [
                 [
-                    "zmkj4qjnfsafpn9t"
+                    "c55u9l0869f4l69h"
                 ]
             ]
         },
         {
-            "id": "es8ipsb6m823u4bm",
+            "id": "0vff8imqj7qxst7u",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set init image",
-            "func": "msg.payload = {};\n\nflow.get(\"bridge.image.protocols\").filter(protocol => protocol.id.includes(\"IMAGE\")).forEach(protocol => {\n    msg.payload[protocol.id] = \"\";\n})\n\nreturn msg;",
+            "func": "msg.payload = {};\n\nflow.get(\"bridge.image.protocols\").filter(protocol => protocol.id.includes(\"IMAGE\") || protocol.id.includes(\"TEXT\")).forEach(protocol => {\n    msg.payload[protocol.id] = \"\";\n})\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -615,61 +615,61 @@
             "y": 80,
             "wires": [
                 [
-                    "x1753ghbigpl5xkg"
+                    "g42mrgzvwcefc1xz"
                 ]
             ]
         },
         {
-            "id": "x1753ghbigpl5xkg",
+            "id": "g42mrgzvwcefc1xz",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 20",
             "mode": "link",
             "links": [
-                "pbyr8gy7swxfg0ob",
-                "z851183fgmwll78v",
-                "tc6emomphwc343j3"
+                "v3915g7n96m9d9xw",
+                "d8pk4dmozq361ehm",
+                "fb1xvgikek4wfe83"
             ],
             "x": 1215,
             "y": 80
         },
         {
-            "id": "z851183fgmwll78v",
+            "id": "d8pk4dmozq361ehm",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Clear LB Screen",
             "links": [
-                "x1753ghbigpl5xkg"
+                "g42mrgzvwcefc1xz"
             ],
             "x": 95,
             "y": 720,
             "wires": [
                 [
-                    "e89k5vd8urlvyj5u"
+                    "2e7wltv56lnugi17"
                 ]
             ]
         },
         {
-            "id": "mi2tth0aviwhbth3",
+            "id": "qlr08a49ld3xy7qm",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set LB Image",
             "links": [
-                "hen7z86n145ase7q",
+                "lj66994yzmfn3rt0",
                 "f8hv6r2p1zpae1l2"
             ],
             "x": 95,
             "y": 900,
             "wires": [
                 [
-                    "91fmnqs4h1l0kg2k"
+                    "pyv2rmmou9h6ypjs"
                 ]
             ]
         },
         {
-            "id": "91fmnqs4h1l0kg2k",
+            "id": "pyv2rmmou9h6ypjs",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "payload",
             "propertyType": "msg",
@@ -688,18 +688,18 @@
             "y": 900,
             "wires": [
                 [
-                    "e89k5vd8urlvyj5u"
+                    "2e7wltv56lnugi17"
                 ],
                 [
-                    "e89k5vd8urlvyj5u",
-                    "cft5wpxbillm4cf4"
+                    "2e7wltv56lnugi17",
+                    "tnu5exxs2okdr2hq"
                 ]
             ]
         },
         {
-            "id": "8fdfirs4wtu3ho0z",
+            "id": "tkmn7pgbbmg0giau",
             "type": "mqtt in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Command",
             "topic": "",
             "qos": "2",
@@ -713,14 +713,14 @@
             "y": 1540,
             "wires": [
                 [
-                    "4nhlrhmy1blckdza"
+                    "ogoz1gbdfwcgj4m5"
                 ]
             ]
         },
         {
-            "id": "hayg4b18fwsrskjp",
+            "id": "d7m4mqgvfvy5iqwb",
             "type": "inject",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "props": [
                 {
@@ -738,14 +738,14 @@
             "y": 1360,
             "wires": [
                 [
-                    "ha8nkaejb1b1a3ee"
+                    "wpyg0wea06lkh1y6"
                 ]
             ]
         },
         {
-            "id": "8netkamlnau441cx",
+            "id": "aq54ncjcwpemtn1j",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Subscribe to commands for this bridge",
             "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/\" + flow.get(\"bridge\").id + \"/#\"\n}\n\nreturn msg;",
             "outputs": 1,
@@ -757,14 +757,14 @@
             "y": 1480,
             "wires": [
                 [
-                    "8fdfirs4wtu3ho0z"
+                    "tkmn7pgbbmg0giau"
                 ]
             ]
         },
         {
-            "id": "ha8nkaejb1b1a3ee",
+            "id": "wpyg0wea06lkh1y6",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -785,17 +785,17 @@
             "y": 1420,
             "wires": [
                 [
-                    "fcfgzfmxw5vznlzy"
+                    "yf760ubsvc7zyp6l"
                 ],
                 [
-                    "8netkamlnau441cx"
+                    "aq54ncjcwpemtn1j"
                 ]
             ]
         },
         {
-            "id": "fcfgzfmxw5vznlzy",
+            "id": "yf760ubsvc7zyp6l",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Error",
             "func": "node.warn(\"The bridge configuration is wrong!\")\nnode.done()",
             "outputs": 0,
@@ -808,9 +808,9 @@
             "wires": []
         },
         {
-            "id": "iw9yog75fbw3q36a",
+            "id": "m555wjcmtihy7ge3",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "prepare write data",
             "func": "const command = msg.payload.command;\nconst response = msg.payload.response;\nconst matchingCommand = flow.get(\"bridge.image.commands\").find(bridgeCommand => bridgeCommand.id === command.id)\nconst matchingProtocol = matchingCommand ? flow.get(\"bridge.image.protocols\").find(protocol => protocol.id === matchingCommand.protocolId) : undefined;\n\nif (matchingProtocol && matchingCommand) {\n    response.value = {\n        \"actual\": flow.get(\"bridge.image.metrics\")[matchingProtocol.id],\n        \"target\": command.value\n    }\n    msg.protocolCommand = matchingCommand;\n    msg.response = response;\n    \n    if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"boolean\") {\n        if (matchingProtocol.invert) {\n            command.value = !command.value;\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"number\") {\n        if (matchingProtocol.invert) {\n            command.value = Math.abs(command.value - 1);\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (typeof command.value === \"number\") {\n        msg.payload = {\n            \"value\": matchingProtocol.type.startsWith(\"int16\") && command.value < 0 ? 65536 + command.value * (1 / matchingProtocol.scale) : command.value * (1 / matchingProtocol.scale),\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else {\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    }\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_EXECUTION\";\n\n    return [msg, responseMessage]\n} else {\n    node.warn(\"Command configuration wrong!\");\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_CONFIG\";\n    \n    return [null, responseMessage];\n}\n",
             "outputs": 2,
@@ -823,17 +823,17 @@
             "y": 1540,
             "wires": [
                 [
-                    "8jzpqxmq47ujboxn"
+                    "unvf9ipgchjaim1e"
                 ],
                 [
-                    "laqku7nnco423asv"
+                    "uqueso329ty6p5lh"
                 ]
             ]
         },
         {
-            "id": "hlu3yhqe91frfo65",
+            "id": "g6e3o08c8jh9vl9x",
             "type": "mqtt out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "topic": "cloud/upstream/response",
             "qos": "2",
@@ -849,9 +849,9 @@
             "wires": []
         },
         {
-            "id": "8jzpqxmq47ujboxn",
+            "id": "unvf9ipgchjaim1e",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Write data",
             "func": "let writeMessage = { payload:  msg.payload };\nwriteMessage.protocolCommand = msg.protocolCommand;\n\nlet responseMessage = { payload: { response: msg.response } };\nresponseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\nresponseMessage.payload.response.status = \"OK\";\nresponseMessage.payload.response.error = \"\";\n\nreturn [writeMessage, responseMessage];",
             "outputs": 2,
@@ -864,17 +864,17 @@
             "y": 1520,
             "wires": [
                 [
-                    "7iootwm0zqw9s1b6"
+                    "27m1vpgod2yxvcwy"
                 ],
                 [
-                    "1koyk1tdxofogzkz"
+                    "fbs88bpwjwmn8gue"
                 ]
             ]
         },
         {
-            "id": "au19kpbbtliibdb9",
+            "id": "9li3a8hfn7n48rtb",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Execute LED Command",
             "active": true,
             "tosidebar": true,
@@ -889,9 +889,9 @@
             "wires": []
         },
         {
-            "id": "7iootwm0zqw9s1b6",
+            "id": "27m1vpgod2yxvcwy",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "protocolCommand.type",
             "propertyType": "msg",
@@ -914,19 +914,19 @@
             "y": 1440,
             "wires": [
                 [
-                    "k3rjq2jdo93kodmc"
+                    "i0ornl33xbkkna24"
                 ],
                 [
-                    "au19kpbbtliibdb9",
-                    "h6glkpcu6tdttbfo",
-                    "hsivctg747wvz752"
+                    "9li3a8hfn7n48rtb",
+                    "pawey8ekh2au0aq3",
+                    "4vxceqcadwgpp3bl"
                 ]
             ]
         },
         {
-            "id": "k3rjq2jdo93kodmc",
+            "id": "i0ornl33xbkkna24",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Command type not yet implemented",
             "active": true,
             "tosidebar": true,
@@ -941,9 +941,9 @@
             "wires": []
         },
         {
-            "id": "z5iula6bkcjiil2f",
+            "id": "19tvcx9mdg8fy8mg",
             "type": "catch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "scope": [
                 "v0ybzti4w6s318gl"
@@ -953,14 +953,14 @@
             "y": 1640,
             "wires": [
                 [
-                    "k7empasx7t1kdlo7"
+                    "xhco8y6daq1uw2r6"
                 ]
             ]
         },
         {
-            "id": "laqku7nnco423asv",
+            "id": "uqueso329ty6p5lh",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -978,14 +978,14 @@
             "y": 1600,
             "wires": [
                 [
-                    "hlu3yhqe91frfo65"
+                    "g6e3o08c8jh9vl9x"
                 ]
             ]
         },
         {
-            "id": "8pzjdnoisqvvlsai",
+            "id": "4ki2scfwk41k7tqb",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -1005,14 +1005,14 @@
             "y": 1560,
             "wires": [
                 [
-                    "laqku7nnco423asv"
+                    "uqueso329ty6p5lh"
                 ]
             ]
         },
         {
-            "id": "1koyk1tdxofogzkz",
+            "id": "fbs88bpwjwmn8gue",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -1030,14 +1030,14 @@
             "y": 1680,
             "wires": [
                 [
-                    "hlu3yhqe91frfo65"
+                    "g6e3o08c8jh9vl9x"
                 ]
             ]
         },
         {
-            "id": "k7empasx7t1kdlo7",
+            "id": "xhco8y6daq1uw2r6",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -1057,14 +1057,14 @@
             "y": 1640,
             "wires": [
                 [
-                    "1koyk1tdxofogzkz"
+                    "fbs88bpwjwmn8gue"
                 ]
             ]
         },
         {
-            "id": "h6glkpcu6tdttbfo",
+            "id": "pawey8ekh2au0aq3",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Update LED Image",
             "func": "const message = { \"payload\": \"data/lib/ui-media/lib/images/\" + msg.payload.value }\n\nif(msg.protocolCommand.protocolId === \"IMAGE-0\"){\n    flow.set(\"LT_IMAGE\", message.payload);\n} else if(msg.protocolCommand.protocolId === \"IMAGE-1\"){\n    flow.set(\"LB_IMAGE\", message.payload);\n}\n\nreturn message;",
             "outputs": 1,
@@ -1077,16 +1077,16 @@
             "y": 1480,
             "wires": [
                 [
-                    "8pzjdnoisqvvlsai",
-                    "igvdbewpe5by0r3e",
-                    "r8mvu6w91yt8xgbz"
+                    "4ki2scfwk41k7tqb",
+                    "5uexw0g57lmjqfj1",
+                    "5u6z6p1d9cfzzc88"
                 ]
             ]
         },
         {
-            "id": "hsivctg747wvz752",
+            "id": "4vxceqcadwgpp3bl",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Update LED Metric",
             "func": "const message ={ \"payload\": {} };\nif(msg.payload.value.includes(\"clear\")){\n    message.payload[msg.protocolCommand.protocolId] = \"\";\n} else {\n    message.payload[msg.protocolCommand.protocolId] = msg.payload.value;\n}\n\n\nreturn message;",
             "outputs": 1,
@@ -1099,26 +1099,26 @@
             "y": 1440,
             "wires": [
                 [
-                    "b3oldcoq1o94m392"
+                    "b2li3m8vkns9e9nt"
                 ]
             ]
         },
         {
-            "id": "b3oldcoq1o94m392",
+            "id": "b2li3m8vkns9e9nt",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 22",
             "mode": "link",
             "links": [
-                "pbyr8gy7swxfg0ob"
+                "v3915g7n96m9d9xw"
             ],
             "x": 1485,
             "y": 1440
         },
         {
-            "id": "ctjcvb0d3bna13pm",
+            "id": "nxs60nrsdicvwlpp",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Error",
             "active": true,
             "tosidebar": true,
@@ -1133,13 +1133,13 @@
             "wires": []
         },
         {
-            "id": "1h0io048m8gt0ml0",
+            "id": "9w1lhbnsyxznrj8b",
             "type": "ui_text_input",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Text",
             "tooltip": "",
-            "group": "ahc6iotwm7df3zwe",
+            "group": "7jouvyguj8284a6u",
             "order": 4,
             "width": 6,
             "height": 1,
@@ -1154,14 +1154,14 @@
             "y": 2760,
             "wires": [
                 [
-                    "j7s72h2fb24ivr4u"
+                    "ky3e1ks0wfbmh9se"
                 ]
             ]
         },
         {
-            "id": "xutbrk9ynh3zt6kt",
+            "id": "z12fv6buaujlnquf",
             "type": "ui_template",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "group": "",
             "name": "Styles",
             "order": 1,
@@ -1180,10 +1180,10 @@
             ]
         },
         {
-            "id": "9nhpbztef5cax143",
+            "id": "infnlahi41zxltah",
             "type": "ui_list",
-            "z": "37867cb6ba9fe124",
-            "group": "ahc6iotwm7df3zwe",
+            "z": "738fc52c69b89618",
+            "group": "7jouvyguj8284a6u",
             "name": "Image list",
             "order": 1,
             "width": 4,
@@ -1197,14 +1197,14 @@
             "y": 2720,
             "wires": [
                 [
-                    "36kmwe4k6ctcug12"
+                    "7yg5bcs9nkp30kr3"
                 ]
             ]
         },
         {
-            "id": "jpftewqtoxe08nkb",
+            "id": "ix755ndgr0tom2r0",
             "type": "exec",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "command": "ls data/lib/ui-media/lib/images",
             "addpay": "",
             "append": "",
@@ -1217,32 +1217,32 @@
             "y": 2560,
             "wires": [
                 [
-                    "9n7zxztmadi55st3"
+                    "uh7gqeqod4uwgozc"
                 ],
                 [],
                 []
             ]
         },
         {
-            "id": "tc6emomphwc343j3",
+            "id": "fb1xvgikek4wfe83",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Scan for images",
             "links": [
-                "x1753ghbigpl5xkg"
+                "g42mrgzvwcefc1xz"
             ],
             "x": 95,
             "y": 2480,
             "wires": [
                 [
-                    "gvk9vem51gcjqoyk"
+                    "uzw8k9ijd08s8ykk"
                 ]
             ]
         },
         {
-            "id": "9n7zxztmadi55st3",
+            "id": "uh7gqeqod4uwgozc",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Get available images",
             "func": "var message = {\"payload\":[]};\n\nmsg.payload.split(\"\\n\").forEach(element => {\n    if(element.includes(\".png\")){\n        message.payload.push({\"title\": element.split(\".\")[0],\"icon\":\"/uimedia/images/\" + element})\n    }\n});\n\n\nreturn message;",
             "outputs": 1,
@@ -1255,17 +1255,17 @@
             "y": 2620,
             "wires": [
                 [
-                    "9nhpbztef5cax143",
-                    "aqmllo968klhqstw",
-                    "xgibwcwei565ec3y"
+                    "infnlahi41zxltah",
+                    "cn441jxjf46wugnw",
+                    "kufok9gq8qaoxr7b"
                 ]
             ]
         },
         {
-            "id": "88maic2ih9yjypnz",
+            "id": "60lcwzrm62dx5iqw",
             "type": "ui_text",
-            "z": "37867cb6ba9fe124",
-            "group": "wtu26o2ch9j46e3q",
+            "z": "738fc52c69b89618",
+            "group": "f7p2oqiekn497usd",
             "order": 2,
             "width": "4",
             "height": "1",
@@ -1283,9 +1283,9 @@
             "wires": []
         },
         {
-            "id": "ey3zsj0gg4v7sobh",
+            "id": "wmozti8w9jfz8czw",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Top",
             "data": "payload",
             "dataType": "msg",
@@ -1371,15 +1371,15 @@
             "y": 2760,
             "wires": [
                 [
-                    "p9nfwdx1q75kksrb"
+                    "yeox4x999dbpykey"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "slnw1m3821m5exas",
+            "id": "xzuujmp2832rm894",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "LT_TEXT",
             "propertyType": "flow",
@@ -1401,20 +1401,20 @@
             "y": 2720,
             "wires": [
                 [
-                    "7szrmt2dmp06lsor"
+                    "voxzb48nty83csli"
                 ],
                 [
-                    "7szrmt2dmp06lsor"
+                    "voxzb48nty83csli"
                 ],
                 [
-                    "2rcsyu9tcb5synl5"
+                    "h5i4ai8v6nbyqyjo"
                 ]
             ]
         },
         {
-            "id": "qclo5z57i6kukz4d",
+            "id": "25e0u93oyrs6a83r",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -1457,14 +1457,14 @@
             "y": 2780,
             "wires": [
                 [
-                    "jb8wfxjsf3ttx4be"
+                    "v8j2d5krlm88hnea"
                 ]
             ]
         },
         {
-            "id": "j7s72h2fb24ivr4u",
+            "id": "ky3e1ks0wfbmh9se",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -1484,15 +1484,15 @@
             "y": 2760,
             "wires": [
                 [
-                    "slnw1m3821m5exas"
+                    "xzuujmp2832rm894"
                 ]
             ]
         },
         {
-            "id": "0u85782mgm1byvfm",
+            "id": "fr92jewc9ppabq62",
             "type": "ui_media",
-            "z": "37867cb6ba9fe124",
-            "group": "wtu26o2ch9j46e3q",
+            "z": "738fc52c69b89618",
+            "group": "f7p2oqiekn497usd",
             "name": "LT",
             "width": 2,
             "height": 2,
@@ -1513,9 +1513,9 @@
             ]
         },
         {
-            "id": "jb8wfxjsf3ttx4be",
+            "id": "v8j2d5krlm88hnea",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set preview image",
             "func": "msg.payload = 'screen/LT_PREVIEW.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -1528,15 +1528,15 @@
             "y": 2820,
             "wires": [
                 [
-                    "0u85782mgm1byvfm"
+                    "fr92jewc9ppabq62"
                 ]
             ]
         },
         {
-            "id": "aqmllo968klhqstw",
+            "id": "cn441jxjf46wugnw",
             "type": "ui_list",
-            "z": "37867cb6ba9fe124",
-            "group": "ik5ku4yv6ztqzncm",
+            "z": "738fc52c69b89618",
+            "group": "2fr8sl5qwm327a3h",
             "name": "Image list",
             "order": 1,
             "width": 4,
@@ -1550,18 +1550,18 @@
             "y": 2980,
             "wires": [
                 [
-                    "kbk0tmo4audvddnc"
+                    "4lioei3h9jvyxli8"
                 ]
             ]
         },
         {
-            "id": "ehtclutbeqbaae1j",
+            "id": "ojvlipnb6skwe8o9",
             "type": "ui_text_input",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Text",
             "tooltip": "",
-            "group": "ik5ku4yv6ztqzncm",
+            "group": "2fr8sl5qwm327a3h",
             "order": 4,
             "width": 6,
             "height": 1,
@@ -1576,15 +1576,15 @@
             "y": 3020,
             "wires": [
                 [
-                    "jqdpmq47dcnikkhu"
+                    "8us36wk8moe7ein5"
                 ]
             ]
         },
         {
-            "id": "vkd3ocygn89nop5o",
+            "id": "hb25f8pqzivfaqqk",
             "type": "ui_text",
-            "z": "37867cb6ba9fe124",
-            "group": "wtu26o2ch9j46e3q",
+            "z": "738fc52c69b89618",
+            "group": "f7p2oqiekn497usd",
             "order": 9,
             "width": 4,
             "height": 1,
@@ -1602,10 +1602,10 @@
             "wires": []
         },
         {
-            "id": "pv20vkv1btp8w76a",
+            "id": "27yblhn3uwd45ao2",
             "type": "ui_media",
-            "z": "37867cb6ba9fe124",
-            "group": "wtu26o2ch9j46e3q",
+            "z": "738fc52c69b89618",
+            "group": "f7p2oqiekn497usd",
             "name": "LB",
             "width": 2,
             "height": "3",
@@ -1626,10 +1626,10 @@
             ]
         },
         {
-            "id": "cq603n745wvnydq8",
+            "id": "joalhvr9gi637qcv",
             "type": "ui_text",
-            "z": "37867cb6ba9fe124",
-            "group": "rx3wzvrz6h7c7fsv",
+            "z": "738fc52c69b89618",
+            "group": "arw1pe6rga962iv3",
             "order": 2,
             "width": 4,
             "height": 1,
@@ -1647,10 +1647,10 @@
             "wires": []
         },
         {
-            "id": "26zj6a1ihmv1yp8k",
+            "id": "rb4mepp57byj9dqd",
             "type": "ui_media",
-            "z": "37867cb6ba9fe124",
-            "group": "rx3wzvrz6h7c7fsv",
+            "z": "738fc52c69b89618",
+            "group": "arw1pe6rga962iv3",
             "name": "LT",
             "width": 2,
             "height": 2,
@@ -1671,10 +1671,10 @@
             ]
         },
         {
-            "id": "trgkkvpoavm9a85j",
+            "id": "ujzru7h6tg777x7n",
             "type": "ui_text",
-            "z": "37867cb6ba9fe124",
-            "group": "rx3wzvrz6h7c7fsv",
+            "z": "738fc52c69b89618",
+            "group": "arw1pe6rga962iv3",
             "order": 40,
             "width": 4,
             "height": 1,
@@ -1692,10 +1692,10 @@
             "wires": []
         },
         {
-            "id": "1srknzoqnfma634a",
+            "id": "qyrmua9ism8x6kwv",
             "type": "ui_media",
-            "z": "37867cb6ba9fe124",
-            "group": "rx3wzvrz6h7c7fsv",
+            "z": "738fc52c69b89618",
+            "group": "arw1pe6rga962iv3",
             "name": "LB",
             "width": 2,
             "height": "3",
@@ -1716,11 +1716,11 @@
             ]
         },
         {
-            "id": "ywgiwc57u1xcbu1h",
+            "id": "fzg945vhkwyzlohq",
             "type": "ui_button",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 16,
             "width": "0",
             "height": "0",
@@ -1739,16 +1739,16 @@
             "y": 3900,
             "wires": [
                 [
-                    "832dy81paurm6elb",
-                    "fueesuai5czhviha",
-                    "vhtry8gcgdf8o5t7"
+                    "va0qgovrvnarmam2",
+                    "zbvi5o4ts78qqd8d",
+                    "4wk4y6aynfmih6lo"
                 ]
             ]
         },
         {
-            "id": "sbquflmcjt0z2sjf",
+            "id": "gpuafy2aa4zaiog9",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set live image",
             "func": "msg.payload = 'screen/LT_LIVE.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -1761,14 +1761,14 @@
             "y": 4100,
             "wires": [
                 [
-                    "26zj6a1ihmv1yp8k"
+                    "rb4mepp57byj9dqd"
                 ]
             ]
         },
         {
-            "id": "c2gleqygbey871sw",
+            "id": "reel9f8mworv19if",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set live image",
             "func": "msg.payload = 'screen/LB_LIVE.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -1781,14 +1781,14 @@
             "y": 4320,
             "wires": [
                 [
-                    "1srknzoqnfma634a"
+                    "qyrmua9ism8x6kwv"
                 ]
             ]
         },
         {
-            "id": "832dy81paurm6elb",
+            "id": "va0qgovrvnarmam2",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "data/lib/ui-media/lib/screen/LB_PREVIEW.png",
             "dataType": "str",
@@ -1831,14 +1831,14 @@
             "y": 4320,
             "wires": [
                 [
-                    "c2gleqygbey871sw"
+                    "reel9f8mworv19if"
                 ]
             ]
         },
         {
-            "id": "fueesuai5czhviha",
+            "id": "zbvi5o4ts78qqd8d",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "data/lib/ui-media/lib/screen/LT_PREVIEW.png",
             "dataType": "str",
@@ -1881,19 +1881,19 @@
             "y": 4100,
             "wires": [
                 [
-                    "sbquflmcjt0z2sjf"
+                    "gpuafy2aa4zaiog9"
                 ]
             ]
         },
         {
-            "id": "tmteufbjv2q1asw3",
+            "id": "bqxw92y7njdipkxe",
             "type": "ui_dropdown",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Text Position",
             "tooltip": "",
             "place": "Position wählen",
-            "group": "ahc6iotwm7df3zwe",
+            "group": "7jouvyguj8284a6u",
             "order": 2,
             "width": 6,
             "height": 1,
@@ -1924,14 +1924,14 @@
             "y": 2800,
             "wires": [
                 [
-                    "egqh7t0elaigy4fg"
+                    "ef6o9jw03i5z2zun"
                 ]
             ]
         },
         {
-            "id": "egqh7t0elaigy4fg",
+            "id": "ef6o9jw03i5z2zun",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set position",
             "func": "if(msg.payload === 0){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_TOP\");\n} else if(msg.payload === 1){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n} else if(msg.payload === 2){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_BOTTOM\");\n} else {\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -1944,19 +1944,19 @@
             "y": 2800,
             "wires": [
                 [
-                    "slnw1m3821m5exas"
+                    "xzuujmp2832rm894"
                 ]
             ]
         },
         {
-            "id": "6icf27j67mlpefwb",
+            "id": "l0ikqnutz70vh3h9",
             "type": "ui_dropdown",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Text Position",
             "tooltip": "",
             "place": "Position wählen",
-            "group": "ik5ku4yv6ztqzncm",
+            "group": "2fr8sl5qwm327a3h",
             "order": 2,
             "width": 6,
             "height": 1,
@@ -1987,14 +1987,14 @@
             "y": 3060,
             "wires": [
                 [
-                    "ec32r3tb0xuxemps"
+                    "fdgyfz4qtk6d1n3r"
                 ]
             ]
         },
         {
-            "id": "vhtry8gcgdf8o5t7",
+            "id": "4wk4y6aynfmih6lo",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "1",
@@ -2012,14 +2012,14 @@
             "y": 3900,
             "wires": [
                 [
-                    "p0cf3jyesmnuzkr2"
+                    "vnafyh47esztmzry"
                 ]
             ]
         },
         {
-            "id": "o8vg2o7vlpgmv0o2",
+            "id": "co9xig9zn1c1hi5y",
             "type": "catch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "scope": null,
             "uncaught": false,
@@ -2027,14 +2027,14 @@
             "y": 2260,
             "wires": [
                 [
-                    "ws3hilq1vh7sbw9b"
+                    "vg5xp6dzk8dnbd16"
                 ]
             ]
         },
         {
-            "id": "gvk9vem51gcjqoyk",
+            "id": "uzw8k9ijd08s8ykk",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -2124,15 +2124,15 @@
             "y": 2480,
             "wires": [
                 [
-                    "s8wq5n6f8tqyqh9h",
-                    "1qsa33eexclklw4h"
+                    "u3d5stwx1pkkfhow",
+                    "ostnhfckcdndhsor"
                 ]
             ]
         },
         {
-            "id": "o81o3qgl1pzw1y6p",
+            "id": "7dbc5mfkn9qah78f",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "----- UI",
             "info": "",
             "x": 50,
@@ -2140,9 +2140,9 @@
             "wires": []
         },
         {
-            "id": "oclbzpmxsaroemj6",
+            "id": "9fvc0lxic1npl97e",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "----- Styles",
             "info": "",
             "x": 120,
@@ -2150,9 +2150,9 @@
             "wires": []
         },
         {
-            "id": "r5g7nh94ix2vn19x",
+            "id": "d0fa0e13naygp0no",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "----- Init",
             "info": "",
             "x": 110,
@@ -2160,9 +2160,9 @@
             "wires": []
         },
         {
-            "id": "pwpuc7nb7kfthbk7",
+            "id": "0n9ufhl3nuauyegt",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "----- Preview",
             "info": "",
             "x": 130,
@@ -2170,9 +2170,9 @@
             "wires": []
         },
         {
-            "id": "6iisqcusv7fhk617",
+            "id": "wup5oeah624n1ofv",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "----- Live",
             "info": "",
             "x": 140,
@@ -2180,14 +2180,14 @@
             "wires": []
         },
         {
-            "id": "arbeg7k5inylwglp",
+            "id": "jjkmwysnxo9g88ym",
             "type": "ui_dropdown",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Text Grösse",
             "tooltip": "",
             "place": "Grösse wählen",
-            "group": "ahc6iotwm7df3zwe",
+            "group": "7jouvyguj8284a6u",
             "order": 3,
             "width": 6,
             "height": 1,
@@ -2218,14 +2218,14 @@
             "y": 2840,
             "wires": [
                 [
-                    "b691k48kvsdnl5h8"
+                    "z7zphf8bzbi3hb50"
                 ]
             ]
         },
         {
-            "id": "b691k48kvsdnl5h8",
+            "id": "z7zphf8bzbi3hb50",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set size",
             "func": "if(msg.payload === 0){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_32_WHITE\");\n} else if(msg.payload === 1){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_16_WHITE\");\n} else if(msg.payload === 2){\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n} else {\n    flow.set(\"LT_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -2238,19 +2238,19 @@
             "y": 2840,
             "wires": [
                 [
-                    "slnw1m3821m5exas"
+                    "xzuujmp2832rm894"
                 ]
             ]
         },
         {
-            "id": "sptf8r7t7k33ox3x",
+            "id": "hshqyfhrs9eykyvm",
             "type": "ui_dropdown",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Text Grösse",
             "tooltip": "",
             "place": "Grösse wählen",
-            "group": "ik5ku4yv6ztqzncm",
+            "group": "2fr8sl5qwm327a3h",
             "order": 3,
             "width": 6,
             "height": 1,
@@ -2281,14 +2281,14 @@
             "y": 3100,
             "wires": [
                 [
-                    "1k99128ipqllniym"
+                    "n74gummbcm85pyj8"
                 ]
             ]
         },
         {
-            "id": "md9bvyiplxxtj4lz",
+            "id": "2bu413o6n3gju3yb",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "LT_ALIGN",
             "propertyType": "flow",
@@ -2319,23 +2319,23 @@
             "y": 2800,
             "wires": [
                 [
-                    "uywo5p4gna8d5gdi"
+                    "cb9tnq4fsj8z39iz"
                 ],
                 [
-                    "ey3zsj0gg4v7sobh"
+                    "wmozti8w9jfz8czw"
                 ],
                 [
-                    "ciqu4ntn2u7snyo0"
+                    "0tdh294fvw7fdzkk"
                 ],
                 [
-                    "uywo5p4gna8d5gdi"
+                    "cb9tnq4fsj8z39iz"
                 ]
             ]
         },
         {
-            "id": "ciqu4ntn2u7snyo0",
+            "id": "0tdh294fvw7fdzkk",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Middle",
             "data": "payload",
             "dataType": "msg",
@@ -2421,15 +2421,15 @@
             "y": 2800,
             "wires": [
                 [
-                    "p9nfwdx1q75kksrb"
+                    "yeox4x999dbpykey"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "uywo5p4gna8d5gdi",
+            "id": "cb9tnq4fsj8z39iz",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Bottom",
             "data": "payload",
             "dataType": "msg",
@@ -2515,15 +2515,15 @@
             "y": 2840,
             "wires": [
                 [
-                    "p9nfwdx1q75kksrb"
+                    "yeox4x999dbpykey"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "xzpaplb8p9tld0i9",
+            "id": "pf1vos5wonkyeh0a",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set Live Image",
             "func": "return { \"payload\": \"data/lib/ui-media/lib/screen/SCREEN_LIVE.png\" };",
             "outputs": 1,
@@ -2536,26 +2536,26 @@
             "y": 3900,
             "wires": [
                 [
-                    "hen7z86n145ase7q"
+                    "lj66994yzmfn3rt0"
                 ]
             ]
         },
         {
-            "id": "hen7z86n145ase7q",
+            "id": "lj66994yzmfn3rt0",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 23",
             "mode": "link",
             "links": [
-                "mi2tth0aviwhbth3"
+                "qlr08a49ld3xy7qm"
             ],
             "x": 1595,
             "y": 3940
         },
         {
-            "id": "s8wq5n6f8tqyqh9h",
+            "id": "u3d5stwx1pkkfhow",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Bottom",
             "data": "payload.image",
             "dataType": "msg",
@@ -2641,15 +2641,15 @@
             "y": 2460,
             "wires": [
                 [
-                    "e803hhhmrrk17jne"
+                    "grrxzc01icq09xeh"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "e803hhhmrrk17jne",
+            "id": "grrxzc01icq09xeh",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -2695,9 +2695,9 @@
             ]
         },
         {
-            "id": "1qsa33eexclklw4h",
+            "id": "ostnhfckcdndhsor",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Bottom",
             "data": "payload.image",
             "dataType": "msg",
@@ -2783,15 +2783,15 @@
             "y": 2500,
             "wires": [
                 [
-                    "p6grupgyhe3cjak0"
+                    "o0rzy31v6f1e6wa3"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "p6grupgyhe3cjak0",
+            "id": "o0rzy31v6f1e6wa3",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -2834,16 +2834,16 @@
             "y": 2500,
             "wires": [
                 [
-                    "jpftewqtoxe08nkb"
+                    "ix755ndgr0tom2r0"
                 ]
             ]
         },
         {
-            "id": "h2knfrkqhty61f2c",
+            "id": "rioog9ax28yllh67",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Update LED Metrics",
-            "func": "const LB_IMAGE = flow.get(\"LB_IMAGE\").split(\"/\")[flow.get(\"LB_IMAGE\").split(\"/\").length -1];\nconst LT_IMAGE = flow.get(\"LT_IMAGE\").split(\"/\")[flow.get(\"LT_IMAGE\").split(\"/\").length -1];\n\nconst message ={ \"payload\": {} };\nif (LT_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-0\"] = \"\";\n} else {\n    message.payload[\"IMAGE-0\"] = LT_IMAGE;\n}\nif(LB_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-1\"] = \"\";\n} else {\n    message.payload[\"IMAGE-1\"] = LB_IMAGE;\n}\n\n\nreturn message;",
+            "func": "const LB_IMAGE = flow.get(\"LB_IMAGE\").split(\"/\")[flow.get(\"LB_IMAGE\").split(\"/\").length -1];\nconst LT_IMAGE = flow.get(\"LT_IMAGE\").split(\"/\")[flow.get(\"LT_IMAGE\").split(\"/\").length -1];\n\nconst message ={ \"payload\": {} };\nif (LT_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-0\"] = \"\";\n} else {\n    message.payload[\"IMAGE-0\"] = LT_IMAGE;\n}\nif(LB_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-1\"] = \"\";\n} else {\n    message.payload[\"IMAGE-1\"] = LB_IMAGE;\n}\nmessage.payload[\"TEXT-0\"] = flow.get(\"LT_TEXT\");\nmessage.payload[\"TEXT-1\"] = flow.get(\"LB_TEXT\");\n\nreturn message;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -2854,26 +2854,26 @@
             "y": 3980,
             "wires": [
                 [
-                    "9hqvsuojp7h8f24m"
+                    "f0naqmv0ov8t8h22"
                 ]
             ]
         },
         {
-            "id": "9hqvsuojp7h8f24m",
+            "id": "f0naqmv0ov8t8h22",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 24",
             "mode": "link",
             "links": [
-                "pbyr8gy7swxfg0ob"
+                "v3915g7n96m9d9xw"
             ],
             "x": 1595,
             "y": 4020
         },
         {
-            "id": "plfbprssq248hgrz",
+            "id": "0tbrwk47f1z3y38o",
             "type": "mqtt out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "topic": "cloud/upstream/error",
             "qos": "2",
@@ -2889,86 +2889,86 @@
             "wires": []
         },
         {
-            "id": "iycntzby57qdjh3x",
+            "id": "5elnb3r8dg6zw5z7",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Reset dashboard",
             "links": [
-                "xxn08iwr1mwcrlj5"
+                "oneyt83npq3jlbxg"
             ],
             "x": 535,
             "y": 4100,
             "wires": [
                 [
-                    "fueesuai5czhviha",
-                    "832dy81paurm6elb",
-                    "vhtry8gcgdf8o5t7"
+                    "zbvi5o4ts78qqd8d",
+                    "va0qgovrvnarmam2",
+                    "4wk4y6aynfmih6lo"
                 ]
             ]
         },
         {
-            "id": "352acuvveko9tbpj",
+            "id": "nz23fz0foxsdlu91",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Reset LT",
             "links": [
-                "igvdbewpe5by0r3e",
-                "orgtkn8c6hh8s1b8"
+                "5uexw0g57lmjqfj1",
+                "dcn3pr9syxkbcrqu"
             ],
             "x": 785,
             "y": 2680,
             "wires": [
                 [
-                    "slnw1m3821m5exas"
+                    "xzuujmp2832rm894"
                 ]
             ]
         },
         {
-            "id": "mcfobubnpd7gf3m7",
+            "id": "syh3kt00ajxmi410",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Reset LB",
             "links": [
-                "igvdbewpe5by0r3e",
-                "orgtkn8c6hh8s1b8"
+                "5uexw0g57lmjqfj1",
+                "dcn3pr9syxkbcrqu"
             ],
             "x": 785,
             "y": 2940,
             "wires": [
                 [
-                    "sbowcau9gf0zvd1e"
+                    "iy4xjtbhthldu0g2"
                 ]
             ]
         },
         {
-            "id": "igvdbewpe5by0r3e",
+            "id": "5uexw0g57lmjqfj1",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 25",
             "mode": "link",
             "links": [
-                "352acuvveko9tbpj",
-                "mcfobubnpd7gf3m7"
+                "nz23fz0foxsdlu91",
+                "syh3kt00ajxmi410"
             ],
             "x": 1485,
             "y": 1480
         },
         {
-            "id": "xxn08iwr1mwcrlj5",
+            "id": "oneyt83npq3jlbxg",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 26",
             "mode": "link",
             "links": [
-                "iycntzby57qdjh3x"
+                "5elnb3r8dg6zw5z7"
             ],
             "x": 1485,
             "y": 1520
         },
         {
-            "id": "r8mvu6w91yt8xgbz",
+            "id": "5u6z6p1d9cfzzc88",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "1",
@@ -2986,18 +2986,18 @@
             "y": 1520,
             "wires": [
                 [
-                    "xxn08iwr1mwcrlj5"
+                    "oneyt83npq3jlbxg"
                 ]
             ]
         },
         {
-            "id": "7ddhrrfwpxtkraew",
+            "id": "1tbrpgpcrkialf9v",
             "type": "ui_slider",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "",
             "tooltip": "",
-            "group": "mzupt29iagakgt7h",
+            "group": "vxm4ekov6vmh3zrt",
             "order": 4,
             "width": "10",
             "height": "1",
@@ -3013,15 +3013,15 @@
             "y": 3320,
             "wires": [
                 [
-                    "xsz5rjhoo6cri801"
+                    "egfs4h33aihp8oa1"
                 ]
             ]
         },
         {
-            "id": "x5bq4xr2tg35isf4",
+            "id": "h07d7fdjnjobdqce",
             "type": "ui_text",
-            "z": "37867cb6ba9fe124",
-            "group": "mzupt29iagakgt7h",
+            "z": "738fc52c69b89618",
+            "group": "vxm4ekov6vmh3zrt",
             "order": 1,
             "width": "10",
             "height": "1",
@@ -3039,9 +3039,9 @@
             "wires": []
         },
         {
-            "id": "xsz5rjhoo6cri801",
+            "id": "egfs4h33aihp8oa1",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set brightness",
             "func": "function factor(percentage) {\n  // Convert percentage value to decimal\n  const decimalPercentage = percentage / 100;\n\n  // Calculate range between numbers\n  const range = 2;\n\n  // Calculate result by adding first number in array to the product of the percentage value and the range\n  const result = -1 + (decimalPercentage * range);\n\n  // Return result rounded to the nearest hundredth\n  return Math.round(result * 100) / 100;\n}\n\nflow.set(\"LT_BRIGHTNESS\", factor(msg.payload));\nflow.set(\"LB_BRIGHTNESS\", factor(msg.payload));\n\nreturn msg;",
             "outputs": 1,
@@ -3054,31 +3054,31 @@
             "y": 3320,
             "wires": [
                 [
-                    "orgtkn8c6hh8s1b8"
+                    "dcn3pr9syxkbcrqu"
                 ]
             ]
         },
         {
-            "id": "orgtkn8c6hh8s1b8",
+            "id": "dcn3pr9syxkbcrqu",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 27",
             "mode": "link",
             "links": [
-                "352acuvveko9tbpj",
-                "mcfobubnpd7gf3m7"
+                "nz23fz0foxsdlu91",
+                "syh3kt00ajxmi410"
             ],
             "x": 1455,
             "y": 3320
         },
         {
-            "id": "qzlap86w0z62d0ex",
+            "id": "cpl0ltqod00eyv94",
             "type": "ui_switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "label": "Automatisch",
             "tooltip": "",
-            "group": "mzupt29iagakgt7h",
+            "group": "vxm4ekov6vmh3zrt",
             "order": 2,
             "width": "4",
             "height": "1",
@@ -3101,14 +3101,14 @@
             "y": 3320,
             "wires": [
                 [
-                    "pvvb6uaqr29wbg7s"
+                    "pcgziyr0a61m9rp1"
                 ]
             ]
         },
         {
-            "id": "pvvb6uaqr29wbg7s",
+            "id": "pcgziyr0a61m9rp1",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -3135,15 +3135,15 @@
             "y": 3320,
             "wires": [
                 [
-                    "as0seam8st9kwkh3"
+                    "oea0h83mvwt22wj4"
                 ]
             ]
         },
         {
-            "id": "h62mc833tjypfviy",
+            "id": "olxsa0thbodd9q4g",
             "type": "ui_text",
-            "z": "37867cb6ba9fe124",
-            "group": "mzupt29iagakgt7h",
+            "z": "738fc52c69b89618",
+            "group": "vxm4ekov6vmh3zrt",
             "order": 3,
             "width": "10",
             "height": "1",
@@ -3161,9 +3161,9 @@
             "wires": []
         },
         {
-            "id": "as0seam8st9kwkh3",
+            "id": "oea0h83mvwt22wj4",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "payload",
             "propertyType": "msg",
@@ -3182,17 +3182,17 @@
             "y": 3320,
             "wires": [
                 [
-                    "ucegw0nrelelobaq"
+                    "emnr8l6kdsynbjoa"
                 ],
                 [
-                    "lr8pfwbvy6ep7qxj"
+                    "fjak2vni26reht6u"
                 ]
             ]
         },
         {
-            "id": "wp1pbd7bx7xog0zf",
+            "id": "3o9i9ekxtfezvj53",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "resize",
             "data": "payload",
             "dataType": "msg",
@@ -3246,14 +3246,14 @@
             "y": 2820,
             "wires": [
                 [
-                    "7zu0ta55qfa4udpn"
+                    "b2zpjrjkby6wn2mo"
                 ]
             ]
         },
         {
-            "id": "7zu0ta55qfa4udpn",
+            "id": "b2zpjrjkby6wn2mo",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "merge",
             "data": "base",
             "dataType": "msg",
@@ -3330,14 +3330,14 @@
             "y": 2860,
             "wires": [
                 [
-                    "md9bvyiplxxtj4lz"
+                    "2bu413o6n3gju3yb"
                 ]
             ]
         },
         {
-            "id": "36kmwe4k6ctcug12",
+            "id": "7yg5bcs9nkp30kr3",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set selected image",
             "func": "var image = msg.payload.icon.split(\"/\")[msg.payload.icon.split(\"/\").length -1]\nflow.set(\"LT_IMAGE\",  \"data/lib/ui-media/lib/images/\" + image);\n\nmsg.payload = flow.get(\"LT_IMAGE\");\n\nreturn msg;",
             "outputs": 1,
@@ -3350,14 +3350,14 @@
             "y": 2720,
             "wires": [
                 [
-                    "slnw1m3821m5exas"
+                    "xzuujmp2832rm894"
                 ]
             ]
         },
         {
-            "id": "7szrmt2dmp06lsor",
+            "id": "voxzb48nty83csli",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -3377,14 +3377,14 @@
             "y": 2720,
             "wires": [
                 [
-                    "p9nfwdx1q75kksrb"
+                    "yeox4x999dbpykey"
                 ]
             ]
         },
         {
-            "id": "p9nfwdx1q75kksrb",
+            "id": "yeox4x999dbpykey",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "brightness",
             "data": "payload",
             "dataType": "msg",
@@ -3426,14 +3426,14 @@
             "y": 2740,
             "wires": [
                 [
-                    "qclo5z57i6kukz4d"
+                    "25e0u93oyrs6a83r"
                 ]
             ]
         },
         {
-            "id": "bb5qqvlx1plqtrxe",
+            "id": "jf5tlv54w1p9qtbf",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Top",
             "data": "payload",
             "dataType": "msg",
@@ -3519,15 +3519,15 @@
             "y": 3020,
             "wires": [
                 [
-                    "isq6a4o085dcdcy8"
+                    "88emlmo5wabxzxe3"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "9dn7odd1aue7itvk",
+            "id": "m4sk4cyz5wc7d1td",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set Images",
             "func": "msg.base = \"data/lib/ui-media/lib/images/clear.png\";\nif (flow.get(\"LB_IMAGE\")) {\n    msg.payload = flow.get(\"LB_IMAGE\");\n} else {\n    msg.payload = \"data/lib/ui-media/lib/images/clear.png\";\n}\n\nif(!flow.get(\"LB_ALIGN\")){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -3540,14 +3540,14 @@
             "y": 3040,
             "wires": [
                 [
-                    "flrb65hp4dm9f30l"
+                    "q7in20sjcn6qzyjw"
                 ]
             ]
         },
         {
-            "id": "sbowcau9gf0zvd1e",
+            "id": "iy4xjtbhthldu0g2",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "LB_TEXT",
             "propertyType": "flow",
@@ -3569,20 +3569,20 @@
             "y": 2980,
             "wires": [
                 [
-                    "fuj995zhninc3uvq"
+                    "9ny576mw3j0a1idp"
                 ],
                 [
-                    "fuj995zhninc3uvq"
+                    "9ny576mw3j0a1idp"
                 ],
                 [
-                    "9dn7odd1aue7itvk"
+                    "m4sk4cyz5wc7d1td"
                 ]
             ]
         },
         {
-            "id": "k1o8nz2ebwgldyji",
+            "id": "363zpan34v64zbd8",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -3625,14 +3625,14 @@
             "y": 3040,
             "wires": [
                 [
-                    "dkspub9v7fmplmgc"
+                    "ze0eqyagava12gq7"
                 ]
             ]
         },
         {
-            "id": "jqdpmq47dcnikkhu",
+            "id": "8us36wk8moe7ein5",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -3652,14 +3652,14 @@
             "y": 3020,
             "wires": [
                 [
-                    "sbowcau9gf0zvd1e"
+                    "iy4xjtbhthldu0g2"
                 ]
             ]
         },
         {
-            "id": "dkspub9v7fmplmgc",
+            "id": "ze0eqyagava12gq7",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set preview image",
             "func": "msg.payload = 'screen/LB_PREVIEW.png?' + + (new Date()).getTime()\nmsg.mimetype = \"image/png\";\n\nreturn msg;",
             "outputs": 1,
@@ -3672,14 +3672,14 @@
             "y": 3080,
             "wires": [
                 [
-                    "pv20vkv1btp8w76a"
+                    "27yblhn3uwd45ao2"
                 ]
             ]
         },
         {
-            "id": "ec32r3tb0xuxemps",
+            "id": "fdgyfz4qtk6d1n3r",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set position",
             "func": "if(msg.payload === 0){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_TOP\");\n} else if(msg.payload === 1){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n} else if(msg.payload === 2){\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_BOTTOM\");\n} else {\n    flow.set(\"LB_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -3692,14 +3692,14 @@
             "y": 3060,
             "wires": [
                 [
-                    "sbowcau9gf0zvd1e"
+                    "iy4xjtbhthldu0g2"
                 ]
             ]
         },
         {
-            "id": "1k99128ipqllniym",
+            "id": "n74gummbcm85pyj8",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set size",
             "func": "if(msg.payload === 0){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_32_WHITE\");\n} else if(msg.payload === 1){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_16_WHITE\");\n} else if(msg.payload === 2){\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n} else {\n    flow.set(\"LB_TEXT_SIZE\", \"FONT_SANS_8_WHITE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -3712,14 +3712,14 @@
             "y": 3100,
             "wires": [
                 [
-                    "sbowcau9gf0zvd1e"
+                    "iy4xjtbhthldu0g2"
                 ]
             ]
         },
         {
-            "id": "wmrppjxhwlj4mlcw",
+            "id": "nkpx6lwtwq2h74cc",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "LB_ALIGN",
             "propertyType": "flow",
@@ -3750,23 +3750,23 @@
             "y": 3060,
             "wires": [
                 [
-                    "4s5w0ffptjj7mnua"
+                    "x2cp5ktjb7vmfhm0"
                 ],
                 [
-                    "bb5qqvlx1plqtrxe"
+                    "jf5tlv54w1p9qtbf"
                 ],
                 [
-                    "wiz3mgst9tdcazlz"
+                    "pfpkx47os5zi90v3"
                 ],
                 [
-                    "4s5w0ffptjj7mnua"
+                    "x2cp5ktjb7vmfhm0"
                 ]
             ]
         },
         {
-            "id": "wiz3mgst9tdcazlz",
+            "id": "pfpkx47os5zi90v3",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Middle",
             "data": "payload",
             "dataType": "msg",
@@ -3852,15 +3852,15 @@
             "y": 3060,
             "wires": [
                 [
-                    "isq6a4o085dcdcy8"
+                    "88emlmo5wabxzxe3"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "4s5w0ffptjj7mnua",
+            "id": "x2cp5ktjb7vmfhm0",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Bottom",
             "data": "payload",
             "dataType": "msg",
@@ -3946,15 +3946,15 @@
             "y": 3100,
             "wires": [
                 [
-                    "isq6a4o085dcdcy8"
+                    "88emlmo5wabxzxe3"
                 ]
             ],
             "icon": "font-awesome/fa-image"
         },
         {
-            "id": "flrb65hp4dm9f30l",
+            "id": "q7in20sjcn6qzyjw",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "resize",
             "data": "payload",
             "dataType": "msg",
@@ -4008,14 +4008,14 @@
             "y": 3080,
             "wires": [
                 [
-                    "tmls305ac1ssi1ed"
+                    "xkqpigyipgjmlo9n"
                 ]
             ]
         },
         {
-            "id": "h66qc0ms4rrsgr5g",
+            "id": "txbmhgum97e3sw60",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "merge",
             "data": "base",
             "dataType": "msg",
@@ -4092,14 +4092,14 @@
             "y": 3160,
             "wires": [
                 [
-                    "wmrppjxhwlj4mlcw"
+                    "nkpx6lwtwq2h74cc"
                 ]
             ]
         },
         {
-            "id": "kbk0tmo4audvddnc",
+            "id": "4lioei3h9jvyxli8",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set selected image",
             "func": "var image = msg.payload.icon.split(\"/\")[msg.payload.icon.split(\"/\").length -1]\nflow.set(\"LB_IMAGE\",  \"data/lib/ui-media/lib/images/\" + image);\n\nmsg.payload = flow.get(\"LB_IMAGE\");\n\nreturn msg;",
             "outputs": 1,
@@ -4112,14 +4112,14 @@
             "y": 2980,
             "wires": [
                 [
-                    "sbowcau9gf0zvd1e"
+                    "iy4xjtbhthldu0g2"
                 ]
             ]
         },
         {
-            "id": "isq6a4o085dcdcy8",
+            "id": "88emlmo5wabxzxe3",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "brightness",
             "data": "payload",
             "dataType": "msg",
@@ -4161,14 +4161,14 @@
             "y": 3000,
             "wires": [
                 [
-                    "k1o8nz2ebwgldyji"
+                    "363zpan34v64zbd8"
                 ]
             ]
         },
         {
-            "id": "tmls305ac1ssi1ed",
+            "id": "xkqpigyipgjmlo9n",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "resize",
             "data": "base",
             "dataType": "msg",
@@ -4222,14 +4222,14 @@
             "y": 3120,
             "wires": [
                 [
-                    "h66qc0ms4rrsgr5g"
+                    "txbmhgum97e3sw60"
                 ]
             ]
         },
         {
-            "id": "2rcsyu9tcb5synl5",
+            "id": "h5i4ai8v6nbyqyjo",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set Images",
             "func": "msg.base = \"data/lib/ui-media/lib/images/clear.png\";\nif (flow.get(\"LT_IMAGE\")) {\n    msg.payload = flow.get(\"LT_IMAGE\");\n} else {\n    msg.payload = \"data/lib/ui-media/lib/images/clear.png\";\n}\n\nif(!flow.get(\"LT_ALIGN\")){\n    flow.set(\"LT_ALIGN\", \"VERTICAL_ALIGN_MIDDLE\");\n}\n\nreturn msg;",
             "outputs": 1,
@@ -4242,14 +4242,14 @@
             "y": 2780,
             "wires": [
                 [
-                    "wp1pbd7bx7xog0zf"
+                    "3o9i9ekxtfezvj53"
                 ]
             ]
         },
         {
-            "id": "fuj995zhninc3uvq",
+            "id": "9ny576mw3j0a1idp",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -4269,14 +4269,14 @@
             "y": 2980,
             "wires": [
                 [
-                    "isq6a4o085dcdcy8"
+                    "88emlmo5wabxzxe3"
                 ]
             ]
         },
         {
-            "id": "p0cf3jyesmnuzkr2",
+            "id": "vnafyh47esztmzry",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "resize",
             "data": "data/lib/ui-media/lib/images/clear.png",
             "dataType": "str",
@@ -4330,14 +4330,14 @@
             "y": 3900,
             "wires": [
                 [
-                    "svtqlr36g69kpemn"
+                    "fnh9yh8sfwzlfdwc"
                 ]
             ]
         },
         {
-            "id": "9msguo5xvqn51pta",
+            "id": "3ii7pswfdtqvcahu",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "merge",
             "data": "data/lib/ui-media/lib/screen/BACKGROUND.png",
             "dataType": "str",
@@ -4414,14 +4414,14 @@
             "y": 3940,
             "wires": [
                 [
-                    "awbq37x37yjrzfjx"
+                    "27ybr5eg81ljwwzr"
                 ]
             ]
         },
         {
-            "id": "sje8r4ek9h93orx7",
+            "id": "z49cq52mr4vmrk2p",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -4464,15 +4464,15 @@
             "y": 3980,
             "wires": [
                 [
-                    "xzpaplb8p9tld0i9",
-                    "h2knfrkqhty61f2c"
+                    "pf1vos5wonkyeh0a",
+                    "rioog9ax28yllh67"
                 ]
             ]
         },
         {
-            "id": "x2e679ntkhq4d359",
+            "id": "g9z8iqekon4mk2qz",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "merge",
             "data": "data/lib/ui-media/lib/screen/SCREEN_LIVE.png",
             "dataType": "str",
@@ -4549,14 +4549,14 @@
             "y": 3940,
             "wires": [
                 [
-                    "sje8r4ek9h93orx7"
+                    "z49cq52mr4vmrk2p"
                 ]
             ]
         },
         {
-            "id": "svtqlr36g69kpemn",
+            "id": "fnh9yh8sfwzlfdwc",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -4599,14 +4599,14 @@
             "y": 3940,
             "wires": [
                 [
-                    "3xmdzeb799nq1m89"
+                    "dookdnjg1q6r4ldc"
                 ]
             ]
         },
         {
-            "id": "3xmdzeb799nq1m89",
+            "id": "dookdnjg1q6r4ldc",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "resize",
             "data": "data/lib/ui-media/lib/screen/LT_LIVE.png",
             "dataType": "str",
@@ -4660,14 +4660,14 @@
             "y": 3900,
             "wires": [
                 [
-                    "9msguo5xvqn51pta"
+                    "3ii7pswfdtqvcahu"
                 ]
             ]
         },
         {
-            "id": "awbq37x37yjrzfjx",
+            "id": "27ybr5eg81ljwwzr",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -4710,14 +4710,14 @@
             "y": 3980,
             "wires": [
                 [
-                    "kdokxuihyisn8j8n"
+                    "gi068jfrw6sdv0zy"
                 ]
             ]
         },
         {
-            "id": "kdokxuihyisn8j8n",
+            "id": "gi068jfrw6sdv0zy",
             "type": "jimp-image",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "resize",
             "data": "data/lib/ui-media/lib/screen/LB_LIVE.png",
             "dataType": "str",
@@ -4771,14 +4771,14 @@
             "y": 3900,
             "wires": [
                 [
-                    "x2e679ntkhq4d359"
+                    "g9z8iqekon4mk2qz"
                 ]
             ]
         },
         {
-            "id": "ucegw0nrelelobaq",
+            "id": "emnr8l6kdsynbjoa",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -4805,14 +4805,14 @@
             "y": 3300,
             "wires": [
                 [
-                    "7ddhrrfwpxtkraew"
+                    "1tbrpgpcrkialf9v"
                 ]
             ]
         },
         {
-            "id": "lr8pfwbvy6ep7qxj",
+            "id": "fjak2vni26reht6u",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -4839,14 +4839,14 @@
             "y": 3340,
             "wires": [
                 [
-                    "7ddhrrfwpxtkraew"
+                    "1tbrpgpcrkialf9v"
                 ]
             ]
         },
         {
-            "id": "xgibwcwei565ec3y",
+            "id": "kufok9gq8qaoxr7b",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "1",
@@ -4864,14 +4864,14 @@
             "y": 3240,
             "wires": [
                 [
-                    "lr8pfwbvy6ep7qxj"
+                    "fjak2vni26reht6u"
                 ]
             ]
         },
         {
-            "id": "4pl0c8dn47nkben6",
+            "id": "2pjvz5r9fk1awwyk",
             "type": "modbus-flex-connector",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Channel Connector",
             "maxReconnectsPerMinute": 4,
             "emptyQueue": false,
@@ -4885,9 +4885,9 @@
             ]
         },
         {
-            "id": "n55dvsur11jdc3jn",
+            "id": "72i8gvmzmivljuez",
             "type": "modbus-flex-sequencer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Channel Read",
             "sequences": [
                 {
@@ -4914,16 +4914,16 @@
             "y": 420,
             "wires": [
                 [
-                    "05dcqe2u40jtcwmt",
-                    "ryu8jf98pzef65x1"
+                    "8muy2gqrjkirwhoj",
+                    "7ql8j2b1duj6fjqz"
                 ],
                 []
             ]
         },
         {
-            "id": "h004l6o4thll1o6m",
+            "id": "xef4zfhlhbjijrrm",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "send bridge data",
             "func": "msg.payload = \"\";\n\nmsg.sequences = flow.get(\"bridge.image.protocols\").filter(protocol => protocol.id.includes(\"DIGITAL\") || protocol.id.includes(\"ANALOG\") || protocol.id.includes(\"INTEGER\")).map(dataPoint => {\n    return {\n        dataPoint: dataPoint,\n        name: dataPoint.id,\n        fc: dataPoint.fc,\n        address: dataPoint.address,\n        unitid: flow.get(\"bridge.image.controller.unitId\"),\n        quantity: global.get(\"function.typeToRegisterLength\")(dataPoint.type)\n    };\n});\n\nif (msg.sequences.length > 0) {\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -4936,14 +4936,14 @@
             "y": 420,
             "wires": [
                 [
-                    "n55dvsur11jdc3jn"
+                    "72i8gvmzmivljuez"
                 ]
             ]
         },
         {
-            "id": "05dcqe2u40jtcwmt",
+            "id": "8muy2gqrjkirwhoj",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set number data point values",
             "func": "if (!msg.dataPoint.type.includes(\"bool\") || (msg.dataPoint.type.includes(\"bool\") && typeof msg.payload[0] !== \"boolean\")) {\n    msg.spec = {\n        \"options\":\n        {\n            \"byteSwap\": msg.dataPoint.type.includes(\"bool\"),\n            \"resultType\": \"keyvalue\",\n            \"singleResult\": true,\n            \"setTopic\": true,\n            \"msgProperty\": \"payload\",\n        },\n        \"items\": []\n    }\n\n    msg.spec.items = [\n        {\n            \"name\": msg.name,\n            \"type\": msg.dataPoint.type.includes(\"bool\") ? \"bool\" : msg.dataPoint.type,\n            \"length \": global.get(\"function.typeToRegisterLength\")(msg.dataPoint.type),\n            \"offset\": 0,\n            \"offsetbit\": msg.dataPoint.offsetbit,\n            \"scale\": msg.dataPoint.scale.toString(),\n            \"mask\": msg.dataPoint.mask\n        }\n    ];\n\n    if (msg.dataPoint.type.includes(\"bool\") && typeof msg.payload[0] !== \"boolean\" && msg.dataPoint.invert) {\n        msg.payload[0] = Math.abs(msg.payload[0] - 1)\n    }\n\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -4955,14 +4955,14 @@
             "y": 420,
             "wires": [
                 [
-                    "bkdekpjgpgd5j8s5"
+                    "43155p6g90cfzra1"
                 ]
             ]
         },
         {
-            "id": "bkdekpjgpgd5j8s5",
+            "id": "43155p6g90cfzra1",
             "type": "buffer-parser",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "data": "payload",
             "dataType": "msg",
@@ -4997,14 +4997,14 @@
             "y": 420,
             "wires": [
                 [
-                    "5il6tqox3l81qsz4"
+                    "uwzmj5p49azokxkn"
                 ]
             ]
         },
         {
-            "id": "ryu8jf98pzef65x1",
+            "id": "7ql8j2b1duj6fjqz",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set boolean data point values",
             "func": "if (msg.dataPoint.type.includes(\"bool\") && typeof msg.payload[0] === \"boolean\") {\n    var payload = {};\n    payload[msg.name] = msg.payload[msg.dataPoint.offsetbit];\n\n    if (msg.dataPoint.invert) {\n        payload[msg.name] = !payload[msg.name];\n    }\n\n    msg.payload = payload;\n    node.send(msg);\n}\n\nnode.done();\n",
             "outputs": 1,
@@ -5016,14 +5016,14 @@
             "y": 460,
             "wires": [
                 [
-                    "5il6tqox3l81qsz4"
+                    "uwzmj5p49azokxkn"
                 ]
             ]
         },
         {
-            "id": "xce77gdboejkcd9t",
+            "id": "matanjqqtjtmcbhd",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Protocol Read",
             "links": [
                 "qoxu08aqopopa2q1",
@@ -5034,14 +5034,14 @@
             "y": 420,
             "wires": [
                 [
-                    "lp7kxou3nyymztdl"
+                    "1wfixyanu3x1qt1f"
                 ]
             ]
         },
         {
-            "id": "lp7kxou3nyymztdl",
+            "id": "1wfixyanu3x1qt1f",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -5059,26 +5059,26 @@
             "y": 420,
             "wires": [
                 [
-                    "ykzv1qbndi0q1w4g"
+                    "icopmxo1r9w2xdks"
                 ]
             ]
         },
         {
-            "id": "5il6tqox3l81qsz4",
+            "id": "uwzmj5p49azokxkn",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 28",
             "mode": "link",
             "links": [
-                "w772tcsn1onwfdeo"
+                "v7nggbxcllwfvxw8"
             ],
             "x": 1275,
             "y": 420
         },
         {
-            "id": "ykzv1qbndi0q1w4g",
+            "id": "icopmxo1r9w2xdks",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Config correct",
             "property": "bridge.image.protocols",
             "propertyType": "flow",
@@ -5096,14 +5096,14 @@
             "y": 460,
             "wires": [
                 [
-                    "h004l6o4thll1o6m"
+                    "xef4zfhlhbjijrrm"
                 ]
             ]
         },
         {
-            "id": "twzuvi281v6y0e8r",
+            "id": "hydnbrhixq0flquy",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "---- Update Telemetry Metrics",
             "info": "",
             "x": 120,
@@ -5111,26 +5111,26 @@
             "wires": []
         },
         {
-            "id": "w772tcsn1onwfdeo",
+            "id": "v7nggbxcllwfvxw8",
             "type": "link in",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Update Telemetry Metrics",
             "links": [
-                "5il6tqox3l81qsz4",
-                "nqg93o7ahzji4btw"
+                "uwzmj5p49azokxkn",
+                "lwqt05g4wil81qn7"
             ],
             "x": 115,
             "y": 1060,
             "wires": [
                 [
-                    "mtjg1z3086q6pr8i"
+                    "94ipxga8q5trh95h"
                 ]
             ]
         },
         {
-            "id": "mtjg1z3086q6pr8i",
+            "id": "94ipxga8q5trh95h",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set sensor value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"error\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n            msg.errorUpstreamRequired = true;\n    }\n    if (msg.dataPoint.topic.find(topic => topic === \"state\") && flow.get(\"bridge\").image.metrics[propertyName] !== undefined && flow.get(\"bridge\").image.metrics[propertyName] !== msg.payload[propertyName]) {\n        msg.stateUpstreamRequired = true;\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
@@ -5143,15 +5143,15 @@
             "y": 1060,
             "wires": [
                 [
-                    "ihhn8bh5ghvd0oxe",
-                    "v7g3dlyzzruu3xev"
+                    "iffhg96o8txrhq2m",
+                    "b8pf8fnwkkxj8kyw"
                 ]
             ]
         },
         {
-            "id": "v7g3dlyzzruu3xev",
+            "id": "b8pf8fnwkkxj8kyw",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Error Upstream Required?",
             "property": "errorUpstreamRequired",
             "propertyType": "msg",
@@ -5167,14 +5167,14 @@
             "y": 1060,
             "wires": [
                 [
-                    "plfbprssq248hgrz"
+                    "0tbrwk47f1z3y38o"
                 ]
             ]
         },
         {
-            "id": "ihhn8bh5ghvd0oxe",
+            "id": "iffhg96o8txrhq2m",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "State Upstream Required?",
             "property": "stateUpstreamRequired",
             "propertyType": "msg",
@@ -5190,14 +5190,14 @@
             "y": 1100,
             "wires": [
                 [
-                    "7qulfagcffhedh4z"
+                    "xpcszazc35e4f6yy"
                 ]
             ]
         },
         {
-            "id": "n2qiuvk7ibto0nv5",
+            "id": "e3c4tzbvbxdvpzbg",
             "type": "comment",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "---- Protocol Read",
             "info": "",
             "x": 90,
@@ -5205,9 +5205,9 @@
             "wires": []
         },
         {
-            "id": "hk1vkdgjyqpsprpa",
+            "id": "pczsw1yyftf7harj",
             "type": "mqtt out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "topic": "cloud/upstream/response",
             "qos": "2",
@@ -5223,9 +5223,9 @@
             "wires": []
         },
         {
-            "id": "r3c67or92qyfy2oq",
+            "id": "o66d8ekr9klqvoy5",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Write data",
             "func": "let writeMessage = { payload:  msg.payload };\nwriteMessage.protocolCommand = msg.protocolCommand;\n\nlet responseMessage = { payload: { response: msg.response } };\nresponseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\nresponseMessage.payload.response.status = \"OK\";\nresponseMessage.payload.response.error = \"\";\n\nreturn [writeMessage, responseMessage];",
             "outputs": 2,
@@ -5238,17 +5238,17 @@
             "y": 1940,
             "wires": [
                 [
-                    "4spa7508mvplmzxo"
+                    "v5ws5k6hjixalmyv"
                 ],
                 [
-                    "lyia5yvqmy9erog7"
+                    "35dcycoydiwwmo7z"
                 ]
             ]
         },
         {
-            "id": "mg2vioua7lwcdg3k",
+            "id": "7yevps0ip1k1vd8q",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Execute SPS Command",
             "active": true,
             "tosidebar": true,
@@ -5263,9 +5263,9 @@
             "wires": []
         },
         {
-            "id": "4spa7508mvplmzxo",
+            "id": "v5ws5k6hjixalmyv",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "protocolCommand.type",
             "propertyType": "msg",
@@ -5288,19 +5288,19 @@
             "y": 1920,
             "wires": [
                 [
-                    "m6uuc2nv3jsbwvnw"
+                    "mcowqdlnd1hpn5ve"
                 ],
                 [
-                    "mg2vioua7lwcdg3k",
-                    "kfqxxrm8djlqmg3y",
-                    "cy8hbtcdhb3z30hl"
+                    "7yevps0ip1k1vd8q",
+                    "8swdokd1zx7qi1j3",
+                    "nfn42rv1hw9z629t"
                 ]
             ]
         },
         {
-            "id": "m6uuc2nv3jsbwvnw",
+            "id": "mcowqdlnd1hpn5ve",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Command type not yet implemented",
             "active": true,
             "tosidebar": true,
@@ -5315,9 +5315,9 @@
             "wires": []
         },
         {
-            "id": "4x7cn6jkbhojirn4",
+            "id": "954lhskel9q31co5",
             "type": "catch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "scope": [
                 "af7a5d65221b4b94"
@@ -5327,14 +5327,14 @@
             "y": 2020,
             "wires": [
                 [
-                    "zzeq86ypnwbb393x"
+                    "2a8hk4tkrqqe4yjk"
                 ]
             ]
         },
         {
-            "id": "2w863sybtsqxnltb",
+            "id": "0cnw5mpv9o5zse9q",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -5352,14 +5352,14 @@
             "y": 1960,
             "wires": [
                 [
-                    "hk1vkdgjyqpsprpa"
+                    "pczsw1yyftf7harj"
                 ]
             ]
         },
         {
-            "id": "cy8hbtcdhb3z30hl",
+            "id": "nfn42rv1hw9z629t",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -5379,14 +5379,14 @@
             "y": 1920,
             "wires": [
                 [
-                    "2w863sybtsqxnltb"
+                    "0cnw5mpv9o5zse9q"
                 ]
             ]
         },
         {
-            "id": "lyia5yvqmy9erog7",
+            "id": "35dcycoydiwwmo7z",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "delay",
             "timeout": "5",
@@ -5404,14 +5404,14 @@
             "y": 2060,
             "wires": [
                 [
-                    "hk1vkdgjyqpsprpa"
+                    "pczsw1yyftf7harj"
                 ]
             ]
         },
         {
-            "id": "zzeq86ypnwbb393x",
+            "id": "2a8hk4tkrqqe4yjk",
             "type": "change",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "rules": [
                 {
@@ -5431,14 +5431,14 @@
             "y": 2020,
             "wires": [
                 [
-                    "lyia5yvqmy9erog7"
+                    "35dcycoydiwwmo7z"
                 ]
             ]
         },
         {
-            "id": "zs7s8cdln7kd2xro",
+            "id": "r5hnam1z5ugibgfq",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "prepare write data",
             "func": "const command = msg.payload.command;\nconst response = msg.payload.response;\nconst matchingCommand = flow.get(\"bridge.image.commands\").find(bridgeCommand => bridgeCommand.id === command.id)\nconst matchingProtocol = matchingCommand ? flow.get(\"bridge.image.protocols\").find(protocol => protocol.id === matchingCommand.protocolId) : undefined;\n\nif (matchingProtocol && matchingCommand) {\n    response.value = {\n        \"actual\": false,\n        \"target\": true\n    }\n    msg.protocolCommand = matchingCommand;\n    msg.response = response;\n    \n    if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"boolean\") {\n        if (matchingProtocol.invert) {\n            command.value = !command.value;\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (matchingProtocol.type.includes(\"bool\") && typeof command.value === \"number\") {\n        if (matchingProtocol.invert) {\n            command.value = Math.abs(command.value - 1);\n        }\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else if (typeof command.value === \"number\") {\n        msg.payload = {\n            \"value\": matchingProtocol.type.startsWith(\"int16\") && command.value < 0 ? 65536 + command.value * (1 / matchingProtocol.scale) : command.value * (1 / matchingProtocol.scale),\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    } else {\n        msg.payload = {\n            \"value\": command.value,\n            \"fc\": matchingCommand.fc,\n            \"unitid\": flow.get(\"bridge.image.controller.unitId\"),\n            \"address\": matchingProtocol.address,\n            \"quantity\": global.get(\"function.typeToRegisterLength\")(matchingProtocol.type)\n        }\n    }\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_EXECUTION\";\n\n    return [msg, responseMessage]\n} else {\n    node.warn(\"Command configuration wrong!\");\n    let responseMessage = { payload: { response: response } };\n    responseMessage.payload.topic = flow.get(\"bridge\").uplink.endpoint.url + \"/command/response\";\n    responseMessage.payload.response.status = \"ERROR\";\n    responseMessage.payload.response.error = \"ERROR_BRIDGE_COMMAND_CONFIG\";\n    \n    return [null, responseMessage];\n}\n",
             "outputs": 2,
@@ -5451,17 +5451,17 @@
             "y": 1960,
             "wires": [
                 [
-                    "r3c67or92qyfy2oq"
+                    "o66d8ekr9klqvoy5"
                 ],
                 [
-                    "2w863sybtsqxnltb"
+                    "0cnw5mpv9o5zse9q"
                 ]
             ]
         },
         {
-            "id": "4nhlrhmy1blckdza",
+            "id": "ogoz1gbdfwcgj4m5",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "msg.payload.command.id",
             "propertyType": "msg",
@@ -5484,17 +5484,17 @@
             "y": 1540,
             "wires": [
                 [
-                    "iw9yog75fbw3q36a"
+                    "m555wjcmtihy7ge3"
                 ],
                 [
-                    "zs7s8cdln7kd2xro"
+                    "r5hnam1z5ugibgfq"
                 ]
             ]
         },
         {
-            "id": "fnstbfr5fujwkwk2",
+            "id": "8x01kwjvbsutx3p5",
             "type": "delay",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "pauseType": "rate",
             "timeout": "5",
@@ -5512,16 +5512,16 @@
             "y": 520,
             "wires": [
                 [
-                    "ovltis6k31qcmkzp"
+                    "mq3hcux5ylm6wa3x"
                 ]
             ]
         },
         {
-            "id": "ovltis6k31qcmkzp",
+            "id": "mq3hcux5ylm6wa3x",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Round values",
-            "func": "msg.payload[\"VIRTUAL-0\"] = false;\nmsg.payload[\"ANALOG-0\"] = msg.payload[\"ANALOG-0\"] / 100;\n\nreturn msg;",
+            "func": "msg.payload[\"VIRTUAL-0\"] = false;\nif (msg.payload[\"AM1\"]) {\n    msg.payload[\"AM1\"] = msg.payload[\"AM1\"] / 100;\n}\nif (msg.payload[\"AM2\"]) {\n    msg.payload[\"AM2\"] = msg.payload[\"AM2\"] / 100;\n}\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -5532,16 +5532,16 @@
             "y": 520,
             "wires": [
                 [
-                    "5il6tqox3l81qsz4",
-                    "rddelf2tdve0vocg"
+                    "uwzmj5p49azokxkn",
+                    "fzgtmnrja374613z"
                 ]
             ]
         },
         {
-            "id": "cdkq2zuf4edqsfkp",
+            "id": "jc83idjern06c68j",
             "type": "s7 in",
-            "z": "37867cb6ba9fe124",
-            "endpoint": "r2nj7sx1nvmc5k9j",
+            "z": "738fc52c69b89618",
+            "endpoint": "reu7595jq8gd4qzk",
             "mode": "all",
             "variable": "",
             "diff": false,
@@ -5550,14 +5550,14 @@
             "y": 520,
             "wires": [
                 [
-                    "fnstbfr5fujwkwk2"
+                    "8x01kwjvbsutx3p5"
                 ]
             ]
         },
         {
-            "id": "ws3hilq1vh7sbw9b",
+            "id": "vg5xp6dzk8dnbd16",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "error.source.type",
             "propertyType": "msg",
@@ -5578,17 +5578,17 @@
             "y": 2260,
             "wires": [
                 [
-                    "fa4v5oshedvl4bg1"
+                    "owjd2wgphrc12exb"
                 ],
                 [
-                    "r8g6nboy6juwnsgg"
+                    "um3fgpqb4l5a3ndj"
                 ]
             ]
         },
         {
-            "id": "rddelf2tdve0vocg",
+            "id": "fzgtmnrja374613z",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "debug 7",
             "active": true,
             "tosidebar": true,
@@ -5602,21 +5602,21 @@
             "wires": []
         },
         {
-            "id": "nqg93o7ahzji4btw",
+            "id": "lwqt05g4wil81qn7",
             "type": "link out",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "link out 29",
             "mode": "link",
             "links": [
-                "w772tcsn1onwfdeo"
+                "v7nggbxcllwfvxw8"
             ],
             "x": 455,
             "y": 2200
         },
         {
-            "id": "fa4v5oshedvl4bg1",
+            "id": "owjd2wgphrc12exb",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "SPS Error",
             "func": "msg = {\n    payload : {}\n}\n\nmsg.payload[\"VIRTUAL-0\"] = true;\n\nreturn msg;",
             "outputs": 1,
@@ -5629,14 +5629,14 @@
             "y": 2200,
             "wires": [
                 [
-                    "e68fb2b8f9eda4b2"
+                    "l1emshofj19lbuzk"
                 ]
             ]
         },
         {
-            "id": "kfqxxrm8djlqmg3y",
+            "id": "8swdokd1zx7qi1j3",
             "type": "switch",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "",
             "property": "protocolCommand.id",
             "propertyType": "msg",
@@ -5709,48 +5709,48 @@
             "y": 1840,
             "wires": [
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ],
                 [
-                    "2d87b9d86b5c7212"
+                    "w5byh1oxpfxk5oac"
                 ]
             ]
         },
         {
-            "id": "61110cedbd75cd6a",
+            "id": "3833l6hdnvg29u4b",
             "type": "s7 out",
-            "z": "37867cb6ba9fe124",
-            "endpoint": "r2nj7sx1nvmc5k9j",
+            "z": "738fc52c69b89618",
+            "endpoint": "reu7595jq8gd4qzk",
             "variable": "",
             "name": "",
             "x": 1700,
@@ -5758,9 +5758,9 @@
             "wires": []
         },
         {
-            "id": "2d87b9d86b5c7212",
+            "id": "w5byh1oxpfxk5oac",
             "type": "function",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Set value",
             "func": "msg = {\n    \"variable\" : msg.protocolCommand.id,\n    \"payload\": true,\n}\n\nreturn msg;",
             "outputs": 1,
@@ -5773,14 +5773,14 @@
             "y": 1840,
             "wires": [
                 [
-                    "61110cedbd75cd6a"
+                    "3833l6hdnvg29u4b"
                 ]
             ]
         },
         {
-            "id": "e68fb2b8f9eda4b2",
+            "id": "l1emshofj19lbuzk",
             "type": "debug",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "SPS Error",
             "active": true,
             "tosidebar": true,
@@ -5797,11 +5797,11 @@
     ],
     "configs": [
         {
-            "id": "ahc6iotwm7df3zwe",
+            "id": "7jouvyguj8284a6u",
             "type": "ui_group",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Screen Oben",
-            "tab": "u261oawxnv4cauuj",
+            "tab": "tx9nk5g1fzwopawt",
             "order": 1,
             "disp": true,
             "width": "10",
@@ -5809,11 +5809,11 @@
             "className": ""
         },
         {
-            "id": "wtu26o2ch9j46e3q",
+            "id": "f7p2oqiekn497usd",
             "type": "ui_group",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Vorschau",
-            "tab": "u261oawxnv4cauuj",
+            "tab": "tx9nk5g1fzwopawt",
             "order": 3,
             "disp": true,
             "width": "5",
@@ -5821,11 +5821,11 @@
             "className": ""
         },
         {
-            "id": "ik5ku4yv6ztqzncm",
+            "id": "2fr8sl5qwm327a3h",
             "type": "ui_group",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Screen Unten",
-            "tab": "u261oawxnv4cauuj",
+            "tab": "tx9nk5g1fzwopawt",
             "order": 2,
             "disp": true,
             "width": "10",
@@ -5833,11 +5833,11 @@
             "className": ""
         },
         {
-            "id": "rx3wzvrz6h7c7fsv",
+            "id": "arw1pe6rga962iv3",
             "type": "ui_group",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Live",
-            "tab": "u261oawxnv4cauuj",
+            "tab": "tx9nk5g1fzwopawt",
             "order": 4,
             "disp": true,
             "width": "5",
@@ -5845,9 +5845,9 @@
             "className": ""
         },
         {
-            "id": "u261oawxnv4cauuj",
+            "id": "tx9nk5g1fzwopawt",
             "type": "ui_tab",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Anzeige",
             "icon": "dashboard",
             "order": 1,
@@ -5855,9 +5855,9 @@
             "hidden": false
         },
         {
-            "id": "dh25p4o737wekigh",
+            "id": "7fyo0odmpdo7qxio",
             "type": "ui_base",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "theme": {
                 "name": "theme-light",
                 "lightTheme": {
@@ -5953,9 +5953,9 @@
             }
         },
         {
-            "id": "jktdj3rezcgdc8nm",
+            "id": "cvxd5stdiyiawlev",
             "type": "ui_tab",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Steuerung",
             "icon": "fa-cogs",
             "order": 2,
@@ -5963,11 +5963,11 @@
             "hidden": false
         },
         {
-            "id": "mzupt29iagakgt7h",
+            "id": "vxm4ekov6vmh3zrt",
             "type": "ui_group",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "Bildschirm Konfiguration",
-            "tab": "jktdj3rezcgdc8nm",
+            "tab": "cvxd5stdiyiawlev",
             "order": 5,
             "disp": true,
             "width": "10",
@@ -5975,239 +5975,239 @@
             "className": ""
         },
         {
-            "id": "yoqmqemfbxau2x6r",
+            "id": "x5nk7hoyt2tiiaza",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 1,
             "width": 1,
             "height": 1
         },
         {
-            "id": "zkeov4qmercwwl8a",
+            "id": "ec86w6j3z7s6ifn4",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 3,
             "width": 1,
             "height": 1
         },
         {
-            "id": "6zmtiuf0oj26e6tu",
+            "id": "927rkquga98fnp11",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 5,
             "width": 2,
             "height": 1
         },
         {
-            "id": "omvobbs5bfapdb5d",
+            "id": "w6bl9gn4jw9b2dwu",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 6,
             "width": 1,
             "height": 1
         },
         {
-            "id": "m1z7ufo22r3dsmu2",
+            "id": "xpxveq9ehuytn5zv",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 7,
             "width": 2,
             "height": 1
         },
         {
-            "id": "xsjk56x1hgavldz6",
+            "id": "lt8606tpizx0g664",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 8,
             "width": 1,
             "height": 1
         },
         {
-            "id": "h799t7ollz2zzobp",
+            "id": "zw2kvwuktjuzotqo",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 10,
             "width": 1,
             "height": 1
         },
         {
-            "id": "1uvjkvx5tnaxlldf",
+            "id": "7w1l2q2mbd1mo2ek",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 12,
             "width": 2,
             "height": 1
         },
         {
-            "id": "pd07ly623a8x0b2g",
+            "id": "qaq3n8tc7f4y57mb",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 13,
             "width": 1,
             "height": 1
         },
         {
-            "id": "k2esf7cw3svug5bj",
+            "id": "djoqyrpe4g471h2o",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 14,
             "width": 2,
             "height": 1
         },
         {
-            "id": "8rysteeelt3uve7t",
+            "id": "2bmsn17ifygd93qn",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 15,
             "width": 1,
             "height": 1
         },
         {
-            "id": "muliqc4oqasgt0yp",
+            "id": "9h93fa90fob5ueyb",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "wtu26o2ch9j46e3q",
+            "group": "f7p2oqiekn497usd",
             "order": 17,
             "width": 1,
             "height": 1
         },
         {
-            "id": "q0l74mes1uzrq1fn",
+            "id": "v056jpl0vds2g7nb",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 1,
             "width": 1,
             "height": 1
         },
         {
-            "id": "k72wmnb892l1n4q2",
+            "id": "dcyh7ewhv4vr2duj",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 9,
             "width": 1,
             "height": 1
         },
         {
-            "id": "1xqu990bvnrgd7ln",
+            "id": "oj3oayes89ja370d",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 24,
             "width": 2,
             "height": 1
         },
         {
-            "id": "iof7xy59usqdqajk",
+            "id": "khiylqzst8ts54ws",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 31,
             "width": 1,
             "height": 1
         },
         {
-            "id": "gcx236zlglhf96sk",
+            "id": "5itt804c1n0n8kfi",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 32,
             "width": 2,
             "height": 1
         },
         {
-            "id": "doptipk5jb6qj77r",
+            "id": "0ob84w3otwu16ntu",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 39,
             "width": 1,
             "height": 1
         },
         {
-            "id": "l7q5l2z9ezs3frt8",
+            "id": "hdgqi1x3t1mguexx",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 47,
             "width": 1,
             "height": 1
         },
         {
-            "id": "f3sa4lwkk7piji0f",
+            "id": "7zi2pl5cxqex8my5",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 61,
             "width": 2,
             "height": 1
         },
         {
-            "id": "780s23rpjzepdzez",
+            "id": "4hqs5bx8jqkcxda9",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 62,
             "width": 1,
             "height": 1
         },
         {
-            "id": "mp7nci9mxgk6qqo7",
+            "id": "11fks1jer42zo50e",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 63,
             "width": 2,
             "height": 1
         },
         {
-            "id": "bwn9hxx5dc13pzz1",
+            "id": "zblk3ohol24673c2",
             "type": "ui_spacer",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "name": "spacer",
-            "group": "rx3wzvrz6h7c7fsv",
+            "group": "arw1pe6rga962iv3",
             "order": 64,
             "width": "5",
             "height": "1"
         },
         {
-            "id": "r2nj7sx1nvmc5k9j",
+            "id": "reu7595jq8gd4qzk",
             "type": "s7 endpoint",
-            "z": "37867cb6ba9fe124",
+            "z": "738fc52c69b89618",
             "transport": "iso-on-tcp",
             "address": "192.168.1.101",
             "port": "102",
