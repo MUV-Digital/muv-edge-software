@@ -2843,7 +2843,7 @@
             "type": "function",
             "z": "738fc52c69b89618",
             "name": "Update LED Metrics",
-            "func": "const LB_IMAGE = flow.get(\"LB_IMAGE\").split(\"/\")[flow.get(\"LB_IMAGE\").split(\"/\").length -1];\nconst LT_IMAGE = flow.get(\"LT_IMAGE\").split(\"/\")[flow.get(\"LT_IMAGE\").split(\"/\").length -1];\n\nconst message ={ \"payload\": {} };\nif (LT_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-0\"] = \"\";\n} else {\n    message.payload[\"IMAGE-0\"] = LT_IMAGE;\n}\nif(LB_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-1\"] = \"\";\n} else {\n    message.payload[\"IMAGE-1\"] = LB_IMAGE;\n}\nmessage.payload[\"TEXT-0\"] = flow.get(\"LT_TEXT\");\nmessage.payload[\"TEXT-1\"] = flow.get(\"LB_TEXT\");\n\nreturn message;",
+            "func": "const LB_IMAGE = flow.get(\"LB_IMAGE\").split(\"/\")[flow.get(\"LB_IMAGE\").split(\"/\").length -1];\nconst LT_IMAGE = flow.get(\"LT_IMAGE\").split(\"/\")[flow.get(\"LT_IMAGE\").split(\"/\").length -1];\n\nconst message ={ \"payload\": {} };\nif (LT_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-0\"] = \"\";\n} else {\n    message.payload[\"IMAGE-0\"] = LT_IMAGE;\n}\nif(LB_IMAGE.includes(\"clear\")){\n    message.payload[\"IMAGE-1\"] = \"\";\n} else {\n    message.payload[\"IMAGE-1\"] = LB_IMAGE;\n}\nmessage.payload[\"TEXT-0\"] = flow.get(\"LT_TEXT\");\nmessage.payload[\"TEXT-1\"] = flow.get(\"LB_TEXT\");\nmessage.payload[\"SIZE-0\"] = flow.get(\"LT_TEXT_SIZE\");\nmessage.payload[\"SIZE-1\"] = flow.get(\"LB_TEXT_SIZE\");\nmessage.payload[\"ALIGN-0\"] = flow.get(\"LT_ALIGN\");\nmessage.payload[\"ALIGN-1\"] = flow.get(\"LB_ALIGN\");\nmessage.payload[\"BRIGHTNESS-0\"] = flow.get(\"LT_BRIGHTNESS\");\n\nreturn message;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -5468,6 +5468,26 @@
             "rules": [
                 {
                     "t": "cont",
+                    "v": "TEXT",
+                    "vt": "str"
+                },
+                {
+                    "t": "cont",
+                    "v": "SIZE",
+                    "vt": "str"
+                },
+                {
+                    "t": "cont",
+                    "v": "ALIGN",
+                    "vt": "str"
+                },
+                {
+                    "t": "cont",
+                    "v": "BRIGHTNESS",
+                    "vt": "str"
+                },
+                {
+                    "t": "cont",
                     "v": "IMAGE",
                     "vt": "str"
                 },
@@ -5479,10 +5499,22 @@
             ],
             "checkall": "false",
             "repair": false,
-            "outputs": 2,
+            "outputs": 6,
             "x": 250,
-            "y": 1540,
+            "y": 1560,
             "wires": [
+                [
+                    "ee2cf767611fd42f"
+                ],
+                [
+                    "ee2cf767611fd42f"
+                ],
+                [
+                    "ee2cf767611fd42f"
+                ],
+                [
+                    "ee2cf767611fd42f"
+                ],
                 [
                     "m555wjcmtihy7ge3"
                 ],
@@ -5792,6 +5824,22 @@
             "statusType": "auto",
             "x": 500,
             "y": 2160,
+            "wires": []
+        },
+        {
+            "id": "ee2cf767611fd42f",
+            "type": "debug",
+            "z": "738fc52c69b89618",
+            "name": "debug 8",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "false",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 400,
+            "y": 1580,
             "wires": []
         }
     ],
