@@ -117,7 +117,7 @@
                     "t": "set",
                     "p": "simulationData",
                     "pt": "flow",
-                    "to": "{\"SYSTEM-0\":0,\"SIM-0\":0,\"SIM-1\":false,\"SIM-2\":99,\"ERROR-0\":false,\"RESET-0\":false}",
+                    "to": "{\"SYSTEM-0\":0,\"SIM-0\":0,\"SIM-1\":false,\"SIM-2\":99,\"ERROR-0\":false,\"RESET-0\":false,\"BOOL-0\":false,\"BOOL-1\":false,\"BOOL-2\":false,\"STRING-2\":\"\",\"STRING-3\":\"\",\"SIM-3\":99}",
                     "tot": "json"
                 }
             ],
