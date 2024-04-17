@@ -285,7 +285,6 @@
             "z": "88227ed73c927385",
             "name": "Update LED Metrics",
             "links": [
-                "hkv2p76jqjfr2qdn",
                 "wno9ypdnlj03tae2",
                 "n7kma1jwq0qadi6l",
                 "sput5fd77lpyqalk",
@@ -304,7 +303,7 @@
             "type": "function",
             "z": "88227ed73c927385",
             "name": "Set LED value on bridge",
-            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nmsg.stateUpstreamRequired = false;\nmsg.errorUpstreamRequired = false;\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
@@ -385,7 +384,7 @@
             "name": "link out 16",
             "mode": "link",
             "links": [
-                "1e6enjl9whwixxkl"
+                "ki3t6l9y04nqkowv"
             ],
             "x": 1285,
             "y": 260
@@ -3901,7 +3900,8 @@
             "name": "Update Telemetry Metrics",
             "links": [
                 "kfjfk1wviy30ml83",
-                "fr5ctzp133i0mwyg"
+                "fr5ctzp133i0mwyg",
+                "hkv2p76jqjfr2qdn"
             ],
             "x": 115,
             "y": 1380,
@@ -4584,8 +4584,8 @@
             "complete": "false",
             "statusVal": "",
             "statusType": "auto",
-            "x": 400,
-            "y": 2080,
+            "x": 420,
+            "y": 2120,
             "wires": []
         },
         {
