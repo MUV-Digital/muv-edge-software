@@ -267,7 +267,7 @@
                     "vt": "str"
                 }
             ],
-            "repeat": "120",
+            "repeat": "150",
             "crontab": "",
             "once": true,
             "onceDelay": "30",
