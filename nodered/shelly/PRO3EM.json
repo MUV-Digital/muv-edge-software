@@ -1,0 +1,234 @@
+{
+    "id": "a813916d4e0d868c",
+    "label": "POWER_MEASUREMENT",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "47603ec35f3c14e3",
+            "type": "mqtt out",
+            "z": "a813916d4e0d868c",
+            "name": "",
+            "topic": "cloud/upstream/data",
+            "qos": "2",
+            "retain": "false",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 2020,
+            "y": 120,
+            "wires": []
+        },
+        {
+            "id": "ba680dc3d8d9596e",
+            "type": "function",
+            "z": "a813916d4e0d868c",
+            "name": "Set Static value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1050,
+            "y": 120,
+            "wires": [
+                [
+                    "dc3139727cefcda2"
+                ]
+            ]
+        },
+        {
+            "id": "6f401ea63f84c09a",
+            "type": "inject",
+            "z": "a813916d4e0d868c",
+            "name": "Startup",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "3",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 140,
+            "y": 60,
+            "wires": [
+                [
+                    "c879be7dde8b4002"
+                ]
+            ]
+        },
+        {
+            "id": "c879be7dde8b4002",
+            "type": "getflows",
+            "z": "a813916d4e0d868c",
+            "name": "",
+            "x": 280,
+            "y": 60,
+            "wires": [
+                [
+                    "61017d557a17c02d"
+                ]
+            ]
+        },
+        {
+            "id": "61017d557a17c02d",
+            "type": "function",
+            "z": "a813916d4e0d868c",
+            "name": "Init",
+            "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
+            "outputs": 1,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 410,
+            "y": 60,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "69582484eb737290",
+            "type": "switch",
+            "z": "a813916d4e0d868c",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 1,
+            "x": 280,
+            "y": 120,
+            "wires": [
+                [
+                    "18c48a27f3f88310"
+                ]
+            ]
+        },
+        {
+            "id": "616d65138e55b292",
+            "type": "udp in",
+            "z": "a813916d4e0d868c",
+            "name": "",
+            "iface": "",
+            "port": "1111",
+            "ipv": "udp4",
+            "multicast": "false",
+            "group": "",
+            "datatype": "buffer",
+            "x": 120,
+            "y": 120,
+            "wires": [
+                [
+                    "69582484eb737290"
+                ]
+            ]
+        },
+        {
+            "id": "18c48a27f3f88310",
+            "type": "json",
+            "z": "a813916d4e0d868c",
+            "name": "",
+            "property": "payload",
+            "action": "",
+            "pretty": false,
+            "x": 430,
+            "y": 120,
+            "wires": [
+                [
+                    "2f4b04d5dd953d51"
+                ]
+            ]
+        },
+        {
+            "id": "2f4b04d5dd953d51",
+            "type": "function",
+            "z": "a813916d4e0d868c",
+            "name": "filter values",
+            "func": "const sensor = msg.payload.params[\"em:0\"];\nmsg.payload = {};\n\nflow.get(\"bridge.image.protocols\").forEach(dataPoint => {\n    const matching = Object.keys(sensor).find(property => property === dataPoint.id);\n    if (matching !== undefined && typeof sensor[dataPoint.id] === 'number'){\n        msg.payload[dataPoint.id] = sensor[dataPoint.id];\n    }\n});\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 570,
+            "y": 120,
+            "wires": [
+                [
+                    "e83bcf7b44d1e9a8"
+                ]
+            ]
+        },
+        {
+            "id": "e83bcf7b44d1e9a8",
+            "type": "change",
+            "z": "a813916d4e0d868c",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload[\"SYSTEM-0\"]",
+                    "pt": "msg",
+                    "to": "0",
+                    "tot": "num"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 790,
+            "y": 120,
+            "wires": [
+                [
+                    "ba680dc3d8d9596e"
+                ]
+            ]
+        },
+        {
+            "id": "dc3139727cefcda2",
+            "type": "delay",
+            "z": "a813916d4e0d868c",
+            "name": "",
+            "pauseType": "rate",
+            "timeout": "5",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "10",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": true,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1820,
+            "y": 120,
+            "wires": [
+                [
+                    "47603ec35f3c14e3"
+                ]
+            ]
+        }
+    ]
+}
