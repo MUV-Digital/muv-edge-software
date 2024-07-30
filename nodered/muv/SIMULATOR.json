@@ -845,7 +845,7 @@
             "type": "function",
             "z": "82badb4b93a0b5d8",
             "name": "Set Value",
-            "func": "if (msg.payload.address === \"RESET-0\") {\n    flow.set(\"simulationData.ERROR-0\", false);\n} else if (msg.payload.address === \"ERROR-0\") {\n    flow.set(\"simulationData.ERROR-0\", true);\n} else {\n    var metrics = flow.get(\"simulationData\");\n    metrics[msg.payload.address] = msg.payload.value;\n    flow.set(\"simulationData\", metrics);\n}\n\nreturn msg;",
+            "func": "if (msg.protocolCommand.protocolId === \"RESET-0\") {\n    flow.set(\"simulationData.ERROR-0\", false);\n} else if (msg.protocolCommand.protocolId === \"ERROR-0\") {\n    flow.set(\"simulationData.ERROR-0\", true);\n} else {\n    var metrics = flow.get(\"simulationData\");\n    metrics[msg.protocolCommand.protocolId] = msg.payload.value;\n    flow.set(\"simulationData\", metrics);\n}\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
