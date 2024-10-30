@@ -21,11 +21,11 @@
             "authType": "basic",
             "senderr": false,
             "headers": [],
-            "x": 770,
+            "x": 590,
             "y": 380,
             "wires": [
                 [
-                    "56ab9b81069073af"
+                    "db7ff966a6594736"
                 ]
             ]
         },
@@ -50,7 +50,7 @@
             "topic": "",
             "payload": "",
             "payloadType": "date",
-            "x": 560,
+            "x": 380,
             "y": 380,
             "wires": [
                 []
@@ -155,6 +155,26 @@
                 [
                     "e212d7ff332aa3bb",
                     "6809547c8c9cf27b"
+                ]
+            ]
+        },
+        {
+            "id": "db7ff966a6594736",
+            "type": "function",
+            "z": "0f4318aea9e606af",
+            "name": "filter",
+            "func": "var filtered = {\n    \"ANALOG-0\": msg.payload.ActivePower,\n    \"ANALOG-1\": msg.payload.CounterReading,\n}\nmsg.payload = filtered;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 730,
+            "y": 380,
+            "wires": [
+                [
+                    "56ab9b81069073af"
                 ]
             ]
         }
