@@ -1369,7 +1369,7 @@
             "z": "896a55b5f71937e1",
             "name": "",
             "pauseType": "delay",
-            "timeout": "10",
+            "timeout": "5",
             "timeoutUnits": "minutes",
             "rate": "1",
             "nbRateUnits": "1",
