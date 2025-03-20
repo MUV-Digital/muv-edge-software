@@ -169,7 +169,7 @@
             "type": "function",
             "z": "dc06564fd8ca9fda",
             "name": "Set data point values",
-            "func": "var bacnetPoints = []\nvar dataPointvalues = { \"payload\": {} };\n\nmsg.payload.forEach(point => {\n    if (point.pointName !== undefined && point.value !== undefined) {\n        bacnetPoints.push({ \"id\": point.pointName, \"value\": point.value });\n    }\n});\n\nflow.get(\"bridge.image.protocols\").map(dataPoint => {\n    let bacnetPoint = bacnetPoints.find(element => element.id === dataPoint.id);\n    if (bacnetPoint && dataPoint.topic.includes(\"bool\")) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value === 1;\n    } else if (bacnetPoint) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value;\n    }\n});\n\nreturn dataPointvalues;",
+            "func": "var bacnetPoints = []\nvar dataPointvalues = { \"payload\": {} };\n\nmsg.payload.forEach(point => {\n    if (point.pointName !== undefined && point.value !== undefined) {\n        bacnetPoints.push({ \"id\": point.pointName, \"value\": point.value });\n    }\n});\n\nflow.get(\"bridge.image.protocols\").filter(protocol => protocol.type !== \"virtual\").map(dataPoint => {\n    let bacnetPoint = bacnetPoints.find(element => element.id === dataPoint.id);\n    if (bacnetPoint && dataPoint.topic.includes(\"bool\")) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value === 1;\n    } else if (bacnetPoint) {\n        dataPointvalues.payload[dataPoint.id] = bacnetPoint.value;\n    }\n});\n\nreturn dataPointvalues;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
