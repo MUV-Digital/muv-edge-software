@@ -1,0 +1,506 @@
+{
+    "id": "d1229bf690c5ef20",
+    "label": "1234561234566",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "931f06952adf6ea3",
+            "type": "function",
+            "z": "d1229bf690c5ef20",
+            "name": "define credentials",
+            "func": "let clientId = env.get('AOP_API_CLIENT_ID');\nlet clientSecret = env.get('AOP_API_CLIENT_SECRET');\nlet scope = env.get('AOP_API_SCOPE'); \"api://14c30f81-64ac-4437-8278-9645b4a129c4/.default\";\n\nif (clientId && clientId !== \"\" && clientSecret && clientSecret !== \"\" && scope && scope !== \"\") {\n    msg.payload =\n        \"client_id=\" + encodeURIComponent(clientId) +\n        \"&client_secret=\" + encodeURIComponent(clientSecret) +\n        \"&grant_type=client_credentials\" +\n        \"&scope=\" + encodeURIComponent(scope);\n\n    msg.headers = {\n        \"Content-Type\": \"application/x-www-form-urlencoded\"\n    };\n\n    return msg;\n}\n\nnode.done();",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 330,
+            "y": 160,
+            "wires": [
+                [
+                    "81c97a739479c750"
+                ]
+            ]
+        },
+        {
+            "id": "81c97a739479c750",
+            "type": "http request",
+            "z": "d1229bf690c5ef20",
+            "name": "Aquire Authorization Token",
+            "method": "POST",
+            "ret": "obj",
+            "paytoqs": "body",
+            "url": "https://login.microsoftonline.com/49181cc3-a08b-493e-8606-9eebd7ae9f10/oauth2/v2.0/token",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [
+                {
+                    "keyType": "other",
+                    "keyValue": "Content-Type",
+                    "valueType": "other",
+                    "valueValue": "application/x-www-form-urlencoded"
+                }
+            ],
+            "x": 580,
+            "y": 160,
+            "wires": [
+                [
+                    "89458c6dd8d2bf17"
+                ]
+            ]
+        },
+        {
+            "id": "ad9b706417846ff9",
+            "type": "inject",
+            "z": "d1229bf690c5ef20",
+            "name": "read cylce",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "120",
+            "crontab": "",
+            "once": false,
+            "onceDelay": 0.1,
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 130,
+            "y": 160,
+            "wires": [
+                [
+                    "931f06952adf6ea3"
+                ]
+            ]
+        },
+        {
+            "id": "89458c6dd8d2bf17",
+            "type": "function",
+            "z": "d1229bf690c5ef20",
+            "name": "define_query_params",
+            "func": "const to_ts = new Date();\nconst from_ts = new Date();\n\nto_ts.setMinutes(to_ts.getMinutes() + 100);\n// to_ts.setHours(to_ts.getHours() + 3);\n\nmsg.gate_area = 'A81-A86'\nmsg.obs_from = from_ts.toJSON()\nmsg.obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 840,
+            "y": 160,
+            "wires": [
+                [
+                    "752eb5082ea546c1"
+                ]
+            ]
+        },
+        {
+            "id": "752eb5082ea546c1",
+            "type": "http request",
+            "z": "d1229bf690c5ef20",
+            "name": "Request Gate Demand Data",
+            "method": "GET",
+            "ret": "obj",
+            "paytoqs": "ignore",
+            "url": "https://api.int.zurich-airport.com/airport_operations_plan/v2/passenger-demand/gate-areas/{{{gate_area}}}?observation_time_window_from={{{obs_from}}}&observation_time_window_to={{{obs_to}}}",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [],
+            "x": 1100,
+            "y": 160,
+            "wires": [
+                [
+                    "90a0a342efc1b227"
+                ]
+            ]
+        },
+        {
+            "id": "90a0a342efc1b227",
+            "type": "function",
+            "z": "d1229bf690c5ef20",
+            "name": "Create AOP PAX Data Array for Modbus Communication",
+            "func": "// Definiere die Größe des Arrays (n kann z. B. aus msg.n kommen oder festgelegt sein)\nvar n = msg.n || 5;  // Falls msg.n nicht gesetzt ist, wird n=5 als Standardwert genommen\n\n// Initialisiere das Array mit Standardwerten (z. B. 0 oder eine Sequenz)\nvar dataArray = new Array(n).fill(0);  // Füllt das Array mit n Elementen, alle auf 0 gesetzt\n\n// Falls du das Array mit einer Sequenz befüllen möchtest, kannst du dies tun:\nfor (let i = 0; i < n; i++) {\n    dataArray[i] = msg.payload.data[i].estimated_passenger_count;  // Erzeugt ein Array [mit den Passagierdaten]\n}\n\n// Setze das Array als msg.payload\nmsg.payload = dataArray;\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 650,
+            "y": 300,
+            "wires": [
+                [
+                    "d1d206f96d964118",
+                    "11e593b7e4283a7d"
+                ]
+            ]
+        },
+        {
+            "id": "d1d206f96d964118",
+            "type": "debug",
+            "z": "d1229bf690c5ef20",
+            "name": "debug 1",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "false",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1040,
+            "y": 300,
+            "wires": []
+        },
+        {
+            "id": "11e593b7e4283a7d",
+            "type": "modbus-write",
+            "z": "d1229bf690c5ef20",
+            "name": "AOP Data to Belimo",
+            "showStatusActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "MHoldingRegisters",
+            "adr": "200",
+            "quantity": "5",
+            "server": "1d6ac8b0e7f4f740",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "x": 1080,
+            "y": 360,
+            "wires": [
+                [],
+                []
+            ]
+        },
+        {
+            "id": "e48c4cb2de6eca95",
+            "type": "comment",
+            "z": "d1229bf690c5ef20",
+            "name": "Get AOP PAX Data",
+            "info": "",
+            "x": 110,
+            "y": 100,
+            "wires": []
+        },
+        {
+            "id": "754645720036f0ca",
+            "type": "modbus-read",
+            "z": "d1229bf690c5ef20",
+            "name": "Beckhoff Sensor Data",
+            "topic": "Read Sensor Data from Beckhoff",
+            "showStatusActivities": false,
+            "logIOActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "InputRegister",
+            "adr": "32768",
+            "quantity": "100",
+            "rate": "1",
+            "rateUnit": "s",
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "server": "e16f9a9bac93907d",
+            "useIOFile": false,
+            "ioFile": "",
+            "useIOForPayload": false,
+            "emptyMsgOnFail": false,
+            "x": 160,
+            "y": 560,
+            "wires": [
+                [
+                    "41f17adcf9db32a1",
+                    "81f82d601c6046fd"
+                ],
+                []
+            ]
+        },
+        {
+            "id": "81f82d601c6046fd",
+            "type": "modbus-write",
+            "z": "d1229bf690c5ef20",
+            "name": "Belimo Sensor Data",
+            "showStatusActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "MHoldingRegisters",
+            "adr": "0",
+            "quantity": "100",
+            "server": "1d6ac8b0e7f4f740",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "x": 480,
+            "y": 620,
+            "wires": [
+                [],
+                []
+            ]
+        },
+        {
+            "id": "41f17adcf9db32a1",
+            "type": "debug",
+            "z": "d1229bf690c5ef20",
+            "name": "Beckhoff Sensor Data",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 480,
+            "y": 560,
+            "wires": []
+        },
+        {
+            "id": "836a695b04380468",
+            "type": "comment",
+            "z": "d1229bf690c5ef20",
+            "name": "Beckhoff -> Belimo",
+            "info": "",
+            "x": 110,
+            "y": 500,
+            "wires": []
+        },
+        {
+            "id": "17fa2b9848318392",
+            "type": "modbus-read",
+            "z": "d1229bf690c5ef20",
+            "name": "Belimo Setpoints",
+            "topic": "Read Setpoints from Belimo",
+            "showStatusActivities": false,
+            "logIOActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "InputRegister",
+            "adr": "1000",
+            "quantity": "5",
+            "rate": "1",
+            "rateUnit": "s",
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "server": "1d6ac8b0e7f4f740",
+            "useIOFile": false,
+            "ioFile": "",
+            "useIOForPayload": false,
+            "emptyMsgOnFail": false,
+            "x": 140,
+            "y": 800,
+            "wires": [
+                [
+                    "4d13368fe2da1744",
+                    "078aff7e6f42ff89"
+                ],
+                []
+            ]
+        },
+        {
+            "id": "078aff7e6f42ff89",
+            "type": "modbus-write",
+            "z": "d1229bf690c5ef20",
+            "name": "Beckhoff setpoints",
+            "showStatusActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "MHoldingRegisters",
+            "adr": "32768",
+            "quantity": "5",
+            "server": "e16f9a9bac93907d",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": true,
+            "startDelayTime": "12",
+            "x": 470,
+            "y": 860,
+            "wires": [
+                [],
+                []
+            ]
+        },
+        {
+            "id": "4d13368fe2da1744",
+            "type": "debug",
+            "z": "d1229bf690c5ef20",
+            "name": "Belimo Setpoints",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 470,
+            "y": 800,
+            "wires": []
+        },
+        {
+            "id": "e32e89ab4833b6e7",
+            "type": "modbus-read",
+            "z": "d1229bf690c5ef20",
+            "name": "Belimo Setpoints",
+            "topic": "Read Setpoints from Belimo",
+            "showStatusActivities": false,
+            "logIOActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "InputRegister",
+            "adr": "1040",
+            "quantity": "8",
+            "rate": "1",
+            "rateUnit": "s",
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "server": "1d6ac8b0e7f4f740",
+            "useIOFile": false,
+            "ioFile": "",
+            "useIOForPayload": false,
+            "emptyMsgOnFail": false,
+            "x": 140,
+            "y": 960,
+            "wires": [
+                [
+                    "59c49f6df3315935",
+                    "da1281013954b526"
+                ],
+                []
+            ]
+        },
+        {
+            "id": "da1281013954b526",
+            "type": "modbus-write",
+            "z": "d1229bf690c5ef20",
+            "name": "Beckhoff setpoints",
+            "showStatusActivities": false,
+            "showErrors": false,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "MHoldingRegisters",
+            "adr": "32808",
+            "quantity": "8",
+            "server": "e16f9a9bac93907d",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": true,
+            "startDelayTime": "12",
+            "x": 470,
+            "y": 1020,
+            "wires": [
+                [],
+                []
+            ]
+        },
+        {
+            "id": "59c49f6df3315935",
+            "type": "debug",
+            "z": "d1229bf690c5ef20",
+            "name": "Belimo Setpoints",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 470,
+            "y": 960,
+            "wires": []
+        },
+        {
+            "id": "696b20024daef308",
+            "type": "comment",
+            "z": "d1229bf690c5ef20",
+            "name": "Belimo -> Beckhoff ",
+            "info": "",
+            "x": 110,
+            "y": 740,
+            "wires": []
+        }
+    ],
+    "configs": [
+        {
+            "id": "e16f9a9bac93907d",
+            "type": "modbus-client",
+            "z": "d1229bf690c5ef20",
+            "name": "Beckhoff",
+            "clienttype": "tcp",
+            "bufferCommands": true,
+            "stateLogEnabled": false,
+            "queueLogEnabled": false,
+            "failureLogEnabled": true,
+            "tcpHost": "192.168.1.50",
+            "tcpPort": "502",
+            "tcpType": "DEFAULT",
+            "serialPort": "/dev/ttyUSB",
+            "serialType": "RTU-BUFFERD",
+            "serialBaudrate": "9600",
+            "serialDatabits": "8",
+            "serialStopbits": "1",
+            "serialParity": "none",
+            "serialConnectionDelay": "100",
+            "serialAsciiResponseStartDelimiter": "0x3A",
+            "unit_id": "1",
+            "commandDelay": "100",
+            "clientTimeout": "1000",
+            "reconnectOnTimeout": true,
+            "reconnectTimeout": "2000",
+            "parallelUnitIdsAllowed": true,
+            "showErrors": true,
+            "showWarnings": true,
+            "showLogs": true
+        },
+        {
+            "id": "1d6ac8b0e7f4f740",
+            "type": "modbus-client",
+            "z": "d1229bf690c5ef20",
+            "name": "Belmo",
+            "clienttype": "tcp",
+            "bufferCommands": true,
+            "stateLogEnabled": false,
+            "queueLogEnabled": false,
+            "failureLogEnabled": true,
+            "tcpHost": "192.168.1.61",
+            "tcpPort": "502",
+            "tcpType": "DEFAULT",
+            "serialPort": "/dev/ttyUSB",
+            "serialType": "RTU-BUFFERD",
+            "serialBaudrate": "9600",
+            "serialDatabits": "8",
+            "serialStopbits": "1",
+            "serialParity": "none",
+            "serialConnectionDelay": "100",
+            "serialAsciiResponseStartDelimiter": "0x3A",
+            "unit_id": "1",
+            "commandDelay": "100",
+            "clientTimeout": "1000",
+            "reconnectOnTimeout": true,
+            "reconnectTimeout": "2000",
+            "parallelUnitIdsAllowed": true,
+            "showErrors": true,
+            "showWarnings": true,
+            "showLogs": true
+        }
+    ]
+}
