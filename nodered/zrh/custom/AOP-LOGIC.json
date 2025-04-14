@@ -1,14 +1,14 @@
 {
-    "id": "e0c00843bd759d2c",
+    "id": "f60195a4aaa57393",
     "label": "67f66d4f9caec53a5ce7506e",
     "disabled": false,
     "info": "",
     "env": [],
     "nodes": [
         {
-            "id": "02zru6ludagijew8",
+            "id": "6qlfodtt9hmoa9j7",
             "type": "function",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "define credentials",
             "func": "let clientId = env.get('AOP_API_CLIENT_ID');\nlet clientSecret = env.get('AOP_API_CLIENT_SECRET');\nlet scope = env.get('AOP_API_SCOPE');\n\nif (clientId && clientId !== \"\" && clientSecret && clientSecret !== \"\" && scope && scope !== \"\") {\n    msg.payload =\n        \"client_id=\" + encodeURIComponent(clientId) +\n        \"&client_secret=\" + encodeURIComponent(clientSecret) +\n        \"&grant_type=client_credentials\" +\n        \"&scope=\" + encodeURIComponent(scope);\n\n    msg.headers = {\n        \"Content-Type\": \"application/x-www-form-urlencoded\"\n    };\n\n    return msg;\n}\n\nnode.done();",
             "outputs": 1,
@@ -21,14 +21,14 @@
             "y": 300,
             "wires": [
                 [
-                    "nv2uhu1klmq1sz6e"
+                    "qzt4j50ygtioe6g4"
                 ]
             ]
         },
         {
-            "id": "nv2uhu1klmq1sz6e",
+            "id": "qzt4j50ygtioe6g4",
             "type": "http request",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Aquire Authorization Token",
             "method": "POST",
             "ret": "obj",
@@ -52,14 +52,14 @@
             "y": 300,
             "wires": [
                 [
-                    "1yiwpg0a8f10rzdh"
+                    "rx18uuvhwpfi4sl7"
                 ]
             ]
         },
         {
-            "id": "if6fvwdhjuhtsqx0",
+            "id": "446p85vxne04eih3",
             "type": "inject",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "read cylce",
             "props": [
                 {
@@ -77,14 +77,14 @@
             "y": 300,
             "wires": [
                 [
-                    "02zru6ludagijew8"
+                    "6qlfodtt9hmoa9j7"
                 ]
             ]
         },
         {
-            "id": "1yiwpg0a8f10rzdh",
+            "id": "rx18uuvhwpfi4sl7",
             "type": "function",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "define_query_params",
             "func": "const to_ts = new Date();\nconst from_ts = new Date();\n\nto_ts.setMinutes(to_ts.getMinutes() + 100);\n// to_ts.setHours(to_ts.getHours() + 3);\n\nmsg.gate_area = 'A81-A86'\nmsg.obs_from = from_ts.toJSON()\nmsg.obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\n\nreturn msg;",
             "outputs": 1,
@@ -97,14 +97,14 @@
             "y": 300,
             "wires": [
                 [
-                    "5asg0trdlxv74u6t"
+                    "3g15bofut13epuri"
                 ]
             ]
         },
         {
-            "id": "5asg0trdlxv74u6t",
+            "id": "3g15bofut13epuri",
             "type": "http request",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Request Gate Demand Data",
             "method": "GET",
             "ret": "obj",
@@ -121,14 +121,14 @@
             "y": 300,
             "wires": [
                 [
-                    "2re7cvka08kado2s"
+                    "e7xyw9vgb16m2chq"
                 ]
             ]
         },
         {
-            "id": "2re7cvka08kado2s",
+            "id": "e7xyw9vgb16m2chq",
             "type": "function",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Create AOP PAX Data Array for Modbus Communication",
             "func": "// Definiere die Größe des Arrays (n kann z. B. aus msg.n kommen oder festgelegt sein)\nvar n = msg.n || 5;  // Falls msg.n nicht gesetzt ist, wird n=5 als Standardwert genommen\n\n// Initialisiere das Array mit Standardwerten (z. B. 0 oder eine Sequenz)\nvar dataArray = new Array(n).fill(0);  // Füllt das Array mit n Elementen, alle auf 0 gesetzt\n\n// Falls du das Array mit einer Sequenz befüllen möchtest, kannst du dies tun:\nfor (let i = 0; i < n; i++) {\n    dataArray[i] = msg.payload.data[i].estimated_passenger_count;  // Erzeugt ein Array [mit den Passagierdaten]\n}\n\n// Setze das Array als msg.payload\nmsg.payload = dataArray;\nreturn msg;",
             "outputs": 1,
@@ -141,16 +141,16 @@
             "y": 440,
             "wires": [
                 [
-                    "8b6l0hl6baz8idkn",
-                    "mdlhryvqwuj7kuyv",
-                    "096bad18a026c396"
+                    "ua8k63ycht1w4itz",
+                    "9wjjberhysip134d",
+                    "z9sz38vejrcr0oum"
                 ]
             ]
         },
         {
-            "id": "8b6l0hl6baz8idkn",
+            "id": "ua8k63ycht1w4itz",
             "type": "debug",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "debug 1",
             "active": true,
             "tosidebar": true,
@@ -164,9 +164,9 @@
             "wires": []
         },
         {
-            "id": "mdlhryvqwuj7kuyv",
+            "id": "9wjjberhysip134d",
             "type": "modbus-write",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "AOP Data to Belimo",
             "showStatusActivities": false,
             "showErrors": false,
@@ -175,7 +175,7 @@
             "dataType": "MHoldingRegisters",
             "adr": "200",
             "quantity": "5",
-            "server": "4uk7euc80ljhf1fp",
+            "server": "6eyw9z9nydc0ovxa",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
@@ -188,9 +188,9 @@
             ]
         },
         {
-            "id": "jzuzunv1ssq23bdv",
+            "id": "py7al8f8kcoqvx91",
             "type": "comment",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Get AOP PAX Data",
             "info": "",
             "x": 110,
@@ -198,14 +198,14 @@
             "wires": []
         },
         {
-            "id": "ixzidy9bphwizca7",
+            "id": "8oyki1zgvluett6p",
             "type": "modbus-read",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Beckhoff Sensor Data",
             "topic": "Read Sensor Data from Beckhoff",
             "showStatusActivities": false,
             "logIOActivities": false,
-            "showErrors": false,
+            "showErrors": true,
             "showWarnings": true,
             "unitid": "1",
             "dataType": "InputRegister",
@@ -215,7 +215,7 @@
             "rateUnit": "s",
             "delayOnStart": false,
             "startDelayTime": "",
-            "server": "tdu5s92y0gnhf7ct",
+            "server": "j0ku6j4f874yvvta",
             "useIOFile": false,
             "ioFile": "",
             "useIOForPayload": false,
@@ -224,16 +224,17 @@
             "y": 700,
             "wires": [
                 [
-                    "glokjmzco5m9z1qm",
-                    "xib3wlb8smrtkct2"
+                    "vnwjm5ewb3ace1ro",
+                    "o5ee4t0sb8n2ypia",
+                    "978pdl5djxh1n37s"
                 ],
                 []
             ]
         },
         {
-            "id": "xib3wlb8smrtkct2",
+            "id": "o5ee4t0sb8n2ypia",
             "type": "modbus-write",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belimo Sensor Data",
             "showStatusActivities": false,
             "showErrors": false,
@@ -242,7 +243,7 @@
             "dataType": "MHoldingRegisters",
             "adr": "0",
             "quantity": "100",
-            "server": "4uk7euc80ljhf1fp",
+            "server": "6eyw9z9nydc0ovxa",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
@@ -250,16 +251,14 @@
             "x": 480,
             "y": 760,
             "wires": [
-                [
-                    "f3b20908c60cbc50"
-                ],
+                [],
                 []
             ]
         },
         {
-            "id": "glokjmzco5m9z1qm",
+            "id": "vnwjm5ewb3ace1ro",
             "type": "debug",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Beckhoff Sensor Data",
             "active": false,
             "tosidebar": true,
@@ -274,9 +273,9 @@
             "wires": []
         },
         {
-            "id": "ekzcfxl0oid5hut5",
+            "id": "a57zgzh4rlozkhrc",
             "type": "comment",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Beckhoff -> Belimo",
             "info": "",
             "x": 110,
@@ -284,14 +283,14 @@
             "wires": []
         },
         {
-            "id": "o4rh1blsnldp0t3q",
+            "id": "lwxwi1d6cpxlgkas",
             "type": "modbus-read",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belimo Setpoints",
             "topic": "Read Setpoints from Belimo",
             "showStatusActivities": false,
             "logIOActivities": false,
-            "showErrors": false,
+            "showErrors": true,
             "showWarnings": true,
             "unitid": "1",
             "dataType": "InputRegister",
@@ -301,7 +300,7 @@
             "rateUnit": "s",
             "delayOnStart": false,
             "startDelayTime": "",
-            "server": "4uk7euc80ljhf1fp",
+            "server": "6eyw9z9nydc0ovxa",
             "useIOFile": false,
             "ioFile": "",
             "useIOForPayload": false,
@@ -310,16 +309,17 @@
             "y": 940,
             "wires": [
                 [
-                    "b98e6tp9hmm9stkk",
-                    "0b8zv8vm25fxwnik"
+                    "fn7ug9qjuqts255j",
+                    "pmoclczqbq3tnsfa",
+                    "6gk26ya8zs225l1a"
                 ],
                 []
             ]
         },
         {
-            "id": "0b8zv8vm25fxwnik",
+            "id": "pmoclczqbq3tnsfa",
             "type": "modbus-write",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Beckhoff setpoints",
             "showStatusActivities": false,
             "showErrors": false,
@@ -328,7 +328,7 @@
             "dataType": "MHoldingRegisters",
             "adr": "32768",
             "quantity": "5",
-            "server": "tdu5s92y0gnhf7ct",
+            "server": "j0ku6j4f874yvvta",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": true,
@@ -336,16 +336,14 @@
             "x": 470,
             "y": 1000,
             "wires": [
-                [
-                    "dbc26d7e48d51175"
-                ],
+                [],
                 []
             ]
         },
         {
-            "id": "b98e6tp9hmm9stkk",
+            "id": "fn7ug9qjuqts255j",
             "type": "debug",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belimo Setpoints",
             "active": false,
             "tosidebar": true,
@@ -360,9 +358,9 @@
             "wires": []
         },
         {
-            "id": "v72dkg0xy4ryol9t",
+            "id": "rzz9jpkuxvb0c5bq",
             "type": "modbus-read",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belimo Setpoints",
             "topic": "Read Setpoints from Belimo",
             "showStatusActivities": false,
@@ -377,7 +375,7 @@
             "rateUnit": "s",
             "delayOnStart": false,
             "startDelayTime": "",
-            "server": "4uk7euc80ljhf1fp",
+            "server": "6eyw9z9nydc0ovxa",
             "useIOFile": false,
             "ioFile": "",
             "useIOForPayload": false,
@@ -386,16 +384,16 @@
             "y": 1100,
             "wires": [
                 [
-                    "76o8goitfvfjsp4a",
-                    "zd74uqecdgkivn1j"
+                    "tfesn0ijnvqe7h8q",
+                    "075t0yi7pfvlkwsl"
                 ],
                 []
             ]
         },
         {
-            "id": "zd74uqecdgkivn1j",
+            "id": "075t0yi7pfvlkwsl",
             "type": "modbus-write",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Beckhoff setpoints",
             "showStatusActivities": false,
             "showErrors": false,
@@ -404,7 +402,7 @@
             "dataType": "MHoldingRegisters",
             "adr": "32808",
             "quantity": "8",
-            "server": "tdu5s92y0gnhf7ct",
+            "server": "j0ku6j4f874yvvta",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": true,
@@ -417,9 +415,9 @@
             ]
         },
         {
-            "id": "76o8goitfvfjsp4a",
+            "id": "tfesn0ijnvqe7h8q",
             "type": "debug",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belimo Setpoints",
             "active": false,
             "tosidebar": true,
@@ -434,9 +432,9 @@
             "wires": []
         },
         {
-            "id": "8phxtw3662bzjo4v",
+            "id": "s3a9mf3w3rd9r4o9",
             "type": "comment",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belimo -> Beckhoff ",
             "info": "",
             "x": 110,
@@ -444,9 +442,9 @@
             "wires": []
         },
         {
-            "id": "il4pjyd5es3xrgrs",
+            "id": "uswtexh3jsudasmm",
             "type": "inject",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Startup",
             "props": [
                 {
@@ -464,28 +462,28 @@
             "y": 40,
             "wires": [
                 [
-                    "1m7cob4kevk0psj0",
-                    "7c242d3c931432d6"
+                    "c0jl2x739stmdy4b",
+                    "106uz0wbllvz379u"
                 ]
             ]
         },
         {
-            "id": "1m7cob4kevk0psj0",
+            "id": "c0jl2x739stmdy4b",
             "type": "getflows",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "x": 300,
             "y": 40,
             "wires": [
                 [
-                    "5td6ao54is1mpi8c"
+                    "mps8wt1dihxz0qox"
                 ]
             ]
         },
         {
-            "id": "5td6ao54is1mpi8c",
+            "id": "mps8wt1dihxz0qox",
             "type": "function",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Init",
             "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
             "outputs": 1,
@@ -497,14 +495,14 @@
             "y": 40,
             "wires": [
                 [
-                    "kie74msqzi5vpqyo"
+                    "yj4nwsquchxbjjye"
                 ]
             ]
         },
         {
-            "id": "kie74msqzi5vpqyo",
+            "id": "yj4nwsquchxbjjye",
             "type": "switch",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -522,14 +520,14 @@
             "y": 40,
             "wires": [
                 [
-                    "amafqpw3qfeussug"
+                    "o0ezk3bgy6mq4i7l"
                 ]
             ]
         },
         {
-            "id": "amafqpw3qfeussug",
+            "id": "o0ezk3bgy6mq4i7l",
             "type": "function",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Set channel parameters",
             "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
             "outputs": 1,
@@ -544,9 +542,9 @@
             ]
         },
         {
-            "id": "3p75tvr07fovp0fr",
+            "id": "dl3zwkvqnimpxx6v",
             "type": "function",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Set sensor value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
@@ -562,9 +560,9 @@
             ]
         },
         {
-            "id": "9rr6gi3koz5wvo9d",
+            "id": "fi5qf50d2d79tffn",
             "type": "inject",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Read intervall",
             "props": [
                 {
@@ -589,9 +587,9 @@
             ]
         },
         {
-            "id": "7c242d3c931432d6",
+            "id": "106uz0wbllvz379u",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -611,14 +609,14 @@
             "y": 80,
             "wires": [
                 [
-                    "3p75tvr07fovp0fr"
+                    "dl3zwkvqnimpxx6v"
                 ]
             ]
         },
         {
-            "id": "f3b20908c60cbc50",
+            "id": "6gk26ya8zs225l1a",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -635,17 +633,17 @@
             "to": "",
             "reg": false,
             "x": 700,
-            "y": 740,
+            "y": 860,
             "wires": [
                 [
-                    "342afe6e59293f54"
+                    "snraypz5gy3290fu"
                 ]
             ]
         },
         {
-            "id": "dbc26d7e48d51175",
+            "id": "978pdl5djxh1n37s",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -665,76 +663,79 @@
             "y": 980,
             "wires": [
                 [
-                    "342afe6e59293f54"
+                    "snraypz5gy3290fu"
                 ]
             ]
         },
         {
-            "id": "f89fea5caccb9fc5",
+            "id": "o32oknja06ksyg8r",
             "type": "link in",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Write Values",
             "links": [
-                "342afe6e59293f54"
+                "snraypz5gy3290fu"
             ],
             "x": 385,
             "y": 120,
             "wires": [
                 [
-                    "3p75tvr07fovp0fr"
+                    "dl3zwkvqnimpxx6v"
                 ]
             ]
         },
         {
-            "id": "342afe6e59293f54",
+            "id": "snraypz5gy3290fu",
             "type": "link out",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "link out 19",
             "mode": "link",
             "links": [
-                "f89fea5caccb9fc5"
+                "o32oknja06ksyg8r"
             ],
             "x": 915,
             "y": 840
         },
         {
-            "id": "846ba42f86a3b0ea",
+            "id": "r34be80hspdqvp5t",
             "type": "catch",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "scope": [
-                "xib3wlb8smrtkct2"
+                "o5ee4t0sb8n2ypia",
+                "lwxwi1d6cpxlgkas",
+                "rzz9jpkuxvb0c5bq"
             ],
             "uncaught": false,
             "x": 530,
             "y": 820,
             "wires": [
                 [
-                    "7201d7493f0ca55f"
+                    "bx7jk79veszvotpb"
                 ]
             ]
         },
         {
-            "id": "f352dd8332393915",
+            "id": "moz04dp06isxnj5d",
             "type": "catch",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "scope": [
-                "0b8zv8vm25fxwnik"
+                "pmoclczqbq3tnsfa",
+                "8oyki1zgvluett6p"
             ],
             "uncaught": false,
             "x": 510,
             "y": 1040,
             "wires": [
                 [
-                    "949a4139ad64aac9"
+                    "ak72fotj7uq9do48"
                 ]
             ]
         },
         {
-            "id": "949a4139ad64aac9",
+            "id": "ak72fotj7uq9do48",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -754,14 +755,14 @@
             "y": 1040,
             "wires": [
                 [
-                    "342afe6e59293f54"
+                    "snraypz5gy3290fu"
                 ]
             ]
         },
         {
-            "id": "7201d7493f0ca55f",
+            "id": "bx7jk79veszvotpb",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -781,14 +782,14 @@
             "y": 820,
             "wires": [
                 [
-                    "342afe6e59293f54"
+                    "snraypz5gy3290fu"
                 ]
             ]
         },
         {
-            "id": "096bad18a026c396",
+            "id": "z9sz38vejrcr0oum",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -808,31 +809,31 @@
             "y": 560,
             "wires": [
                 [
-                    "342afe6e59293f54"
+                    "snraypz5gy3290fu"
                 ]
             ]
         },
         {
-            "id": "c7058b7fbd3f6d1e",
+            "id": "nqsha45e2pmfa2xl",
             "type": "catch",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "scope": [
-                "2re7cvka08kado2s"
+                "e7xyw9vgb16m2chq"
             ],
             "uncaught": false,
             "x": 810,
             "y": 600,
             "wires": [
                 [
-                    "2687b5f806c425b6"
+                    "fxhqr3o3e1hd36cs"
                 ]
             ]
         },
         {
-            "id": "2687b5f806c425b6",
+            "id": "fxhqr3o3e1hd36cs",
             "type": "change",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "",
             "rules": [
                 {
@@ -852,16 +853,16 @@
             "y": 600,
             "wires": [
                 [
-                    "342afe6e59293f54"
+                    "snraypz5gy3290fu"
                 ]
             ]
         }
     ],
     "configs": [
         {
-            "id": "tdu5s92y0gnhf7ct",
+            "id": "j0ku6j4f874yvvta",
             "type": "modbus-client",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Beckhoff",
             "clienttype": "tcp",
             "bufferCommands": true,
@@ -890,9 +891,9 @@
             "showLogs": true
         },
         {
-            "id": "4uk7euc80ljhf1fp",
+            "id": "6eyw9z9nydc0ovxa",
             "type": "modbus-client",
-            "z": "e0c00843bd759d2c",
+            "z": "f60195a4aaa57393",
             "name": "Belmo",
             "clienttype": "tcp",
             "bufferCommands": true,
