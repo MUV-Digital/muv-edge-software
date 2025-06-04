@@ -737,7 +737,6 @@
             "y": 1360,
             "wires": [
                 [
-                    "87c0d441b3f2162b",
                     "196c93d7a73c5c77"
                 ]
             ]
@@ -830,14 +829,17 @@
             "z": "bb1e9e9dafb5c7e7",
             "name": "",
             "scope": [
-                "3ca8475fe3a8c2f9"
+                "3ca8475fe3a8c2f9",
+                "0891c9d5938b16fb",
+                "c38b70ce34176a33",
+                "c00537d608f96095",
+                "44266a4d8ba69390"
             ],
             "uncaught": false,
             "x": 530,
             "y": 620,
             "wires": [
                 [
-                    "87c0d441b3f2162b",
                     "0ee837f58bcbc07d"
                 ]
             ]
@@ -1085,7 +1087,6 @@
             "y": 880,
             "wires": [
                 [
-                    "87c0d441b3f2162b",
                     "d055745cff9fe44a"
                 ]
             ]
@@ -1196,30 +1197,13 @@
             ]
         },
         {
-            "id": "87c0d441b3f2162b",
-            "type": "debug",
-            "z": "bb1e9e9dafb5c7e7",
-            "name": "debug 1",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "true",
-            "targetType": "full",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 720,
-            "y": 540,
-            "wires": []
-        },
-        {
             "id": "0ee837f58bcbc07d",
             "type": "delay",
             "z": "bb1e9e9dafb5c7e7",
             "name": "",
             "pauseType": "delay",
-            "timeout": "30",
-            "timeoutUnits": "seconds",
+            "timeout": "10",
+            "timeoutUnits": "minutes",
             "rate": "1",
             "nbRateUnits": "1",
             "rateUnits": "second",
@@ -1229,7 +1213,7 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 1360,
+            "x": 1370,
             "y": 620,
             "wires": [
                 [
@@ -1297,8 +1281,8 @@
             "z": "bb1e9e9dafb5c7e7",
             "name": "",
             "pauseType": "delay",
-            "timeout": "30",
-            "timeoutUnits": "seconds",
+            "timeout": "120",
+            "timeoutUnits": "minutes",
             "rate": "1",
             "nbRateUnits": "1",
             "rateUnits": "second",
@@ -1308,7 +1292,7 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 1360,
+            "x": 1370,
             "y": 880,
             "wires": [
                 [
@@ -1441,7 +1425,6 @@
             "y": 1120,
             "wires": [
                 [
-                    "87c0d441b3f2162b",
                     "69c17364692af6c4"
                 ]
             ]
