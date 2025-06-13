@@ -744,7 +744,7 @@
             "type": "function",
             "z": "47e82e98e38bbf97",
             "name": "calculate virtual values",
-            "func": "msg.sequences.forEach(sequence => {\n    const virtual = {};\n    virtual.payload = {};\n    virtual.payload[sequence.dataPoint.id] = false;\n    node.send(virtual);\n});\n\nnode.done();",
+            "func": "msg.sequences.forEach(sequence => {\n    const virtual = {};\n    virtual.payload = {};\n    virtual.dataPoint = sequence.dataPoint;\n    virtual.payload[sequence.dataPoint.id] = false;\n    node.send(virtual);\n});\n\nnode.done();",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
