@@ -244,7 +244,9 @@
             "x": 830,
             "y": 60,
             "wires": [
-                []
+                [
+                    "4955ed605f549bdb"
+                ]
             ]
         },
         {
@@ -515,7 +517,8 @@
             "wires": [
                 [
                     "d9f4ed395d785579",
-                    "2e4c8e76534833f3"
+                    "2e4c8e76534833f3",
+                    "b4d131fb18575a8e"
                 ]
             ]
         },
@@ -745,6 +748,139 @@
                 [
                     "2bdafa65dba859e3"
                 ]
+            ]
+        },
+        {
+            "id": "dee3125cdccef3a5",
+            "type": "function",
+            "z": "948cf356fd1bc9d9",
+            "name": "Init error values",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nflow.get(\"bridge\").image.metrics[\"ALARM_CRITICAL\"] = false;\nflow.get(\"bridge\").image.metrics[\"ALARM_NORMAL\"] = false;\nflow.get(\"bridge\").image.metrics[\"ALARM_MESSAGE\"] = \"\";\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1300,
+            "y": 60,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "852f415e8fb2e910",
+            "type": "file",
+            "z": "948cf356fd1bc9d9",
+            "name": "Persist States",
+            "filename": "/storage/danfoss-ak-sm-800a.json",
+            "filenameType": "str",
+            "appendNewline": true,
+            "createDir": true,
+            "overwriteFile": "true",
+            "encoding": "utf8",
+            "x": 880,
+            "y": 880,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "4955ed605f549bdb",
+            "type": "file in",
+            "z": "948cf356fd1bc9d9",
+            "name": "Read States",
+            "filename": "/storage/danfoss-ak-sm-800a.json",
+            "filenameType": "str",
+            "format": "utf8",
+            "chunk": false,
+            "sendError": false,
+            "encoding": "utf8",
+            "allProps": false,
+            "x": 1050,
+            "y": 100,
+            "wires": [
+                [
+                    "a6fae0e4e2054a98"
+                ]
+            ]
+        },
+        {
+            "id": "b06db7a13ed587d5",
+            "type": "catch",
+            "z": "948cf356fd1bc9d9",
+            "name": "",
+            "scope": [
+                "4955ed605f549bdb"
+            ],
+            "uncaught": false,
+            "x": 1030,
+            "y": 60,
+            "wires": [
+                [
+                    "dee3125cdccef3a5"
+                ]
+            ]
+        },
+        {
+            "id": "b4d131fb18575a8e",
+            "type": "change",
+            "z": "948cf356fd1bc9d9",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "bridge.image.metrics",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 880,
+            "y": 840,
+            "wires": [
+                [
+                    "852f415e8fb2e910"
+                ]
+            ]
+        },
+        {
+            "id": "a6fae0e4e2054a98",
+            "type": "json",
+            "z": "948cf356fd1bc9d9",
+            "name": "",
+            "property": "payload",
+            "action": "",
+            "pretty": false,
+            "x": 1070,
+            "y": 140,
+            "wires": [
+                [
+                    "94840a1374d917ef"
+                ]
+            ]
+        },
+        {
+            "id": "94840a1374d917ef",
+            "type": "function",
+            "z": "948cf356fd1bc9d9",
+            "name": "Set persisted values",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nflow.get(\"bridge\").image.metrics = msg.payload;\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1320,
+            "y": 140,
+            "wires": [
+                []
             ]
         }
     ]
