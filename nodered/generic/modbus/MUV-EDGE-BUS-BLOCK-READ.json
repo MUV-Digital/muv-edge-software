@@ -201,7 +201,7 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1050,
+            "x": 1190,
             "y": 520,
             "wires": [
                 [
@@ -529,7 +529,7 @@
             "links": [
                 "n4v5ojt27l8jahbu"
             ],
-            "x": 1275,
+            "x": 1415,
             "y": 480
         },
         {
@@ -615,7 +615,7 @@
             "links": [
                 "n4v5ojt27l8jahbu"
             ],
-            "x": 1275,
+            "x": 1425,
             "y": 260
         },
         {
@@ -684,7 +684,6 @@
             "y": 520,
             "wires": [
                 [
-                    "y3f2uol6w9vgj05k",
                     "olozwic4qikl1cfs"
                 ]
             ]
@@ -1064,118 +1063,6 @@
             ]
         },
         {
-            "id": "jz5g82swp35au5pe",
-            "type": "delay",
-            "z": "e0bb868bd3f1e16c",
-            "name": "",
-            "pauseType": "delay",
-            "timeout": "30",
-            "timeoutUnits": "minutes",
-            "rate": "1",
-            "nbRateUnits": "1",
-            "rateUnits": "second",
-            "randomFirst": "1",
-            "randomLast": "5",
-            "randomUnits": "seconds",
-            "drop": false,
-            "allowrate": false,
-            "outputs": 1,
-            "x": 850,
-            "y": 700,
-            "wires": [
-                [
-                    "sry26djtqevxhg5p"
-                ]
-            ]
-        },
-        {
-            "id": "y3f2uol6w9vgj05k",
-            "type": "function",
-            "z": "e0bb868bd3f1e16c",
-            "name": "send virtual data",
-            "func": "flow.get(\"bridge.image.protocols\").filter(protocol => protocol.type === \"virtual\").forEach(dataPoint => {\n    if(dataPoint.id === \"COMMUNICATION_ERROR\") {\n        msg.dataPoint = dataPoint;\n        msg.name = dataPoint.id;\n        msg.payload = false;\n        node.send(msg);\n    }\n});\n\nnode.done();",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 440,
-            "y": 560,
-            "wires": [
-                [
-                    "7uvo8x8ary7r74u2"
-                ]
-            ]
-        },
-        {
-            "id": "fuzwwzbmbttine5d",
-            "type": "change",
-            "z": "e0bb868bd3f1e16c",
-            "name": "",
-            "rules": [
-                {
-                    "t": "set",
-                    "p": "reset",
-                    "pt": "msg",
-                    "to": "true",
-                    "tot": "bool"
-                }
-            ],
-            "action": "",
-            "property": "",
-            "from": "",
-            "to": "",
-            "reg": false,
-            "x": 440,
-            "y": 700,
-            "wires": [
-                [
-                    "jz5g82swp35au5pe"
-                ]
-            ]
-        },
-        {
-            "id": "sry26djtqevxhg5p",
-            "type": "function",
-            "z": "e0bb868bd3f1e16c",
-            "name": "COMMUNICATION_ERROR - ERROR",
-            "func": "flow.set(\"bridge.image.metrics\", {});\n\nflow.get(\"bridge.image.protocols\").filter(protocol => protocol.type === \"virtual\").forEach(dataPoint => {\n    if(dataPoint.id === \"COMMUNICATION_ERROR\") {\n        msg.dataPoint = dataPoint;\n        msg.name = dataPoint.id;\n        msg.payload = true;\n        node.send(msg);\n    }\n});\n\nnode.done();",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 930,
-            "y": 660,
-            "wires": [
-                [
-                    "uaubpg888w7zwqtx"
-                ]
-            ]
-        },
-        {
-            "id": "ahzd1pq8dq5s9t3f",
-            "type": "function",
-            "z": "e0bb868bd3f1e16c",
-            "name": "COMMUNICATION_ERROR - OK",
-            "func": "flow.get(\"bridge.image.protocols\").filter(protocol => protocol.type === \"virtual\").forEach(dataPoint => {\n    if(dataPoint.id === \"COMMUNICATION_ERROR\") {\n        msg.dataPoint = dataPoint;\n        msg.name = dataPoint.id;\n        msg.payload = false;\n        node.send(msg);\n    }\n});\n\nnode.done();",
-            "outputs": 1,
-            "timeout": "",
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 920,
-            "y": 620,
-            "wires": [
-                [
-                    "uaubpg888w7zwqtx"
-                ]
-            ]
-        },
-        {
             "id": "uaubpg888w7zwqtx",
             "type": "function",
             "z": "e0bb868bd3f1e16c",
@@ -1187,66 +1074,11 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1180,
+            "x": 1260,
             "y": 620,
             "wires": [
                 [
                     "7sveulg0k19w9vmx"
-                ]
-            ]
-        },
-        {
-            "id": "7uvo8x8ary7r74u2",
-            "type": "switch",
-            "z": "e0bb868bd3f1e16c",
-            "name": "",
-            "property": "bridge.image.metrics.COMMUNICATION_ERRORS",
-            "propertyType": "flow",
-            "rules": [
-                {
-                    "t": "false"
-                },
-                {
-                    "t": "null"
-                }
-            ],
-            "checkall": "false",
-            "repair": false,
-            "outputs": 2,
-            "x": 610,
-            "y": 680,
-            "wires": [
-                [
-                    "jz5g82swp35au5pe"
-                ],
-                [
-                    "jz5g82swp35au5pe"
-                ]
-            ]
-        },
-        {
-            "id": "oo4q0wowjzmd91ju",
-            "type": "delay",
-            "z": "e0bb868bd3f1e16c",
-            "name": "",
-            "pauseType": "rate",
-            "timeout": "5",
-            "timeoutUnits": "seconds",
-            "rate": "1",
-            "nbRateUnits": "30",
-            "rateUnits": "second",
-            "randomFirst": "1",
-            "randomLast": "5",
-            "randomUnits": "seconds",
-            "drop": true,
-            "allowrate": false,
-            "outputs": 1,
-            "x": 860,
-            "y": 580,
-            "wires": [
-                [
-                    "ahzd1pq8dq5s9t3f",
-                    "fuzwwzbmbttine5d"
                 ]
             ]
         },
@@ -1263,10 +1095,10 @@
             "finalize": "",
             "libs": [],
             "x": 430,
-            "y": 480,
+            "y": 440,
             "wires": [
                 [
-                    "djbzd0fq6quv7lp2"
+                    "5c7417f1339a5d90"
                 ]
             ]
         },
@@ -1292,7 +1124,7 @@
             "wires": [
                 [
                     "a3cjeyrbczu8w5a4",
-                    "oo4q0wowjzmd91ju"
+                    "c05c7347876e5ed8"
                 ],
                 []
             ]
@@ -1314,7 +1146,7 @@
             "drop": false,
             "allowrate": false,
             "outputs": 1,
-            "x": 450,
+            "x": 410,
             "y": 520,
             "wires": [
                 [
@@ -1335,7 +1167,7 @@
             "finalize": "",
             "libs": [],
             "x": 840,
-            "y": 440,
+            "y": 520,
             "wires": [
                 [
                     "sl0j6yyw4qn1uoo4",
@@ -1377,7 +1209,7 @@
             "fanOutMultipleResult": false,
             "setTopic": true,
             "outputs": 1,
-            "x": 1090,
+            "x": 1230,
             "y": 480,
             "wires": [
                 [
@@ -1397,11 +1229,251 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 1040,
+            "x": 1180,
             "y": 440,
             "wires": [
                 [
                     "x7zipnsirieh9z3l"
+                ]
+            ]
+        },
+        {
+            "id": "5c7417f1339a5d90",
+            "type": "switch",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "property": "bridge.error",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "false"
+                },
+                {
+                    "t": "null"
+                }
+            ],
+            "checkall": "false",
+            "repair": false,
+            "outputs": 2,
+            "x": 390,
+            "y": 480,
+            "wires": [
+                [
+                    "djbzd0fq6quv7lp2"
+                ],
+                []
+            ]
+        },
+        {
+            "id": "021bbbf048d91050",
+            "type": "delay",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "30",
+            "timeoutUnits": "minutes",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1010,
+            "y": 700,
+            "wires": [
+                [
+                    "848f24e4c37f9728"
+                ]
+            ]
+        },
+        {
+            "id": "4e6f7ce1a17a2848",
+            "type": "function",
+            "z": "e0bb868bd3f1e16c",
+            "name": "COMMUNICATION_ERROR - OK",
+            "func": "flow.get(\"bridge.image.protocols\").filter(protocol => protocol.type === \"virtual\").forEach(dataPoint => {\n    if(dataPoint.id === \"COMMUNICATION_ERROR\") {\n        msg.dataPoint = dataPoint;\n        msg.name = dataPoint.id;\n        msg.payload = false;\n        node.send(msg);\n    }\n});\n\nnode.done();",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 880,
+            "y": 620,
+            "wires": [
+                [
+                    "uaubpg888w7zwqtx"
+                ]
+            ]
+        },
+        {
+            "id": "69a5a1951bc114b3",
+            "type": "change",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "reset",
+                    "pt": "msg",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 820,
+            "y": 660,
+            "wires": [
+                [
+                    "021bbbf048d91050"
+                ]
+            ]
+        },
+        {
+            "id": "848f24e4c37f9728",
+            "type": "function",
+            "z": "e0bb868bd3f1e16c",
+            "name": "COMMUNICATION_ERROR - ERROR",
+            "func": "flow.set(\"bridge.image.metrics\", {});\n\nflow.get(\"bridge.image.protocols\").filter(protocol => protocol.type === \"virtual\").forEach(dataPoint => {\n    if(dataPoint.id === \"COMMUNICATION_ERROR\") {\n        msg.dataPoint = dataPoint;\n        msg.name = dataPoint.id;\n        msg.payload = true;\n        node.send(msg);\n    }\n});\n\nnode.done();",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 890,
+            "y": 740,
+            "wires": [
+                [
+                    "uaubpg888w7zwqtx"
+                ]
+            ]
+        },
+        {
+            "id": "a1f3b439c5f47863",
+            "type": "change",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "bridge.error",
+                    "pt": "flow",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 830,
+            "y": 700,
+            "wires": [
+                [
+                    "021bbbf048d91050"
+                ]
+            ]
+        },
+        {
+            "id": "2364b63030765a92",
+            "type": "delay",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "5",
+            "timeoutUnits": "minutes",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 810,
+            "y": 780,
+            "wires": [
+                [
+                    "52b4f2c9e8c6f50c"
+                ]
+            ]
+        },
+        {
+            "id": "52b4f2c9e8c6f50c",
+            "type": "change",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "bridge.error",
+                    "pt": "flow",
+                    "to": "false",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 990,
+            "y": 780,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "c05c7347876e5ed8",
+            "type": "delay",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "pauseType": "rate",
+            "timeout": "5",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "30",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": true,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 820,
+            "y": 580,
+            "wires": [
+                [
+                    "4e6f7ce1a17a2848",
+                    "69a5a1951bc114b3"
+                ]
+            ]
+        },
+        {
+            "id": "53d3ba658c97eba1",
+            "type": "catch",
+            "z": "e0bb868bd3f1e16c",
+            "name": "",
+            "scope": [
+                "10hv7rw20ox8hepe"
+            ],
+            "uncaught": false,
+            "x": 610,
+            "y": 700,
+            "wires": [
+                [
+                    "a1f3b439c5f47863",
+                    "2364b63030765a92"
                 ]
             ]
         }
