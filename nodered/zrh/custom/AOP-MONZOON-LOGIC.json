@@ -1,0 +1,297 @@
+{
+    "id": "7f7ae0af18720c2b",
+    "label": "1231231231233123",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "fd821cda2363af3a",
+            "type": "function",
+            "z": "7f7ae0af18720c2b",
+            "name": "Set sensor value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1140,
+            "y": 120,
+            "wires": [
+                [
+                    "7c5ed87d64620e9a",
+                    "be56c431c81cf636"
+                ]
+            ]
+        },
+        {
+            "id": "6181391394f387db",
+            "type": "change",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"MONZOON_COMMUNICATION_ERROR\":true,\"SYSTEM-0\":2}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 680,
+            "y": 240,
+            "wires": [
+                [
+                    "fd821cda2363af3a"
+                ]
+            ]
+        },
+        {
+            "id": "a72347a1bc23c0fa",
+            "type": "delay",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "30",
+            "timeoutUnits": "minutes",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 510,
+            "y": 240,
+            "wires": [
+                [
+                    "6181391394f387db"
+                ]
+            ]
+        },
+        {
+            "id": "b83b7dbf17036ceb",
+            "type": "change",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "reset",
+                    "pt": "msg",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 520,
+            "y": 160,
+            "wires": [
+                [
+                    "a72347a1bc23c0fa"
+                ]
+            ]
+        },
+        {
+            "id": "35a62d55bfe3c2fe",
+            "type": "catch",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "scope": [
+                "0190bcd3e4ee73da",
+                "fd821cda2363af3a",
+                "688eb4d148252317",
+                "7b1f0877cabb4c3b"
+            ],
+            "uncaught": false,
+            "x": 130,
+            "y": 240,
+            "wires": [
+                [
+                    "a72347a1bc23c0fa"
+                ]
+            ]
+        },
+        {
+            "id": "be56c431c81cf636",
+            "type": "mqtt out",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "topic": "cloud/upstream/data",
+            "qos": "2",
+            "retain": "false",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 1460,
+            "y": 120,
+            "wires": []
+        },
+        {
+            "id": "7c5ed87d64620e9a",
+            "type": "delay",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "10",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1080,
+            "y": 160,
+            "wires": [
+                [
+                    "688eb4d148252317"
+                ]
+            ]
+        },
+        {
+            "id": "a5fa6bfd424d4401",
+            "type": "delay",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "pauseType": "rate",
+            "timeout": "5",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "20",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 520,
+            "y": 120,
+            "wires": [
+                [
+                    "7b1f0877cabb4c3b",
+                    "b83b7dbf17036ceb"
+                ]
+            ]
+        },
+        {
+            "id": "688eb4d148252317",
+            "type": "function",
+            "z": "7f7ae0af18720c2b",
+            "name": "Reset bridge values",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nflow.get(\"bridge\").image.metrics = {};\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1120,
+            "y": 200,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "7b1f0877cabb4c3b",
+            "type": "function",
+            "z": "7f7ae0af18720c2b",
+            "name": "Translate Sensor Publish",
+            "func": "const mapping = {\n    \"A81758FFFE0EAD32\": [\n        { \"id\": \"A020_133_1141_AAA_Z01Lum01_AV01\", \"datapoint\": \"mmi_Light1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Bew01_BV01\", \"datapoint\": \"mmi_Motion1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq02_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq02_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq02_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0E38E7\": [\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq01_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq01_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq01_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0E38E2\": [\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq03_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq03_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_133_1141_AAA_Z01Tfq03_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0EAD31\": [\n        { \"id\": \"A020_132_1141_AAA_Z01Lum01_AV01\", \"datapoint\": \"mmi_Light1_Value\" },\n        { \"id\": \"A020_132_1141_AAA_Z01Bew01_BV01\", \"datapoint\": \"mmi_Motion1_Value\" },\n        { \"id\": \"A020_132_1141_AAA_Z01Tfq01_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_132_1141_AAA_Z01Tfq01_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_132_1141_AAA_Z01Tfq01_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0E3A91\": [\n        { \"id\": \"A020_132_1141_AAA_Z01Tfq02_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_132_1141_AAA_Z01Tfq02_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_132_1141_AAA_Z01Tfq02_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0EAD30\": [\n        { \"id\": \"A020_131_1141_AAA_Z01Lum01_AV01\", \"datapoint\": \"mmi_Light1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Bew01_BV01\", \"datapoint\": \"mmi_Motion1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq02_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq02_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq02_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0E3A8F\": [\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq01_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq01_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq01_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0E3A90\": [\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq03_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq03_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z01Tfq03_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0EAD2F\": [\n        { \"id\": \"A020_131_1141_AAA_Z02Lum01_AV01\", \"datapoint\": \"mmi_Light1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z02Bew01_BV01\", \"datapoint\": \"mmi_Motion1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z02Tfq01_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z02Tfq01_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z02Tfq01_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ],\n    \"A81758FFFE0E3A8D\": [\n        { \"id\": \"A020_131_1141_AAA_Z02Tfq02_AV01\", \"datapoint\": \"mmi_Temp1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z02Tfq02_AV02\", \"datapoint\": \"mmi_Humidity1_Value\" },\n        { \"id\": \"A020_131_1141_AAA_Z02Tfq02_AV03\", \"datapoint\": \"mmi_Co1_Value\" }\n    ]\n}\n\n\nconst device = mapping[msg.payload.mmi_DevEUI];\nconst result = {};\nif (device) {\n    if (msg.payload[\"mmi_Temp1_Value\"]) {\n        const datapoint = device.find(devicePoint => devicePoint.datapoint === \"mmi_Temp1_Value\");\n        if (datapoint) {\n            result[datapoint.id] = msg.payload[\"mmi_Temp1_Value\"];\n        }\n    }\n    if (msg.payload[\"mmi_Humidity1_Value\"]) {\n        const datapoint = device.find(devicePoint => devicePoint.datapoint === \"mmi_Humidity1_Value\");\n        if (datapoint) {\n            result[datapoint.id] = msg.payload[\"mmi_Humidity1_Value\"];\n        }\n    }\n    if (msg.payload[\"mmi_Co1_Value\"]) {\n        const datapoint = device.find(devicePoint => devicePoint.datapoint === \"mmi_Co1_Value\");\n        if (datapoint) {\n            result[datapoint.id] = msg.payload[\"mmi_Co1_Value\"];\n        }\n    }\n    if (msg.payload[\"mmi_Motion1_Value\"]) {\n        const datapoint = device.find(devicePoint => devicePoint.datapoint === \"mmi_Motion1_Value\");\n        if (datapoint) {\n            result[datapoint.id] = msg.payload[\"mmi_Motion1_Value\"];\n        }\n    }\n    if (msg.payload[\"mmi_Light1_Value\"]) {\n        const datapoint = device.find(devicePoint => devicePoint.datapoint === \"mmi_Light1_Value\");\n        if (datapoint) {\n            result[datapoint.id] = msg.payload[\"mmi_Light1_Value\"];\n        }\n    }\n}\nmsg.payload = result;\nmsg.payload[\"MONZOON_COMMUNICATION_ERROR\"] = false;\nmsg.payload[\"SYSTEM-0\"] = 0;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 810,
+            "y": 120,
+            "wires": [
+                [
+                    "a72347a1bc23c0fa",
+                    "fd821cda2363af3a"
+                ]
+            ]
+        },
+        {
+            "id": "429236c72478dea0",
+            "type": "mqtt in",
+            "z": "7f7ae0af18720c2b",
+            "name": "Monzoon Cloud Subscribe",
+            "topic": "monzoon/airportzh/zrh/zh/muvdigital01/devices/#",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "9fe381a6e2097c38",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 0,
+            "x": 190,
+            "y": 120,
+            "wires": [
+                [
+                    "a5fa6bfd424d4401"
+                ]
+            ]
+        }
+    ],
+    "configs": [
+        {
+            "id": "9fe381a6e2097c38",
+            "type": "mqtt-broker",
+            "z": "7f7ae0af18720c2b",
+            "name": "",
+            "broker": "imq.monzoon.net",
+            "port": "8883",
+            "tls": "",
+            "clientid": "",
+            "autoConnect": true,
+            "usetls": true,
+            "protocolVersion": "4",
+            "keepalive": "60",
+            "cleansession": true,
+            "autoUnsubscribe": true,
+            "birthTopic": "",
+            "birthQos": "0",
+            "birthRetain": "false",
+            "birthPayload": "",
+            "birthMsg": {},
+            "closeTopic": "",
+            "closeQos": "0",
+            "closeRetain": "false",
+            "closePayload": "",
+            "closeMsg": {},
+            "willTopic": "",
+            "willQos": "0",
+            "willRetain": "false",
+            "willPayload": "",
+            "willMsg": {},
+            "userProps": "",
+            "sessionExpiry": "",
+            "credentials": {
+                "user": "${MONZOON_CLOUD_USERNAME}",
+                "password": "${MONZOON_CLOUD_PASSWORD}"
+            } 
+        }
+    ]
+}
