@@ -1,65 +1,14 @@
 {
-    "id": "7ca9e00c3f58386e",
-    "label": "12312413413413413",
+    "id": "5c0cf66e996cb52c",
+    "label": "1231321321321",
     "disabled": false,
     "info": "",
     "env": [],
     "nodes": [
         {
-            "id": "x55s0ameile3yezb",
-            "type": "function",
-            "z": "7ca9e00c3f58386e",
-            "name": "define credentials",
-            "func": "let clientId = env.get('AOP_API_CLIENT_ID');\nlet clientSecret = env.get('AOP_API_CLIENT_SECRET');\nlet scope = env.get('AOP_API_SCOPE');\n\nif (clientId && clientId !== \"\" && clientSecret && clientSecret !== \"\" && scope && scope !== \"\") {\n    msg.payload =\n        \"client_id=\" + encodeURIComponent(clientId) +\n        \"&client_secret=\" + encodeURIComponent(clientSecret) +\n        \"&grant_type=client_credentials\" +\n        \"&scope=\" + encodeURIComponent(scope);\n\n    msg.headers = {\n        \"Content-Type\": \"application/x-www-form-urlencoded\"\n    };\n\n    return msg;\n}\n\nnode.done();",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 330,
-            "y": 320,
-            "wires": [
-                [
-                    "oafcyoesul05sc9x"
-                ]
-            ]
-        },
-        {
-            "id": "oafcyoesul05sc9x",
-            "type": "http request",
-            "z": "7ca9e00c3f58386e",
-            "name": "Aquire Authorization Token",
-            "method": "POST",
-            "ret": "obj",
-            "paytoqs": "body",
-            "url": "https://login.microsoftonline.com/49181cc3-a08b-493e-8606-9eebd7ae9f10/oauth2/v2.0/token",
-            "tls": "",
-            "persist": false,
-            "proxy": "",
-            "insecureHTTPParser": false,
-            "authType": "",
-            "senderr": false,
-            "headers": [
-                {
-                    "keyType": "other",
-                    "keyValue": "Content-Type",
-                    "valueType": "other",
-                    "valueValue": "application/x-www-form-urlencoded"
-                }
-            ],
-            "x": 560,
-            "y": 320,
-            "wires": [
-                [
-                    "ofpkqzrteun30pc0"
-                ]
-            ]
-        },
-        {
-            "id": "sp41jtdnx88e9ha8",
+            "id": "vy1eli2jgv2k4ctv",
             "type": "inject",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "AOP API interval",
             "props": [
                 {
@@ -77,58 +26,14 @@
             "y": 320,
             "wires": [
                 [
-                    "x55s0ameile3yezb"
+                    "define_credentials_privatekey"
                 ]
             ]
         },
         {
-            "id": "ofpkqzrteun30pc0",
+            "id": "k94nwwz0qj8y8atp",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
-            "name": "define_query_params",
-            "func": "const to_ts = new Date();\nconst from_ts = new Date();\n\nto_ts.setMinutes(to_ts.getMinutes() + 200);\n\nmsg.gate_area = 'A81-A86'\nmsg.obs_from = from_ts.toJSON()\nmsg.obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 820,
-            "y": 320,
-            "wires": [
-                [
-                    "iqfw9d3sp6k9khcj"
-                ]
-            ]
-        },
-        {
-            "id": "iqfw9d3sp6k9khcj",
-            "type": "http request",
-            "z": "7ca9e00c3f58386e",
-            "name": "Request Gate Demand Data",
-            "method": "GET",
-            "ret": "obj",
-            "paytoqs": "ignore",
-            "url": "https://api.int.zurich-airport.com/airport_operations_plan/v2/passenger-demand/gate-areas/{{{gate_area}}}?observation_time_window_from={{{obs_from}}}&observation_time_window_to={{{obs_to}}}",
-            "tls": "",
-            "persist": false,
-            "proxy": "",
-            "insecureHTTPParser": false,
-            "authType": "",
-            "senderr": false,
-            "headers": [],
-            "x": 1080,
-            "y": 320,
-            "wires": [
-                [
-                    "lyjxp42b8bby6l8u"
-                ]
-            ]
-        },
-        {
-            "id": "lyjxp42b8bby6l8u",
-            "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Create AOP PAX Data Array for Modbus Communication",
             "func": "// Definiere die Größe des Arrays (n kann z. B. aus msg.n kommen oder festgelegt sein)\nvar n = msg.n || 10;  // Falls msg.n nicht gesetzt ist, wird n=5 als Standardwert genommen\n\n// Initialisiere das Array mit Standardwerten (z. B. 0 oder eine Sequenz)\nvar dataArray = new Array(n).fill(0);  // Füllt das Array mit n Elementen, alle auf 0 gesetzt\n\n// Falls du das Array mit einer Sequenz befüllen möchtest, kannst du dies tun:\nfor (let i = 0; i < n; i++) {\n    dataArray[i] = msg.payload.data[i].estimated_passenger_count;  // Erzeugt ein Array [mit den Passagierdaten]\n}\n\n// Setze das Array als msg.payload\nmsg.payload = dataArray;\nreturn msg;",
             "outputs": 1,
@@ -137,20 +42,20 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 630,
+            "x": 690,
             "y": 460,
             "wires": [
                 [
-                    "u604t9tczepfgnuj",
-                    "9u3p20fqz2bwia2b",
-                    "hc7ao88dpfirhe3b"
+                    "ao5re903erhrt6th",
+                    "3omelfbs0fcoi0dc",
+                    "1jvnli96bp81pxqu"
                 ]
             ]
         },
         {
-            "id": "u604t9tczepfgnuj",
+            "id": "ao5re903erhrt6th",
             "type": "debug",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "AOP Data",
             "active": false,
             "tosidebar": true,
@@ -165,9 +70,9 @@
             "wires": []
         },
         {
-            "id": "9u3p20fqz2bwia2b",
+            "id": "3omelfbs0fcoi0dc",
             "type": "modbus-write",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "AOP Data to Belimo",
             "showStatusActivities": false,
             "showErrors": true,
@@ -176,7 +81,7 @@
             "dataType": "MHoldingRegisters",
             "adr": "11100",
             "quantity": "10",
-            "server": "dms7enn3dp7rwtpa",
+            "server": "3vtsaxox9l6ia4ax",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
@@ -189,9 +94,9 @@
             ]
         },
         {
-            "id": "3buondkw3fx17boq",
+            "id": "xz7mgypg0936ei2q",
             "type": "comment",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "AOP-> Belimo",
             "info": "",
             "x": 70,
@@ -199,9 +104,9 @@
             "wires": []
         },
         {
-            "id": "gn5x9btiu358148m",
+            "id": "qe2gwwkj376uy8jd",
             "type": "modbus-read",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Beckhoff Sensor Data",
             "topic": "Read Sensor Data from Beckhoff",
             "showStatusActivities": false,
@@ -216,26 +121,26 @@
             "rateUnit": "s",
             "delayOnStart": false,
             "startDelayTime": "",
-            "server": "ax8al96z8cizgl4x",
+            "server": "7bypa7bte0v84e8q",
             "useIOFile": false,
             "ioFile": "",
             "useIOForPayload": false,
             "emptyMsgOnFail": false,
             "x": 180,
-            "y": 1080,
+            "y": 960,
             "wires": [
                 [
-                    "pjobk68ky66kvzdm",
-                    "6fb9pu5ebnw3069v",
-                    "lcalqo8931hpimgb"
+                    "2rhjm6ywhflu1dpz",
+                    "nfuodxwrymjte7rp",
+                    "k3d2qhjn0o1tr8m0"
                 ],
                 []
             ]
         },
         {
-            "id": "6fb9pu5ebnw3069v",
+            "id": "nfuodxwrymjte7rp",
             "type": "modbus-write",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Belimo Sensor Data",
             "showStatusActivities": false,
             "showErrors": true,
@@ -244,22 +149,22 @@
             "dataType": "MHoldingRegisters",
             "adr": "0",
             "quantity": "100",
-            "server": "dms7enn3dp7rwtpa",
+            "server": "3vtsaxox9l6ia4ax",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
             "startDelayTime": "",
             "x": 1160,
-            "y": 1120,
+            "y": 1000,
             "wires": [
                 [],
                 []
             ]
         },
         {
-            "id": "pjobk68ky66kvzdm",
+            "id": "2rhjm6ywhflu1dpz",
             "type": "debug",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Beckhoff Sensor Data",
             "active": false,
             "tosidebar": true,
@@ -270,23 +175,23 @@
             "statusVal": "",
             "statusType": "auto",
             "x": 1720,
-            "y": 1080,
+            "y": 960,
             "wires": []
         },
         {
-            "id": "53lol9okbmzi6neq",
+            "id": "ssvcxssd1sxwdjix",
             "type": "comment",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Beckhoff -> Belimo",
             "info": "",
             "x": 130,
-            "y": 1020,
+            "y": 900,
             "wires": []
         },
         {
-            "id": "vxt4mfm6zjg6y1hn",
+            "id": "q194b29txbts656e",
             "type": "modbus-read",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Belimo Setpoints",
             "topic": "Read Setpoints from Belimo",
             "showStatusActivities": false,
@@ -301,26 +206,26 @@
             "rateUnit": "s",
             "delayOnStart": false,
             "startDelayTime": "",
-            "server": "dms7enn3dp7rwtpa",
+            "server": "3vtsaxox9l6ia4ax",
             "useIOFile": false,
             "ioFile": "",
             "useIOForPayload": false,
             "emptyMsgOnFail": false,
             "x": 160,
-            "y": 1320,
+            "y": 1200,
             "wires": [
                 [
-                    "u1c9jf2jd2v11i7l",
-                    "jj3trbvv79213kw4",
-                    "109klqic5914aado"
+                    "pw74sfjbnblwe04o",
+                    "ltm2v617901uoa3o",
+                    "p1t4eyve3khv6je7"
                 ],
                 []
             ]
         },
         {
-            "id": "jj3trbvv79213kw4",
+            "id": "ltm2v617901uoa3o",
             "type": "modbus-write",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Beckhoff setpoints",
             "showStatusActivities": false,
             "showErrors": true,
@@ -329,22 +234,22 @@
             "dataType": "MHoldingRegisters",
             "adr": "32768",
             "quantity": "5",
-            "server": "ax8al96z8cizgl4x",
+            "server": "7bypa7bte0v84e8q",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
             "startDelayTime": "12",
             "x": 1150,
-            "y": 1360,
+            "y": 1240,
             "wires": [
                 [],
                 []
             ]
         },
         {
-            "id": "u1c9jf2jd2v11i7l",
+            "id": "pw74sfjbnblwe04o",
             "type": "debug",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Belimo Setpoints",
             "active": false,
             "tosidebar": true,
@@ -355,18 +260,18 @@
             "statusVal": "",
             "statusType": "auto",
             "x": 1710,
-            "y": 1320,
+            "y": 1200,
             "wires": []
         },
         {
-            "id": "3svuqohd4i9thpj1",
+            "id": "44woff3ytrxew3ho",
             "type": "modbus-read",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Belimo Setpoints",
             "topic": "Read Setpoints from Belimo",
             "showStatusActivities": false,
             "logIOActivities": false,
-            "showErrors": true,
+            "showErrors": false,
             "showWarnings": true,
             "unitid": "1",
             "dataType": "InputRegister",
@@ -376,25 +281,25 @@
             "rateUnit": "s",
             "delayOnStart": false,
             "startDelayTime": "",
-            "server": "dms7enn3dp7rwtpa",
+            "server": "3vtsaxox9l6ia4ax",
             "useIOFile": false,
             "ioFile": "",
             "useIOForPayload": false,
             "emptyMsgOnFail": false,
             "x": 160,
-            "y": 1540,
+            "y": 1420,
             "wires": [
                 [
-                    "wqnoa7o7frvs8t62",
-                    "bmcwe2u9gsiw1dwy"
+                    "lytol8xku92f2ut8",
+                    "bmj1s9y1vquar1oj"
                 ],
                 []
             ]
         },
         {
-            "id": "bmcwe2u9gsiw1dwy",
+            "id": "bmj1s9y1vquar1oj",
             "type": "modbus-write",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Beckhoff setpoints",
             "showStatusActivities": false,
             "showErrors": true,
@@ -403,22 +308,22 @@
             "dataType": "MHoldingRegisters",
             "adr": "32808",
             "quantity": "8",
-            "server": "ax8al96z8cizgl4x",
+            "server": "7bypa7bte0v84e8q",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
             "startDelayTime": "12",
             "x": 1150,
-            "y": 1600,
+            "y": 1480,
             "wires": [
                 [],
                 []
             ]
         },
         {
-            "id": "wqnoa7o7frvs8t62",
+            "id": "lytol8xku92f2ut8",
             "type": "debug",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Belimo Setpoints",
             "active": false,
             "tosidebar": true,
@@ -429,23 +334,23 @@
             "statusVal": "",
             "statusType": "auto",
             "x": 1710,
-            "y": 1560,
+            "y": 1440,
             "wires": []
         },
         {
-            "id": "5wpg08q9yk39mo7n",
+            "id": "vhu0j986l8ux5lps",
             "type": "comment",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Belimo -> Beckhoff ",
             "info": "",
             "x": 130,
-            "y": 1260,
+            "y": 1140,
             "wires": []
         },
         {
-            "id": "7p73xionmnaeo1cs",
+            "id": "xqiywmap76tzio8o",
             "type": "inject",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Startup",
             "props": [
                 {
@@ -463,28 +368,28 @@
             "y": 60,
             "wires": [
                 [
-                    "4ok3pmqqogjf2ql6",
-                    "oj419vw5blr0r3di"
+                    "ioja1c3xrrdgjjbw",
+                    "lamn4mrsdrrnlijh"
                 ]
             ]
         },
         {
-            "id": "4ok3pmqqogjf2ql6",
+            "id": "ioja1c3xrrdgjjbw",
             "type": "getflows",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "x": 280,
             "y": 60,
             "wires": [
                 [
-                    "h3hr8jekju3a0dpt"
+                    "dcu14bobd6uu3ldc"
                 ]
             ]
         },
         {
-            "id": "h3hr8jekju3a0dpt",
+            "id": "dcu14bobd6uu3ldc",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Init",
             "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
             "outputs": 1,
@@ -496,14 +401,14 @@
             "y": 60,
             "wires": [
                 [
-                    "9qicmldgtx7o4dww"
+                    "261ibxjknrqavye1"
                 ]
             ]
         },
         {
-            "id": "9qicmldgtx7o4dww",
+            "id": "261ibxjknrqavye1",
             "type": "switch",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Config correct",
             "property": "bridge.image.controller",
             "propertyType": "flow",
@@ -521,14 +426,14 @@
             "y": 60,
             "wires": [
                 [
-                    "o4gsozpxu5avbh44"
+                    "azg6h2btb5ur51us"
                 ]
             ]
         },
         {
-            "id": "o4gsozpxu5avbh44",
+            "id": "azg6h2btb5ur51us",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Set channel parameters",
             "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
             "outputs": 1,
@@ -543,9 +448,9 @@
             ]
         },
         {
-            "id": "kxa34bbnazm1ghmy",
+            "id": "nnl5pd2uvgwhnago",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Set sensor value on bridge",
             "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
             "outputs": 1,
@@ -561,9 +466,9 @@
             ]
         },
         {
-            "id": "yqap6ym1mngzzz9n",
+            "id": "b2662goazvwdbk4r",
             "type": "inject",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "error interval",
             "props": [
                 {
@@ -585,15 +490,15 @@
             "y": 220,
             "wires": [
                 [
-                    "jpppp8t9z0zd9ank",
-                    "ktb9fdixuonud4c3"
+                    "jg66uw4id2t3ec3y",
+                    "fvxdqlu10em65m3f"
                 ]
             ]
         },
         {
-            "id": "oj419vw5blr0r3di",
+            "id": "lamn4mrsdrrnlijh",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -613,14 +518,14 @@
             "y": 100,
             "wires": [
                 [
-                    "kxa34bbnazm1ghmy"
+                    "nnl5pd2uvgwhnago"
                 ]
             ]
         },
         {
-            "id": "109klqic5914aado",
+            "id": "p1t4eyve3khv6je7",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -637,18 +542,18 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1160,
+            "y": 1040,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc",
-                    "v763s065t8l4rtdw"
+                    "405myobncqfe5oqa",
+                    "bsfuhewnsno3ib0z"
                 ]
             ]
         },
         {
-            "id": "lcalqo8931hpimgb",
+            "id": "k3d2qhjn0o1tr8m0",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -665,86 +570,86 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1400,
+            "y": 1280,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc",
-                    "wi45k0z2ewdd8s74"
+                    "405myobncqfe5oqa",
+                    "nztnwa5p8dhcmfrf"
                 ]
             ]
         },
         {
-            "id": "jdukgcy1iptgliry",
+            "id": "1x37as97f6074izw",
             "type": "link in",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Write Values",
             "links": [
-                "11lxg6kgit8h7pgc"
+                "405myobncqfe5oqa"
             ],
             "x": 365,
             "y": 140,
             "wires": [
                 [
-                    "kxa34bbnazm1ghmy"
+                    "nnl5pd2uvgwhnago"
                 ]
             ]
         },
         {
-            "id": "11lxg6kgit8h7pgc",
+            "id": "405myobncqfe5oqa",
             "type": "link out",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "link out 20",
             "mode": "link",
             "links": [
-                "jdukgcy1iptgliry"
+                "1x37as97f6074izw"
             ],
             "x": 1595,
-            "y": 1220
+            "y": 1100
         },
         {
-            "id": "sco4ty2qqr0xazfc",
+            "id": "zd4ldk34mtdtlplj",
             "type": "catch",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "scope": [
-                "6fb9pu5ebnw3069v",
-                "vxt4mfm6zjg6y1hn",
-                "3svuqohd4i9thpj1",
-                "g1nns37i6t404ona",
-                "zxks5lp5k76h5w0q",
-                "9u3p20fqz2bwia2b"
+                "nfuodxwrymjte7rp",
+                "q194b29txbts656e",
+                "44woff3ytrxew3ho",
+                "sadk8fb6eklagd0f",
+                "hfmlnhcwd8ovp44g",
+                "3omelfbs0fcoi0dc"
             ],
             "uncaught": false,
             "x": 530,
-            "y": 1240,
+            "y": 1120,
             "wires": [
                 [
-                    "kq4bwv9l60tj71q3"
+                    "p8brxe5ql2z21lvv"
                 ]
             ]
         },
         {
-            "id": "0490z645ns2tikc5",
+            "id": "17xtysaeh2199vg2",
             "type": "catch",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "scope": [
-                "jj3trbvv79213kw4",
-                "gn5x9btiu358148m"
+                "ltm2v617901uoa3o",
+                "qe2gwwkj376uy8jd"
             ],
             "uncaught": false,
             "x": 530,
-            "y": 1480,
+            "y": 1360,
             "wires": [
                 [
-                    "17ayjydz4nlpu52u"
+                    "al9u6eev9i2ci8v6"
                 ]
             ]
         },
         {
-            "id": "ee3zesuxf61jqhll",
+            "id": "dnp3u3sjpvq52sj8",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -761,17 +666,17 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1520,
+            "y": 1400,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc"
+                    "405myobncqfe5oqa"
                 ]
             ]
         },
         {
-            "id": "zioyy5u4giqb6ete",
+            "id": "k0oe4ers0tmun6gc",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -788,17 +693,17 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1280,
+            "y": 1160,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc"
+                    "405myobncqfe5oqa"
                 ]
             ]
         },
         {
-            "id": "hc7ao88dpfirhe3b",
+            "id": "1jvnli96bp81pxqu",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -818,36 +723,36 @@
             "y": 540,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc",
-                    "3mk39d0pils7p1mn"
+                    "405myobncqfe5oqa",
+                    "2fn1dde7026g9m57"
                 ]
             ]
         },
         {
-            "id": "tk4fqw8nsggn46se",
+            "id": "z0s3kqsenvuzwdz2",
             "type": "catch",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "scope": [
-                "lyjxp42b8bby6l8u",
-                "iqfw9d3sp6k9khcj",
-                "ofpkqzrteun30pc0",
-                "oafcyoesul05sc9x",
-                "x55s0ameile3yezb"
+                "k94nwwz0qj8y8atp",
+                "iz08c00ubjm6dw5y",
+                "nf75zqpu23estg5t",
+                "bmbfyte5z36p57t7",
+                "wrbbwg9vk8k5hrmj"
             ],
             "uncaught": false,
             "x": 530,
             "y": 620,
             "wires": [
                 [
-                    "rt1tn2idh5sjiexs"
+                    "t4qd4qv9x5l0jlsj"
                 ]
             ]
         },
         {
-            "id": "eki66ulwnryut6l1",
+            "id": "ysigncxjwu5vwyau",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -867,14 +772,14 @@
             "y": 660,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc"
+                    "405myobncqfe5oqa"
                 ]
             ]
         },
         {
-            "id": "jpppp8t9z0zd9ank",
+            "id": "jg66uw4id2t3ec3y",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Set error indicator",
             "func": "const filtered = Object.fromEntries(\n    Object.entries(flow.get(\"bridge\").image.metrics).filter(\n        ([key, value]) => key.includes(\"ERROR\") && value === true\n    )\n);\n\nif (Object.keys(filtered).length > 0) {\n    msg.payload = { \"SYSTEM-0\": 2 }\n} else {\n    msg.payload = { \"SYSTEM-0\": 0 }\n}\n\nreturn msg;",
             "outputs": 1,
@@ -887,14 +792,14 @@
             "y": 180,
             "wires": [
                 [
-                    "kxa34bbnazm1ghmy"
+                    "nnl5pd2uvgwhnago"
                 ]
             ]
         },
         {
-            "id": "jdrl6v3lr4l3i2vd",
+            "id": "g8eughit7xc98c52",
             "type": "http request",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "method": "POST",
             "ret": "txt",
@@ -920,18 +825,18 @@
                     "valueValue": "apiKey"
                 }
             ],
-            "x": 590,
-            "y": 920,
+            "x": 490,
+            "y": 800,
             "wires": [
                 [
-                    "ekb0yfnyqc5dc87e"
+                    "tr35mljrfbeahfrm"
                 ]
             ]
         },
         {
-            "id": "4yuat9f5y3d2ionw",
+            "id": "pou6nlyg10u9e7x2",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Build query",
             "func": "const apiKey = env.get('MUV_API_TOKEN');\nconst to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 1560);\nfrom_ts.setMinutes(to_ts.getMinutes() + 60);\n\nconst body = {\n  \"timestamp\": {\n    \"from\": from_ts,\n    \"to\": to_ts\n  },\n  \"metricId\": [\n    \"FORECAST_TEMPERATURE\",\n    \"FORECAST_HUMIDITY\",\n    \"FORECAST_UVINDEX\"\n  ],\n  \"aggregation\": {\n    \"method\": \"mean\",\n    \"interval\": \"1h\"\n  }\n}\n\nmsg.apiKey = apiKey;\nmsg.payload = body;\n\nreturn msg;",
             "outputs": 1,
@@ -940,44 +845,44 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 430,
-            "y": 920,
+            "x": 330,
+            "y": 800,
             "wires": [
                 [
-                    "jdrl6v3lr4l3i2vd"
+                    "g8eughit7xc98c52"
                 ]
             ]
         },
         {
-            "id": "ekb0yfnyqc5dc87e",
+            "id": "tr35mljrfbeahfrm",
             "type": "json",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "property": "payload",
             "action": "",
             "pretty": false,
-            "x": 730,
-            "y": 920,
+            "x": 630,
+            "y": 800,
             "wires": [
                 [
-                    "ktfhpm897o10w18y"
+                    "42txa2cbk9plyacm"
                 ]
             ]
         },
         {
-            "id": "khv9a5ntd4oh5pec",
+            "id": "3tt0l4ee2iwlxivg",
             "type": "comment",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Weather -> Belimo ",
             "info": "",
             "x": 130,
-            "y": 880,
+            "y": 760,
             "wires": []
         },
         {
-            "id": "ktfhpm897o10w18y",
+            "id": "42txa2cbk9plyacm",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Set Modbus data",
             "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value });\n    data.pop();\n    const metricId = metric.metricId;\n    if (metricId === \"FORECAST_TEMPERATURE\") {\n        const registerStart = 12100;\n        node.send({ \"payload\": { value: data.map(x => { return Math.round(x * 100) }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_HUMIDITY\") {\n        const registerStart = 12200;\n        node.send({ \"payload\": { value: data.map(x => { return Math.round(x * 100) }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_UVINDEX\") {\n        const registerStart = 12300;\n        node.send({ \"payload\": { value: data, 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else {\n        throw new Error(\"API data missing\");\n    }\n});\n\nnode.done();",
             "outputs": 1,
@@ -986,41 +891,41 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 890,
-            "y": 920,
+            "x": 790,
+            "y": 800,
             "wires": [
                 [
-                    "g1nns37i6t404ona",
-                    "pe17rwtc6g4406vr"
+                    "sadk8fb6eklagd0f",
+                    "ub1yvaxqfda94zv1"
                 ]
             ]
         },
         {
-            "id": "g1nns37i6t404ona",
+            "id": "sadk8fb6eklagd0f",
             "type": "modbus-flex-write",
-            "z": "7ca9e00c3f58386e",
-            "name": "Belimo MUV API Data",
+            "z": "5c0cf66e996cb52c",
+            "name": "Belimo Weather Data",
             "showStatusActivities": false,
             "showErrors": true,
             "showWarnings": true,
-            "server": "dms7enn3dp7rwtpa",
+            "server": "3vtsaxox9l6ia4ax",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
             "startDelayTime": "",
             "x": 1160,
-            "y": 920,
+            "y": 800,
             "wires": [
                 [
-                    "lm1lroo0uvomtpd0"
+                    "gpz1cjd2ims487pa"
                 ],
                 []
             ]
         },
         {
-            "id": "lm1lroo0uvomtpd0",
+            "id": "gpz1cjd2ims487pa",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -1037,18 +942,18 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 920,
+            "y": 800,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc",
-                    "96gwacrdf9j9ryxg"
+                    "405myobncqfe5oqa",
+                    "yz9xxhg1qgkxz4il"
                 ]
             ]
         },
         {
-            "id": "l765cfn3tkkmh4v3",
+            "id": "zfp2vvpv8xc1qkja",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -1065,37 +970,37 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1040,
+            "y": 920,
             "wires": [
                 [
-                    "11lxg6kgit8h7pgc"
+                    "405myobncqfe5oqa"
                 ]
             ]
         },
         {
-            "id": "kc2xsdqzmsgnnf4v",
+            "id": "psu1of9ostlr9ucn",
             "type": "catch",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "scope": [
-                "ktfhpm897o10w18y",
-                "ekb0yfnyqc5dc87e",
-                "jdrl6v3lr4l3i2vd"
+                "42txa2cbk9plyacm",
+                "tr35mljrfbeahfrm",
+                "g8eughit7xc98c52"
             ],
             "uncaught": false,
             "x": 530,
-            "y": 1000,
+            "y": 880,
             "wires": [
                 [
-                    "4d167n8syvk2f9nf"
+                    "c0l7apgkz8xa60k5"
                 ]
             ]
         },
         {
-            "id": "xh8x1vszh00r73zc",
+            "id": "z047vvrgvgcb9wfy",
             "type": "inject",
-            "z": "7ca9e00c3f58386e",
-            "name": "MUV API interval (Weather)",
+            "z": "5c0cf66e996cb52c",
+            "name": "MUV API interval",
             "props": [
                 {
                     "p": "payload"
@@ -1108,18 +1013,18 @@
             "topic": "",
             "payload": "",
             "payloadType": "date",
-            "x": 180,
-            "y": 920,
+            "x": 150,
+            "y": 800,
             "wires": [
                 [
-                    "4yuat9f5y3d2ionw"
+                    "pou6nlyg10u9e7x2"
                 ]
             ]
         },
         {
-            "id": "pe17rwtc6g4406vr",
+            "id": "ub1yvaxqfda94zv1",
             "type": "debug",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "MUV API Data",
             "active": false,
             "tosidebar": true,
@@ -1130,13 +1035,13 @@
             "statusVal": "",
             "statusType": "auto",
             "x": 1700,
-            "y": 840,
+            "y": 720,
             "wires": []
         },
         {
-            "id": "zxks5lp5k76h5w0q",
+            "id": "hfmlnhcwd8ovp44g",
             "type": "modbus-write",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "AOP Data to Belimo",
             "showStatusActivities": false,
             "showErrors": true,
@@ -1145,7 +1050,7 @@
             "dataType": "MHoldingRegisters",
             "adr": "10000",
             "quantity": "2",
-            "server": "dms7enn3dp7rwtpa",
+            "server": "3vtsaxox9l6ia4ax",
             "emptyMsgOnFail": false,
             "keepMsgProperties": false,
             "delayOnStart": false,
@@ -1154,15 +1059,15 @@
             "y": 260,
             "wires": [
                 [
-                    "4wsc9xm0p5ueawcj"
+                    "ewi8hcqcpeb4or3y"
                 ],
                 []
             ]
         },
         {
-            "id": "4wsc9xm0p5ueawcj",
+            "id": "ewi8hcqcpeb4or3y",
             "type": "debug",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Health State",
             "active": false,
             "tosidebar": true,
@@ -1177,9 +1082,9 @@
             "wires": []
         },
         {
-            "id": "ktb9fdixuonud4c3",
+            "id": "fvxdqlu10em65m3f",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "Set health values",
             "func": "const filtered = Object.fromEntries(\n    Object.entries(flow.get(\"bridge\").image.metrics).filter(\n        ([key, value]) => key.includes(\"ERROR\") && value === true\n    )\n);\n\nif (Object.keys(filtered).length > 0) {\n    msg.payload = [Math.floor(Math.random() * 10000), 1]\n} else {\n    msg.payload = [Math.floor(Math.random() * 10000), 0]\n}\n\nreturn msg;",
             "outputs": 1,
@@ -1192,14 +1097,14 @@
             "y": 260,
             "wires": [
                 [
-                    "zxks5lp5k76h5w0q"
+                    "hfmlnhcwd8ovp44g"
                 ]
             ]
         },
         {
-            "id": "rt1tn2idh5sjiexs",
+            "id": "t4qd4qv9x5l0jlsj",
             "type": "delay",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "pauseType": "delay",
             "timeout": "10",
@@ -1217,14 +1122,14 @@
             "y": 620,
             "wires": [
                 [
-                    "eki66ulwnryut6l1"
+                    "ysigncxjwu5vwyau"
                 ]
             ]
         },
         {
-            "id": "3mk39d0pils7p1mn",
+            "id": "2fn1dde7026g9m57",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -1244,14 +1149,14 @@
             "y": 580,
             "wires": [
                 [
-                    "rt1tn2idh5sjiexs"
+                    "t4qd4qv9x5l0jlsj"
                 ]
             ]
         },
         {
-            "id": "96gwacrdf9j9ryxg",
+            "id": "yz9xxhg1qgkxz4il",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -1268,17 +1173,17 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 960,
+            "y": 840,
             "wires": [
                 [
-                    "4d167n8syvk2f9nf"
+                    "c0l7apgkz8xa60k5"
                 ]
             ]
         },
         {
-            "id": "4d167n8syvk2f9nf",
+            "id": "c0l7apgkz8xa60k5",
             "type": "delay",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "pauseType": "delay",
             "timeout": "120",
@@ -1293,17 +1198,17 @@
             "allowrate": false,
             "outputs": 1,
             "x": 1370,
-            "y": 1000,
+            "y": 880,
             "wires": [
                 [
-                    "l765cfn3tkkmh4v3"
+                    "zfp2vvpv8xc1qkja"
                 ]
             ]
         },
         {
-            "id": "y6g2vejqgqc1bdbq",
+            "id": "uqc10124cd73vyb9",
             "type": "delay",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "pauseType": "delay",
             "timeout": "30",
@@ -1318,17 +1223,17 @@
             "allowrate": false,
             "outputs": 1,
             "x": 1360,
-            "y": 1240,
+            "y": 1120,
             "wires": [
                 [
-                    "zioyy5u4giqb6ete"
+                    "k0oe4ers0tmun6gc"
                 ]
             ]
         },
         {
-            "id": "v763s065t8l4rtdw",
+            "id": "bsfuhewnsno3ib0z",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -1345,17 +1250,17 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1200,
+            "y": 1080,
             "wires": [
                 [
-                    "y6g2vejqgqc1bdbq"
+                    "uqc10124cd73vyb9"
                 ]
             ]
         },
         {
-            "id": "wi45k0z2ewdd8s74",
+            "id": "nztnwa5p8dhcmfrf",
             "type": "change",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "rules": [
                 {
@@ -1372,17 +1277,17 @@
             "to": "",
             "reg": false,
             "x": 1380,
-            "y": 1440,
+            "y": 1320,
             "wires": [
                 [
-                    "17ayjydz4nlpu52u"
+                    "al9u6eev9i2ci8v6"
                 ]
             ]
         },
         {
-            "id": "17ayjydz4nlpu52u",
+            "id": "al9u6eev9i2ci8v6",
             "type": "delay",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "pauseType": "delay",
             "timeout": "30",
@@ -1397,17 +1302,17 @@
             "allowrate": false,
             "outputs": 1,
             "x": 1360,
-            "y": 1480,
+            "y": 1360,
             "wires": [
                 [
-                    "ee3zesuxf61jqhll"
+                    "dnp3u3sjpvq52sj8"
                 ]
             ]
         },
         {
-            "id": "kq4bwv9l60tj71q3",
+            "id": "p8brxe5ql2z21lvv",
             "type": "switch",
-            "z": "7ca9e00c3f58386e",
+            "z": "5c0cf66e996cb52c",
             "name": "",
             "property": "error.message",
             "propertyType": "msg",
@@ -1422,42 +1327,91 @@
             "repair": false,
             "outputs": 1,
             "x": 670,
-            "y": 1240,
+            "y": 1120,
             "wires": [
                 [
-                    "y6g2vejqgqc1bdbq"
+                    "uqc10124cd73vyb9"
                 ]
             ]
         },
         {
-            "id": "a8dca9aa835a1f6c",
+            "id": "lfyegh3jjtrt1c5q",
             "type": "function",
-            "z": "7ca9e00c3f58386e",
-            "name": "Build query",
-            "func": "const apiKey = env.get('MUV_API_TOKEN');\nconst to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes());\nfrom_ts.setMinutes(to_ts.getMinutes() - 60);\n\nconst body = {\n  \"timestamp\": {\n    \"from\": from_ts,\n    \"to\": to_ts\n  },\n  \"metricId\": [\n    \"A020_133_1141_AAA_Z01Bew01_BV01\",\n    \"A020_133_1141_AAA_Z01Tfq01_AV01\",\n    \"A020_133_1141_AAA_Z01Tfq01_AV02\",\n    \"A020_133_1141_AAA_Z01Tfq01_AV03\",\n    \"A020_133_1141_AAA_Z01Tfq02_AV01\",\n    \"A020_133_1141_AAA_Z01Tfq02_AV02\",\n    \"A020_133_1141_AAA_Z01Tfq02_AV03\",\n    \"A020_133_1141_AAA_Z01Tfq03_AV01\",\n    \"A020_133_1141_AAA_Z01Tfq03_AV02\",\n    \"A020_133_1141_AAA_Z01Tfq03_AV03\"\n  ],\n  \"limit\": 100,\n  \"skip\": 0\n}\n\nmsg.apiKey = apiKey;\nmsg.payload = body;\n\nreturn msg;",
+            "z": "5c0cf66e996cb52c",
+            "name": "define_query_params",
+            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst gate_area = 'A81-A86'\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 430,
-            "y": 800,
+            "x": 480,
+            "y": 360,
             "wires": [
                 [
-                    "c164686f1436b09e"
+                    "gtvsb63hokfwcspf"
                 ]
             ]
         },
         {
-            "id": "c164686f1436b09e",
+            "id": "gtvsb63hokfwcspf",
             "type": "http request",
-            "z": "7ca9e00c3f58386e",
-            "name": "",
-            "method": "POST",
-            "ret": "txt",
+            "z": "5c0cf66e996cb52c",
+            "name": "Request Gate Demand Data",
+            "method": "use",
+            "ret": "obj",
             "paytoqs": "ignore",
-            "url": "https://api.muv.digital/v1/query/68d23ed2115f2fa209181001/raw",
+            "url": "",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [],
+            "x": 780,
+            "y": 360,
+            "wires": [
+                [
+                    "k94nwwz0qj8y8atp"
+                ]
+            ]
+        },
+        {
+            "id": "define_credentials_privatekey",
+            "type": "function",
+            "z": "5c0cf66e996cb52c",
+            "name": "Define credentials (cert auth)",
+            "func": "// @ts-ignore\nconst jwt = global.get('jsonwebtoken');\nconst fs = global.get('fs');\nconst crypto = global.get('crypto');\n\nconst clientId = env.get('AOP_API_CLIENT_ID');\nconst scope = env.get('AOP_API_SCOPE');\nconst tenantId = env.get('AOP_TENANT_ID');\nconst tokenEndpoint = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;\nconst privateKey = fs.readFileSync(\"/config/aopPrivateKey.pem\");\nconst cert = fs.readFileSync(\"/config/aopCertificate.pem\");\nconst x509 = new crypto.X509Certificate(cert);\nconst sha1 = crypto.createHash(\"sha1\").update(x509.raw).digest(\"hex\").toUpperCase();\nconst base64urlThumbprint = Buffer.from(sha1, \"hex\")\n  .toString(\"base64\")\n  .replace(/\\+/g, \"-\")\n  .replace(/\\//g, \"_\")\n  .replace(/=+$/, \"\");\n\nconst now = Math.floor(Date.now() / 1000);\n// build JWT payload (valid for 10 min is allowed — 1 min is too short)\nconst payload = {\n  aud: tokenEndpoint, // must match your /oauth2/v2.0/token URL exactly\n  iss: clientId,\n  sub: clientId,\n  jti: crypto.randomUUID(),\n  nbf: now,\n  exp: now + 600 // 10 minutes is OK\n};\n\n// JWT header — use x5t (base64url thumbprint)\nconst header = {\n  alg: \"RS256\",\n  typ: \"JWT\",\n  x5t: base64urlThumbprint\n}\n\n// sign JWT\nconst token = jwt.sign(payload, privateKey, {\n  algorithm: \"RS256\",\n  header\n});\n\n// use URLSearchParams for correct form encoding\nconst params = new URLSearchParams({\n  grant_type: \"client_credentials\",\n  client_id: clientId,\n  scope: scope,\n  client_assertion_type: \"urn:ietf:params:oauth:client-assertion-type:jwt-bearer\",\n  client_assertion: token\n});\n\nmsg.payload = params.toString();\nmsg.url = tokenEndpoint;\nmsg.method = \"POST\";\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [
+                {
+                    "var": "jwt",
+                    "module": "jsonwebtoken"
+                }
+            ],
+            "x": 500,
+            "y": 320,
+            "wires": [
+                [
+                    "a6640634eb96f52a"
+                ]
+            ]
+        },
+        {
+            "id": "a6640634eb96f52a",
+            "type": "http request",
+            "z": "5c0cf66e996cb52c",
+            "name": "Aquire Authorization Token",
+            "method": "use",
+            "ret": "obj",
+            "paytoqs": "body",
+            "url": "",
             "tls": "",
             "persist": false,
             "proxy": "",
@@ -1467,100 +1421,32 @@
             "headers": [
                 {
                     "keyType": "other",
-                    "keyValue": "accept",
+                    "keyValue": "Content-Type",
                     "valueType": "other",
-                    "valueValue": "application/json"
-                },
-                {
-                    "keyType": "other",
-                    "keyValue": "x-api-key",
-                    "valueType": "msg",
-                    "valueValue": "apiKey"
+                    "valueValue": "application/x-www-form-urlencoded"
                 }
             ],
-            "x": 590,
-            "y": 800,
+            "x": 780,
+            "y": 320,
             "wires": [
                 [
-                    "13c418f5f2d55ba5"
-                ]
-            ]
-        },
-        {
-            "id": "13c418f5f2d55ba5",
-            "type": "json",
-            "z": "7ca9e00c3f58386e",
-            "name": "",
-            "property": "payload",
-            "action": "",
-            "pretty": false,
-            "x": 730,
-            "y": 800,
-            "wires": [
-                [
-                    "4fafed1d7240afb8"
-                ]
-            ]
-        },
-        {
-            "id": "4fafed1d7240afb8",
-            "type": "function",
-            "z": "7ca9e00c3f58386e",
-            "name": "Set Modbus data",
-            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value }).pop();\n    const metricId = metric.metricId;\n    if (metricId === \"A020_133_1141_AAA_Z01Bew01_BV01\") {\n        const registerStart = 13000;\n        node.send({ \"payload\": { value: Math.round(data * 1) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1 } });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq01_AV01\") {\n        const registerStart = 13001;\n        node.send({ \"payload\": { value: Math.round(data * 100) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq01_AV02\") {\n        const registerStart = 13002;\n        node.send({ \"payload\": { value: Math.round(data * 100) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq01_AV03\") {\n        const registerStart = 13003;\n        node.send({ \"payload\": { value: Math.round(data * 1) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq02_AV01\") {\n        const registerStart = 13004;\n        node.send({ \"payload\": { value: Math.round(data * 100) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq02_AV02\") {\n        const registerStart = 13005;\n        node.send({ \"payload\": { value: Math.round(data * 100) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq02_AV03\") {\n        const registerStart = 13006;\n        node.send({ \"payload\": { value: Math.round(data * 1) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq03_AV01\") {\n        const registerStart = 13007;\n        node.send({ \"payload\": { value: Math.round(data * 100) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq03_AV02\") {\n        const registerStart = 13008;\n        node.send({ \"payload\": { value: Math.round(data * 100) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    } else if (metricId === \"A020_133_1141_AAA_Z01Tfq03_AV03\") {\n        const registerStart = 13009;\n        node.send({ \"payload\": { value: Math.round(data * 1) , 'fc': 6, 'unitid': 1, 'address': registerStart, 'quantity': 1} });\n    }\n});\n\nnode.done();",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 890,
-            "y": 800,
-            "wires": [
-                [
-                    "g1nns37i6t404ona",
-                    "pe17rwtc6g4406vr"
-                ]
-            ]
-        },
-        {
-            "id": "4ecd18eca38ee6ec",
-            "type": "inject",
-            "z": "7ca9e00c3f58386e",
-            "name": "MUV API interval (Monzoon)",
-            "props": [
-                {
-                    "p": "payload"
-                }
-            ],
-            "repeat": "600",
-            "crontab": "",
-            "once": true,
-            "onceDelay": "30",
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 210,
-            "y": 800,
-            "wires": [
-                [
-                    "a8dca9aa835a1f6c"
+                    "lfyegh3jjtrt1c5q"
                 ]
             ]
         }
     ],
     "configs": [
         {
-            "id": "dms7enn3dp7rwtpa",
+            "id": "7bypa7bte0v84e8q",
             "type": "modbus-client",
-            "z": "7ca9e00c3f58386e",
-            "name": "Belimo",
+            "z": "5c0cf66e996cb52c",
+            "name": "Beckhoff",
             "clienttype": "tcp",
             "bufferCommands": true,
             "stateLogEnabled": false,
             "queueLogEnabled": false,
             "failureLogEnabled": true,
-            "tcpHost": "192.168.1.61",
+            "tcpHost": "192.168.1.50",
             "tcpPort": "502",
             "tcpType": "DEFAULT",
             "serialPort": "/dev/ttyUSB",
@@ -1582,16 +1468,16 @@
             "showLogs": true
         },
         {
-            "id": "ax8al96z8cizgl4x",
+            "id": "3vtsaxox9l6ia4ax",
             "type": "modbus-client",
-            "z": "7ca9e00c3f58386e",
-            "name": "Beckhoff",
+            "z": "5c0cf66e996cb52c",
+            "name": "Belimo",
             "clienttype": "tcp",
             "bufferCommands": true,
             "stateLogEnabled": false,
             "queueLogEnabled": false,
             "failureLogEnabled": true,
-            "tcpHost": "192.168.1.50",
+            "tcpHost": "192.168.1.61",
             "tcpPort": "502",
             "tcpType": "DEFAULT",
             "serialPort": "/dev/ttyUSB",
