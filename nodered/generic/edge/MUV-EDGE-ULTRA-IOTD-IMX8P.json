@@ -1234,7 +1234,7 @@
             "type": "function",
             "z": "2db35774679ef5c5",
             "name": "Parse response",
-            "func": "const value = parseFloat(msg.payload);\nmsg.payload = {};\nmsg.payload[msg.name] = value;\n\nreturn msg;",
+            "func": "const value = parseFloat(msg.payload);\nmsg.payload = {};\nmsg.payload[msg.name] = value;\n\nif(msg.dataPoint.invert === true){\n    msg.payload[msg.name] = 1 - msg.payload[msg.name];\n}\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
