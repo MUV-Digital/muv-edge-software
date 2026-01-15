@@ -57,7 +57,7 @@
             "type": "debug",
             "z": "627c657139d5bff3",
             "name": "AOP Data",
-            "active": true,
+            "active": false,
             "tosidebar": true,
             "console": false,
             "tostatus": false,
@@ -469,7 +469,7 @@
             "type": "function",
             "z": "627c657139d5bff3",
             "name": "Set Modbus data",
-            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value });\n    data.pop();\n    const metricId = metric.metricId;\n    if (metricId === \"FORECAST_TEMPERATURE\") {\n        const registerStart = 12100;\n        node.send({ \"payload\": { value: data.map(x => { return Math.round(x * 100) }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_HUMIDITY\") {\n        const registerStart = 12200;\n        node.send({ \"payload\": { value: data.map(x => { return Math.round(x * 100) }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_UVINDEX\") {\n        const registerStart = 12300;\n        node.send({ \"payload\": { value: data, 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else {\n        throw new Error(\"API data missing\");\n    }\n});\n\nnode.done();",
+            "func": "// 16-bit types -> single Modbus register (number 0..65535)\nfunction encode16ToRegister(value, type) {\n    const buf = Buffer.alloc(2);\n\n    switch (type) {\n        case 'int':\n            buf.writeInt16BE(value);\n            break;\n        case 'int16be':\n            buf.writeInt16BE(value);\n            break;\n        case 'int16le':\n            buf.writeInt16LE(value);\n            break;\n        case 'uint':\n            buf.writeUInt16BE(value);\n            break;\n        case 'uint16be':\n            buf.writeUInt16BE(value);\n            break;\n        case 'uint16le':\n            buf.writeUInt16LE(value);\n            break;\n        case 'int8':\n            // store in low byte of the register\n            buf.writeInt8(value, 1);\n            break;\n        case 'uint8':\n        case 'byte':\n            buf.writeUInt8(value, 1);\n            break;\n        default:\n            throw new Error(\"Unsupported 16-bit type: \" + type);\n    }\n\n    // we send Modbus register as an unsigned 16-bit word 0..65535\n    return buf.readUInt16BE(0);\n}\n\nmsg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value });\n    data.pop();\n    const metricId = metric.metricId;\n    if (metricId === \"FORECAST_TEMPERATURE\") {\n        const registerStart = 12100;\n        node.send({ \"payload\": { value: data.map(x => { return encode16ToRegister(Math.round(x * 100), 'int16be') }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_HUMIDITY\") {\n        const registerStart = 12200;\n        node.send({ \"payload\": { value: data.map(x => { return encode16ToRegister(Math.round(x * 100), 'int16be') }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_UVINDEX\") {\n        const registerStart = 12300;\n        node.send({ \"payload\": { value: data.map(x => { return encode16ToRegister(Math.round(x), 'int16be') }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else {\n        throw new Error(\"API data missing\");\n    }\n});\n\nnode.done();",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -583,8 +583,7 @@
             "y": 1100,
             "wires": [
                 [
-                    "469f33537b25e18e",
-                    "27c30e68f384d3c7"
+                    "469f33537b25e18e"
                 ]
             ]
         },
@@ -618,7 +617,7 @@
             "type": "debug",
             "z": "627c657139d5bff3",
             "name": "MUV API Data",
-            "active": true,
+            "active": false,
             "tosidebar": true,
             "console": false,
             "tostatus": false,
@@ -661,7 +660,7 @@
             "type": "debug",
             "z": "627c657139d5bff3",
             "name": "Health State",
-            "active": true,
+            "active": false,
             "tosidebar": true,
             "console": false,
             "tostatus": false,
@@ -802,7 +801,7 @@
             "type": "function",
             "z": "627c657139d5bff3",
             "name": "define_query_params",
-            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst prefixEnv = env.get(\"AOP_GATE_NAME\");\nconst gate_area = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n        ? \"A81-A86\"\n        : prefixEnv;\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
+            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst prefixEnv = env.get(\"AOP_GATE_NAME\");\nconst gate_area = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n        ? \"A71-A75\"\n        : prefixEnv;\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -996,7 +995,7 @@
             "type": "function",
             "z": "627c657139d5bff3",
             "name": "Set Modbus data",
-            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value }).pop();\n    const metricId = metric.metricId;\n    const sendScaled = (registerStart, scale) => {\n        const factor = scale === 0 ? 1 : 1 / scale;\n        if (metric.timeseries.length > 0) {\n            node.send({\n                payload: {\n                    value: Math.round(data * factor),\n                    fc: 6,\n                    unitid: 1,\n                    address: registerStart,\n                    quantity: 1\n                }\n            });\n        } else {\n            node.warn(\"No values for: \" + metricId + \" at: \" + registerStart)\n        }\n\n    };\n\n    if (metricId.includes(\"Z01Bew01_BV01\")) {\n        sendScaled(13000, 1);\n    } else if (metricId.includes(\"Z01Tfq01_AV01\")) {\n        sendScaled(13001, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV02\")) {\n        sendScaled(13002, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV03\")) {\n        sendScaled(13003, 1);\n    } else if (metricId.includes(\"Z01Tfq02_AV01\")) {\n        sendScaled(13004, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV02\")) {\n        sendScaled(13005, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV03\")) {\n        sendScaled(13006, 1);\n    } else if (metricId.includes(\"Z01Tfq03_AV01\")) {\n        sendScaled(13007, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV02\")) {\n        sendScaled(13008, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV03\")) {\n        sendScaled(13009, 1);\n    } else if (metricId.includes(\"Z02Bew01_BV01\")) {\n        sendScaled(13010, 1);\n    } else if (metricId.includes(\"Z02Tfq01_AV01\")) {\n        sendScaled(13011, 0.01);\n    } else if (metricId.includes(\"Z02Tfq01_AV02\")) {\n        sendScaled(13012, 0.01);\n    } else if (metricId.includes(\"Z02Tfq01_AV03\")) {\n        sendScaled(13013, 1);\n    } else if (metricId.includes(\"Z02Tfq02_AV01\")) {\n        sendScaled(13014, 0.01);\n    } else if (metricId.includes(\"Z02Tfq02_AV02\")) {\n        sendScaled(13015, 0.01);\n    } else if (metricId.includes(\"Z02Tfq02_AV03\")) {\n        sendScaled(13016, 1);\n    }\n});\n\nnode.done();",
+            "func": "// 16-bit types -> single Modbus register (number 0..65535)\nfunction encode16ToRegister(value, type) {\n    const buf = Buffer.alloc(2);\n\n    switch (type) {\n        case 'int':\n            buf.writeInt16BE(value);\n            break;\n        case 'int16be':\n            buf.writeInt16BE(value);\n            break;\n        case 'int16le':\n            buf.writeInt16LE(value);\n            break;\n        case 'uint':\n            buf.writeUInt16BE(value);\n            break;\n        case 'uint16be':\n            buf.writeUInt16BE(value);\n            break;\n        case 'uint16le':\n            buf.writeUInt16LE(value);\n            break;\n        case 'int8':\n            // store in low byte of the register\n            buf.writeInt8(value, 1);\n            break;\n        case 'uint8':\n        case 'byte':\n            buf.writeUInt8(value, 1);\n            break;\n        default:\n            throw new Error(\"Unsupported 16-bit type: \" + type);\n    }\n\n    // we send Modbus register as an unsigned 16-bit word 0..65535\n    return buf.readUInt16BE(0);\n}\n\nmsg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value }).pop();\n    const metricId = metric.metricId;\n    const sendScaled = (registerStart, scale) => {\n        const factor = scale === 0 ? 1 : 1 / scale;\n        if (metric.timeseries.length > 0) {\n            node.send({\n                payload: {\n                    value: encode16ToRegister(Math.round(data * factor), 'int16be'),\n                    fc: 6,\n                    unitid: 1,\n                    address: registerStart,\n                    quantity: 1\n                }\n            });\n        } else {\n            node.warn(\"No values for: \" + metricId + \" at: \" + registerStart)\n        }\n\n    };\n\n    if (metricId.includes(\"Z01Bew01_BV01\")) {\n        sendScaled(13000, 1);\n    } else if (metricId.includes(\"Z01Tfq01_AV01\")) {\n        sendScaled(13001, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV02\")) {\n        sendScaled(13002, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV03\")) {\n        sendScaled(13003, 1);\n    } else if (metricId.includes(\"Z01Tfq02_AV01\")) {\n        sendScaled(13004, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV02\")) {\n        sendScaled(13005, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV03\")) {\n        sendScaled(13006, 1);\n    } else if (metricId.includes(\"Z01Tfq03_AV01\")) {\n        sendScaled(13007, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV02\")) {\n        sendScaled(13008, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV03\")) {\n        sendScaled(13009, 1);\n    } else if (metricId.includes(\"Z02Bew01_BV01\")) {\n        sendScaled(13010, 1);\n    } else if (metricId.includes(\"Z02Tfq01_AV01\")) {\n        sendScaled(13011, 0.01);\n    } else if (metricId.includes(\"Z02Tfq01_AV02\")) {\n        sendScaled(13012, 0.01);\n    } else if (metricId.includes(\"Z02Tfq01_AV03\")) {\n        sendScaled(13013, 1);\n    } else if (metricId.includes(\"Z02Tfq02_AV01\")) {\n        sendScaled(13014, 0.01);\n    } else if (metricId.includes(\"Z02Tfq02_AV02\")) {\n        sendScaled(13015, 0.01);\n    } else if (metricId.includes(\"Z02Tfq02_AV03\")) {\n        sendScaled(13016, 1);\n    }\n});\n\nnode.done();",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -1045,151 +1044,6 @@
             "info": "",
             "x": 170,
             "y": 740,
-            "wires": []
-        },
-        {
-            "id": "089953662ad86f0a",
-            "type": "http request",
-            "z": "627c657139d5bff3",
-            "name": "",
-            "method": "POST",
-            "ret": "txt",
-            "paytoqs": "ignore",
-            "url": "https://api.muv.digital/v1/query/693035bf6a0e1456a414a7c8/raw",
-            "tls": "",
-            "persist": false,
-            "proxy": "",
-            "insecureHTTPParser": false,
-            "authType": "",
-            "senderr": false,
-            "headers": [
-                {
-                    "keyType": "other",
-                    "keyValue": "accept",
-                    "valueType": "other",
-                    "valueValue": "application/json"
-                },
-                {
-                    "keyType": "other",
-                    "keyValue": "x-api-key",
-                    "valueType": "msg",
-                    "valueValue": "apiKey"
-                }
-            ],
-            "x": 530,
-            "y": 980,
-            "wires": [
-                [
-                    "269b52818902fee7"
-                ]
-            ]
-        },
-        {
-            "id": "1df01b6773dee8e8",
-            "type": "function",
-            "z": "627c657139d5bff3",
-            "name": "Build query",
-            "func": "const apiKey = env.get('MUV_API_TOKEN');\nconst to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes());\nfrom_ts.setMinutes(to_ts.getMinutes() - 60);\nconst prefixEnv = env.get(\"AOP_STATION_NAME\");\nconst stationName = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n  ? \"XXX\"\n  : prefixEnv;\n\nconst body = {\n  \"timestamp\": {\n    \"from\": from_ts,\n    \"to\": to_ts\n  },\n  \"metricId\": [\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV01\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV11\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV03\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV13\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV05\",\n    stationName + \"_AAZ_\" + \"ZulReg01_AV01\",\n    stationName + \"_AAZ_\" + \"ZulReg01_AV02\",\n    stationName + \"_AAZ_\" + \"WrgReg01_AV01\",\n    stationName + \"_AAZ_\" + \"AnlSch01_MV90\",\n    stationName + \"_AAZ_\" + \"AulReg01_AV02\",\n    stationName + \"_AAZ_\" + \"AulKlp01_AV01\",\n    stationName + \"_AAZ_\" + \"FolKlp01_AV01\",\n    stationName + \"_AAZ_\" + \"UmlKlp01_AV01\",\n    stationName + \"_AAZ_\" + \"ZulVen01_AV01\",\n    stationName + \"_AAZ_\" + \"FolVen01_AV01\",\n    stationName + \"_AAZ_\" + \"WrgMot01_AV01\",\n    stationName + \"_AAZ_\" + \"LueVtl01_AV01\",\n    stationName + \"_AAZ_\" + \"LkuVtl01_AV01\",\n    stationName + \"_AAZ_\" + \"VarSet01_AV01\",\n    stationName + \"_AAZ_\" + \"VarSet02_AV01\",\n    stationName + \"_AAZ_\" + \"SteSet01_AV01\",\n    stationName + \"_AAZ_\" + \"SteSet02_AV01\",\n    stationName + \"_AAZ_\" + \"SteSet03_AV01\"\n  ],\n  \"limit\": 100,\n  \"skip\": 0\n}\n\nmsg.apiKey = apiKey;\nmsg.payload = body;\n\nreturn msg;",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 370,
-            "y": 980,
-            "wires": [
-                [
-                    "089953662ad86f0a"
-                ]
-            ]
-        },
-        {
-            "id": "269b52818902fee7",
-            "type": "json",
-            "z": "627c657139d5bff3",
-            "name": "",
-            "property": "payload",
-            "action": "",
-            "pretty": false,
-            "x": 670,
-            "y": 980,
-            "wires": [
-                [
-                    "a2397c6d09af0746"
-                ]
-            ]
-        },
-        {
-            "id": "c9203a26fbd23017",
-            "type": "comment",
-            "z": "627c657139d5bff3",
-            "name": "Predict -> Belimo ",
-            "info": "",
-            "x": 160,
-            "y": 940,
-            "wires": []
-        },
-        {
-            "id": "a2397c6d09af0746",
-            "type": "function",
-            "z": "627c657139d5bff3",
-            "name": "Set Modbus data",
-            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value });\n    if (data.length > 0) {\n        const lastValue = data.pop();\n        const metricId = metric.metricId;\n        const sendScaled = (register, scale) => {\n            const factor = scale === 0 ? 1 : 1 / scale; // safety for scale 0\n            node.send({\n                payload: {\n                    value: Math.round(lastValue * factor),\n                    fc: 6,\n                    unitid: 1,\n                    address: register,\n                    quantity: 1\n                }\n            });\n        };\n\n        if (metricId.includes(\"SAT_Sp_C\")) {\n            sendScaled(10405, 0.01);\n        } else if (metricId.includes(\"SAV_Sp_m3h\")) {\n            sendScaled(10406, 1);\n        } else if (metricId.includes(\"Z01Sol01_AV01\")) {\n            sendScaled(10400, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV11\")) {\n            sendScaled(10401, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV03\")) {\n            sendScaled(10402, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV13\")) {\n            sendScaled(10403, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV05\")) {\n            sendScaled(10404, 1);\n        } else if (metricId.includes(\"ZulReg01_AV01\")) {\n            sendScaled(10405, 0.01);\n        } else if (metricId.includes(\"ZulReg01_AV02\")) {\n            sendScaled(10406, 1);\n        } else if (metricId.includes(\"WrgReg01_AV01\")) {\n            sendScaled(10407, 0.01);\n        } else if (metricId.includes(\"AnlSch01_MV90\")) {\n            sendScaled(10408, 1);\n        } else if (metricId.includes(\"AulReg01_AV02\")) {\n            sendScaled(10409, 1);\n        } else if (metricId.includes(\"AulKlp01_AV01\")) {\n            sendScaled(10410, 0.01);\n        } else if (metricId.includes(\"FolKlp01_AV01\")) {\n            sendScaled(10411, 0.01);\n        } else if (metricId.includes(\"UmlKlp01_AV01\")) {\n            sendScaled(10412, 0.01);\n        } else if (metricId.includes(\"ZulVen01_AV01\")) {\n            sendScaled(10413, 0.01);\n        } else if (metricId.includes(\"FolVen01_AV01\")) {\n            sendScaled(10414, 0.01);\n        } else if (metricId.includes(\"WrgMot01_AV01\")) {\n            sendScaled(10415, 0.01);\n        } else if (metricId.includes(\"LueVtl01_AV01\")) {\n            sendScaled(10416, 0.01);\n        } else if (metricId.includes(\"LkuVtl01_AV01\")) {\n            sendScaled(10417, 0.01);\n        } else if (metricId.includes(\"VarSet01_AV01\")) {\n            sendScaled(10418, 0.01);\n        } else if (metricId.includes(\"VarSet02_AV01\")) {\n            sendScaled(10419, 0.01);\n        } else if (metricId.includes(\"SteSet01_AV01\")) {\n            sendScaled(10420, 1);\n        } else if (metricId.includes(\"SteSet02_AV01\")) {\n            sendScaled(10421, 1);\n        } else if (metricId.includes(\"SteSet03_AV01\")) {\n            sendScaled(10422, 1);\n        }\n    }\n});\n\nnode.done();",
-            "outputs": 1,
-            "timeout": 0,
-            "noerr": 0,
-            "initialize": "",
-            "finalize": "",
-            "libs": [],
-            "x": 830,
-            "y": 980,
-            "wires": [
-                [
-                    "cd2745a79f1ea105",
-                    "36fab5165d37a178"
-                ]
-            ]
-        },
-        {
-            "id": "819743d383e153c9",
-            "type": "inject",
-            "z": "627c657139d5bff3",
-            "name": "MUV API interval",
-            "props": [
-                {
-                    "p": "payload"
-                }
-            ],
-            "repeat": "300",
-            "crontab": "",
-            "once": true,
-            "onceDelay": "30",
-            "topic": "",
-            "payload": "",
-            "payloadType": "date",
-            "x": 190,
-            "y": 980,
-            "wires": [
-                [
-                    "1df01b6773dee8e8"
-                ]
-            ]
-        },
-        {
-            "id": "27c30e68f384d3c7",
-            "type": "debug",
-            "z": "627c657139d5bff3",
-            "name": "debug 1",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 760,
-            "y": 1140,
             "wires": []
         }
     ],
