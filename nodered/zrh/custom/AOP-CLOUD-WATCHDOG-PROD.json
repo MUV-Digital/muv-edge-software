@@ -801,7 +801,7 @@
             "type": "function",
             "z": "627c657139d5bff3",
             "name": "define_query_params",
-            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst prefixEnv = env.get(\"AOP_GATE_NAME\");\nconst gate_area = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n        ? \"A71-A75\"\n        : prefixEnv;\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
+            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst prefixEnv = env.get(\"AOP_GATE_NAME\");\nconst gate_area = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n        ? \"XXXX\"\n        : prefixEnv;\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
