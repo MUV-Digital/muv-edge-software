@@ -261,7 +261,7 @@
                     "t": "set",
                     "p": "payload",
                     "pt": "msg",
-                    "to": "{\"SYSTEM-0\":0,\"COMMUNICATION_ERROR\":false,\"BECKHOFF_COMMUNICATION_ERROR\":false,\"BELIMO_COMMUNICATION_ERROR\":false,\"AOP_COMMUNICATION_ERROR\":false,\"MUV_API_COMMUNICATION_ERROR\":false}",
+                    "to": "{\"SYSTEM-0\":0,\"COMMUNICATION_ERROR\":false,\"BELIMO_COMMUNICATION_ERROR\":false,\"AOP_COMMUNICATION_ERROR\":false,\"MUV_API_COMMUNICATION_ERROR\":false}",
                     "tot": "json"
                 }
             ],
@@ -802,7 +802,7 @@
             "type": "function",
             "z": "627c657139d5bff3",
             "name": "define_query_params",
-            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst gate_area = 'A81-A86'\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
+            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst prefixEnv = env.get(\"AOP_GATE_NAME\");\nconst gate_area = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n        ? \"A81-A86\"\n        : prefixEnv;\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
@@ -996,7 +996,7 @@
             "type": "function",
             "z": "627c657139d5bff3",
             "name": "Set Modbus data",
-            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value }).pop();\n    const metricId = metric.metricId;\n    const sendScaled = (registerStart, scale) => {\n        const factor = scale === 0 ? 1 : 1 / scale;\n        node.send({\n            payload: {\n                value: Math.round(data * factor),\n                fc: 6,\n                unitid: 1,\n                address: registerStart,\n                quantity: 1\n            }\n        });\n    };\n\n    if (metricId.includes(\"Z01Bew01_BV01\")) {\n        sendScaled(13000, 1);\n    } else if (metricId.includes(\"Z01Tfq01_AV01\")) {\n        sendScaled(13001, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV02\")) {\n        sendScaled(13002, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV03\")) {\n        sendScaled(13003, 1);\n    } else if (metricId.includes(\"Z01Tfq02_AV01\")) {\n        sendScaled(13004, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV02\")) {\n        sendScaled(13005, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV03\")) {\n        sendScaled(13006, 1);\n    } else if (metricId.includes(\"Z01Tfq03_AV01\")) {\n        sendScaled(13007, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV02\")) {\n        sendScaled(13008, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV03\")) {\n        sendScaled(13009, 1);\n    }\n});\n\nnode.done();",
+            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value }).pop();\n    const metricId = metric.metricId;\n    const sendScaled = (registerStart, scale) => {\n        const factor = scale === 0 ? 1 : 1 / scale;\n        if (metric.timeseries.length > 0) {\n            node.send({\n                payload: {\n                    value: Math.round(data * factor),\n                    fc: 6,\n                    unitid: 1,\n                    address: registerStart,\n                    quantity: 1\n                }\n            });\n        } else {\n            node.warn(\"No values for: \" + metricId + \" at: \" + registerStart)\n        }\n\n    };\n\n    if (metricId.includes(\"Z01Bew01_BV01\")) {\n        sendScaled(13000, 1);\n    } else if (metricId.includes(\"Z01Tfq01_AV01\")) {\n        sendScaled(13001, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV02\")) {\n        sendScaled(13002, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV03\")) {\n        sendScaled(13003, 1);\n    } else if (metricId.includes(\"Z01Tfq02_AV01\")) {\n        sendScaled(13004, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV02\")) {\n        sendScaled(13005, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV03\")) {\n        sendScaled(13006, 1);\n    } else if (metricId.includes(\"Z01Tfq03_AV01\")) {\n        sendScaled(13007, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV02\")) {\n        sendScaled(13008, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV03\")) {\n        sendScaled(13009, 1);\n    }\n});\n\nnode.done();",
             "outputs": 1,
             "timeout": 0,
             "noerr": 0,
