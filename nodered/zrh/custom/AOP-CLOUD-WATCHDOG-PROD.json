@@ -1,0 +1,1229 @@
+{
+    "id": "627c657139d5bff3",
+    "label": "695d221c6239eba95a3e4567",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "3b62449b7d56d9d0",
+            "type": "inject",
+            "z": "627c657139d5bff3",
+            "name": "AOP API interval",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "120",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "30",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 130,
+            "y": 320,
+            "wires": [
+                [
+                    "1417cf43470d2a01"
+                ]
+            ]
+        },
+        {
+            "id": "11a468b0d719c944",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Create AOP PAX Data Array for Modbus Communication",
+            "func": "// Definiere die Größe des Arrays (n kann z. B. aus msg.n kommen oder festgelegt sein)\nvar n = msg.n || 10;  // Falls msg.n nicht gesetzt ist, wird n=5 als Standardwert genommen\n\n// Initialisiere das Array mit Standardwerten (z. B. 0 oder eine Sequenz)\nvar dataArray = new Array(n).fill(0);  // Füllt das Array mit n Elementen, alle auf 0 gesetzt\n\n// Falls du das Array mit einer Sequenz befüllen möchtest, kannst du dies tun:\nfor (let i = 0; i < n; i++) {\n    dataArray[i] = msg.payload.data[i].estimated_passenger_count;  // Erzeugt ein Array [mit den Passagierdaten]\n}\n\n// Setze das Array als msg.payload\nmsg.payload = dataArray;\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 690,
+            "y": 460,
+            "wires": [
+                [
+                    "0224644da7ed449d",
+                    "af0e2dfb14892373",
+                    "40c58452af694792"
+                ]
+            ]
+        },
+        {
+            "id": "0224644da7ed449d",
+            "type": "debug",
+            "z": "627c657139d5bff3",
+            "name": "AOP Data",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1680,
+            "y": 400,
+            "wires": []
+        },
+        {
+            "id": "af0e2dfb14892373",
+            "type": "modbus-write",
+            "z": "627c657139d5bff3",
+            "name": "AOP Data to Belimo",
+            "showStatusActivities": false,
+            "showErrors": true,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "MHoldingRegisters",
+            "adr": "11100",
+            "quantity": "10",
+            "server": "gqmprqh7vfckb8jv",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "x": 1160,
+            "y": 460,
+            "wires": [
+                [],
+                []
+            ]
+        },
+        {
+            "id": "091d0e6bf04fd083",
+            "type": "comment",
+            "z": "627c657139d5bff3",
+            "name": "AOP-> Belimo",
+            "info": "",
+            "x": 70,
+            "y": 280,
+            "wires": []
+        },
+        {
+            "id": "1e27a4c041d8421f",
+            "type": "inject",
+            "z": "627c657139d5bff3",
+            "name": "Startup",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "0.1",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 120,
+            "y": 60,
+            "wires": [
+                [
+                    "6c9f6ca0a3b2ce96",
+                    "b7a7545c0381d056"
+                ]
+            ]
+        },
+        {
+            "id": "6c9f6ca0a3b2ce96",
+            "type": "getflows",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "x": 280,
+            "y": 60,
+            "wires": [
+                [
+                    "9f300aea9066f91d"
+                ]
+            ]
+        },
+        {
+            "id": "9f300aea9066f91d",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Init",
+            "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
+            "outputs": 1,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 410,
+            "y": 60,
+            "wires": [
+                [
+                    "009a3badc7d5c276"
+                ]
+            ]
+        },
+        {
+            "id": "009a3badc7d5c276",
+            "type": "switch",
+            "z": "627c657139d5bff3",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 1,
+            "x": 560,
+            "y": 60,
+            "wires": [
+                [
+                    "74b6c52181b2e88b"
+                ]
+            ]
+        },
+        {
+            "id": "74b6c52181b2e88b",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set channel parameters",
+            "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
+            "outputs": 1,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 790,
+            "y": 60,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "4bee1bf108a33a0a",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set sensor value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 780,
+            "y": 140,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "16027ed72c829136",
+            "type": "inject",
+            "z": "627c657139d5bff3",
+            "name": "error interval",
+            "props": [
+                {
+                    "p": "payload"
+                },
+                {
+                    "p": "topic",
+                    "vt": "str"
+                }
+            ],
+            "repeat": "30",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "30",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 120,
+            "y": 220,
+            "wires": [
+                [
+                    "8e0bf78ddbdb1e4d",
+                    "e236f6927aac65f4"
+                ]
+            ]
+        },
+        {
+            "id": "b7a7545c0381d056",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"SYSTEM-0\":0,\"COMMUNICATION_ERROR\":false,\"BECKHOFF_COMMUNICATION_ERROR\":false,\"BELIMO_COMMUNICATION_ERROR\":false,\"AOP_COMMUNICATION_ERROR\":false,\"MUV_API_COMMUNICATION_ERROR\":false}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 300,
+            "y": 100,
+            "wires": [
+                [
+                    "4bee1bf108a33a0a"
+                ]
+            ]
+        },
+        {
+            "id": "360cf198c1172362",
+            "type": "link in",
+            "z": "627c657139d5bff3",
+            "name": "Write Values",
+            "links": [
+                "392fd48c6b4e8788"
+            ],
+            "x": 365,
+            "y": 140,
+            "wires": [
+                [
+                    "4bee1bf108a33a0a"
+                ]
+            ]
+        },
+        {
+            "id": "392fd48c6b4e8788",
+            "type": "link out",
+            "z": "627c657139d5bff3",
+            "name": "link out 21",
+            "mode": "link",
+            "links": [
+                "360cf198c1172362"
+            ],
+            "x": 1675,
+            "y": 1080
+        },
+        {
+            "id": "40c58452af694792",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"AOP_COMMUNICATION_ERROR\":false}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1380,
+            "y": 540,
+            "wires": [
+                [
+                    "392fd48c6b4e8788",
+                    "e9d89f9b8715813e"
+                ]
+            ]
+        },
+        {
+            "id": "71143de029c884dc",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"AOP_COMMUNICATION_ERROR\":true}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1380,
+            "y": 660,
+            "wires": [
+                [
+                    "392fd48c6b4e8788"
+                ]
+            ]
+        },
+        {
+            "id": "8e0bf78ddbdb1e4d",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set error indicator",
+            "func": "const filtered = Object.fromEntries(\n    Object.entries(flow.get(\"bridge\").image.metrics).filter(\n        ([key, value]) => key.includes(\"ERROR\") && value === true\n    )\n);\n\nif (Object.keys(filtered).length > 0) {\n    msg.payload = { \"SYSTEM-0\": 2 }\n} else {\n    msg.payload = { \"SYSTEM-0\": 0 }\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 470,
+            "y": 180,
+            "wires": [
+                [
+                    "4bee1bf108a33a0a"
+                ]
+            ]
+        },
+        {
+            "id": "760f0533e6ae0ad0",
+            "type": "http request",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "method": "POST",
+            "ret": "txt",
+            "paytoqs": "ignore",
+            "url": "https://api.muv.digital/v1/query/67ff4f0493299f82a9c194f3/aggregated",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [
+                {
+                    "keyType": "other",
+                    "keyValue": "accept",
+                    "valueType": "other",
+                    "valueValue": "application/json"
+                },
+                {
+                    "keyType": "other",
+                    "keyValue": "x-api-key",
+                    "valueType": "msg",
+                    "valueValue": "apiKey"
+                }
+            ],
+            "x": 530,
+            "y": 880,
+            "wires": [
+                [
+                    "07234fedbef99cdd"
+                ]
+            ]
+        },
+        {
+            "id": "06ae270bde916c74",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Build query",
+            "func": "const apiKey = env.get('MUV_API_TOKEN');\nconst to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 1560);\nfrom_ts.setMinutes(to_ts.getMinutes() + 60);\n\nconst body = {\n  \"timestamp\": {\n    \"from\": from_ts,\n    \"to\": to_ts\n  },\n  \"metricId\": [\n    \"FORECAST_TEMPERATURE\",\n    \"FORECAST_HUMIDITY\",\n    \"FORECAST_UVINDEX\"\n  ],\n  \"aggregation\": {\n    \"method\": \"mean\",\n    \"interval\": \"1h\"\n  }\n}\n\nmsg.apiKey = apiKey;\nmsg.payload = body;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 370,
+            "y": 880,
+            "wires": [
+                [
+                    "760f0533e6ae0ad0"
+                ]
+            ]
+        },
+        {
+            "id": "07234fedbef99cdd",
+            "type": "json",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "property": "payload",
+            "action": "",
+            "pretty": false,
+            "x": 670,
+            "y": 880,
+            "wires": [
+                [
+                    "2419ad635d012cf9"
+                ]
+            ]
+        },
+        {
+            "id": "ab8b34014ca19e7c",
+            "type": "comment",
+            "z": "627c657139d5bff3",
+            "name": "Weather -> Belimo ",
+            "info": "",
+            "x": 170,
+            "y": 840,
+            "wires": []
+        },
+        {
+            "id": "2419ad635d012cf9",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set Modbus data",
+            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value });\n    data.pop();\n    const metricId = metric.metricId;\n    if (metricId === \"FORECAST_TEMPERATURE\") {\n        const registerStart = 12100;\n        node.send({ \"payload\": { value: data.map(x => { return Math.round(x * 100) }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_HUMIDITY\") {\n        const registerStart = 12200;\n        node.send({ \"payload\": { value: data.map(x => { return Math.round(x * 100) }), 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else if (metricId === \"FORECAST_UVINDEX\") {\n        const registerStart = 12300;\n        node.send({ \"payload\": { value: data, 'fc': 16, 'unitid': 1, 'address': registerStart, 'quantity': data.length } });\n    } else {\n        throw new Error(\"API data missing\");\n    }\n});\n\nnode.done();",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 830,
+            "y": 880,
+            "wires": [
+                [
+                    "cd2745a79f1ea105",
+                    "36fab5165d37a178"
+                ]
+            ]
+        },
+        {
+            "id": "36fab5165d37a178",
+            "type": "modbus-flex-write",
+            "z": "627c657139d5bff3",
+            "name": "Belimo MUV API Data",
+            "showStatusActivities": false,
+            "showErrors": true,
+            "showWarnings": true,
+            "server": "gqmprqh7vfckb8jv",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "x": 1200,
+            "y": 1020,
+            "wires": [
+                [
+                    "fab1fd96c991e66b"
+                ],
+                []
+            ]
+        },
+        {
+            "id": "fab1fd96c991e66b",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"MUV_API_COMMUNICATION_ERROR\":false}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1420,
+            "y": 1020,
+            "wires": [
+                [
+                    "392fd48c6b4e8788",
+                    "3f60682b3ad7777c"
+                ]
+            ]
+        },
+        {
+            "id": "013eeb22e87c6c2a",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "{\"MUV_API_COMMUNICATION_ERROR\":true}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1420,
+            "y": 1140,
+            "wires": [
+                [
+                    "392fd48c6b4e8788"
+                ]
+            ]
+        },
+        {
+            "id": "efb37fb4a4a93c71",
+            "type": "catch",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "scope": [
+                "760f0533e6ae0ad0",
+                "07234fedbef99cdd",
+                "2419ad635d012cf9",
+                "9df99d20c154ebc5",
+                "7643a11e2b76f9a3",
+                "35f8787783b10c1b",
+                "089953662ad86f0a",
+                "269b52818902fee7",
+                "a2397c6d09af0746"
+            ],
+            "uncaught": false,
+            "x": 570,
+            "y": 1100,
+            "wires": [
+                [
+                    "469f33537b25e18e",
+                    "27c30e68f384d3c7"
+                ]
+            ]
+        },
+        {
+            "id": "4878aa3d2148a99a",
+            "type": "inject",
+            "z": "627c657139d5bff3",
+            "name": "MUV API interval",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "1800",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "30",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 190,
+            "y": 880,
+            "wires": [
+                [
+                    "06ae270bde916c74"
+                ]
+            ]
+        },
+        {
+            "id": "cd2745a79f1ea105",
+            "type": "debug",
+            "z": "627c657139d5bff3",
+            "name": "MUV API Data",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1740,
+            "y": 940,
+            "wires": []
+        },
+        {
+            "id": "fbf5eb5abd00715d",
+            "type": "modbus-write",
+            "z": "627c657139d5bff3",
+            "name": "AOP Data to Belimo",
+            "showStatusActivities": false,
+            "showErrors": true,
+            "showWarnings": true,
+            "unitid": "1",
+            "dataType": "MHoldingRegisters",
+            "adr": "10000",
+            "quantity": "2",
+            "server": "gqmprqh7vfckb8jv",
+            "emptyMsgOnFail": false,
+            "keepMsgProperties": false,
+            "delayOnStart": false,
+            "startDelayTime": "",
+            "x": 1160,
+            "y": 260,
+            "wires": [
+                [
+                    "ee780adb73ce2c87"
+                ],
+                []
+            ]
+        },
+        {
+            "id": "ee780adb73ce2c87",
+            "type": "debug",
+            "z": "627c657139d5bff3",
+            "name": "Health State",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 1690,
+            "y": 260,
+            "wires": []
+        },
+        {
+            "id": "e236f6927aac65f4",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set health values",
+            "func": "const filtered = Object.fromEntries(\n    Object.entries(flow.get(\"bridge\").image.metrics).filter(\n        ([key, value]) => key.includes(\"ERROR\") && value === true\n    )\n);\n\nif (Object.keys(filtered).length > 0) {\n    msg.payload = [Math.floor(Math.random() * 10000), 1]\n} else {\n    msg.payload = [Math.floor(Math.random() * 10000), 0]\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 470,
+            "y": 260,
+            "wires": [
+                [
+                    "fbf5eb5abd00715d"
+                ]
+            ]
+        },
+        {
+            "id": "3208c4cfdc4df4c8",
+            "type": "delay",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "10",
+            "timeoutUnits": "minutes",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1370,
+            "y": 620,
+            "wires": [
+                [
+                    "71143de029c884dc"
+                ]
+            ]
+        },
+        {
+            "id": "e9d89f9b8715813e",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "reset",
+                    "pt": "msg",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1380,
+            "y": 580,
+            "wires": [
+                [
+                    "3208c4cfdc4df4c8"
+                ]
+            ]
+        },
+        {
+            "id": "3f60682b3ad7777c",
+            "type": "change",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "reset",
+                    "pt": "msg",
+                    "to": "true",
+                    "tot": "bool"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1420,
+            "y": 1060,
+            "wires": [
+                [
+                    "469f33537b25e18e"
+                ]
+            ]
+        },
+        {
+            "id": "469f33537b25e18e",
+            "type": "delay",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "120",
+            "timeoutUnits": "minutes",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1410,
+            "y": 1100,
+            "wires": [
+                [
+                    "013eeb22e87c6c2a"
+                ]
+            ]
+        },
+        {
+            "id": "f23bca1356cacd63",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "define_query_params",
+            "func": "const to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes() + 200);\nconst gate_area = 'A81-A86'\nconst obs_from = from_ts.toJSON()\nconst obs_to = to_ts.toJSON()\n\nmsg.headers = {\n        'Authorization': 'Bearer ' + msg.payload.access_token\n}\nmsg.url = `https://api.zurich-airport.com/airport_operations_plan/v3/passenger-demand/gate-areas/${gate_area}?observation_time_window_from=${obs_from}&observation_time_window_to=${obs_to}`;\nmsg.method = \"GET\";\nmsg.payload = {};\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 480,
+            "y": 360,
+            "wires": [
+                [
+                    "eccf211478d56f9d"
+                ]
+            ]
+        },
+        {
+            "id": "eccf211478d56f9d",
+            "type": "http request",
+            "z": "627c657139d5bff3",
+            "name": "Request Gate Demand Data",
+            "method": "use",
+            "ret": "obj",
+            "paytoqs": "ignore",
+            "url": "",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [],
+            "x": 780,
+            "y": 360,
+            "wires": [
+                [
+                    "11a468b0d719c944"
+                ]
+            ]
+        },
+        {
+            "id": "1417cf43470d2a01",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Define credentials (cert auth)",
+            "func": "// @ts-ignore\nconst jwt = global.get('jsonwebtoken');\nconst fs = global.get('fs');\nconst crypto = global.get('crypto');\n\nconst clientId = env.get('AOP_API_CLIENT_ID');\nconst scope = env.get('AOP_API_SCOPE');\nconst tenantId = env.get('AOP_TENANT_ID');\nconst tokenEndpoint = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;\nconst privateKey = fs.readFileSync(\"/config/aopPrivateKey.pem\");\nconst cert = fs.readFileSync(\"/config/aopCertificate.pem\");\nconst x509 = new crypto.X509Certificate(cert);\nconst sha1 = crypto.createHash(\"sha1\").update(x509.raw).digest(\"hex\").toUpperCase();\nconst base64urlThumbprint = Buffer.from(sha1, \"hex\")\n  .toString(\"base64\")\n  .replace(/\\+/g, \"-\")\n  .replace(/\\//g, \"_\")\n  .replace(/=+$/, \"\");\n\nconst now = Math.floor(Date.now() / 1000);\n// build JWT payload (valid for 10 min is allowed — 1 min is too short)\nconst payload = {\n  aud: tokenEndpoint, // must match your /oauth2/v2.0/token URL exactly\n  iss: clientId,\n  sub: clientId,\n  jti: crypto.randomUUID(),\n  nbf: now,\n  exp: now + 600 // 10 minutes is OK\n};\n\n// JWT header — use x5t (base64url thumbprint)\nconst header = {\n  alg: \"RS256\",\n  typ: \"JWT\",\n  x5t: base64urlThumbprint\n}\n\n// sign JWT\nconst token = jwt.sign(payload, privateKey, {\n  algorithm: \"RS256\",\n  header\n});\n\n// use URLSearchParams for correct form encoding\nconst params = new URLSearchParams({\n  grant_type: \"client_credentials\",\n  client_id: clientId,\n  scope: scope,\n  client_assertion_type: \"urn:ietf:params:oauth:client-assertion-type:jwt-bearer\",\n  client_assertion: token\n});\n\nmsg.payload = params.toString();\nmsg.url = tokenEndpoint;\nmsg.method = \"POST\";\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [
+                {
+                    "var": "jwt",
+                    "module": "jsonwebtoken"
+                }
+            ],
+            "x": 500,
+            "y": 320,
+            "wires": [
+                [
+                    "2227d46507cca439"
+                ]
+            ]
+        },
+        {
+            "id": "2227d46507cca439",
+            "type": "http request",
+            "z": "627c657139d5bff3",
+            "name": "Aquire Authorization Token",
+            "method": "use",
+            "ret": "obj",
+            "paytoqs": "body",
+            "url": "",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [
+                {
+                    "keyType": "other",
+                    "keyValue": "Content-Type",
+                    "valueType": "other",
+                    "valueValue": "application/x-www-form-urlencoded"
+                }
+            ],
+            "x": 780,
+            "y": 320,
+            "wires": [
+                [
+                    "f23bca1356cacd63"
+                ]
+            ]
+        },
+        {
+            "id": "9d54ccb4ebebd445",
+            "type": "catch",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "scope": [
+                "1417cf43470d2a01",
+                "f23bca1356cacd63",
+                "2227d46507cca439",
+                "eccf211478d56f9d",
+                "11a468b0d719c944"
+            ],
+            "uncaught": false,
+            "x": 430,
+            "y": 620,
+            "wires": [
+                [
+                    "3208c4cfdc4df4c8"
+                ]
+            ]
+        },
+        {
+            "id": "cd2aa68ff3c58593",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Build query",
+            "func": "const apiKey = env.get('MUV_API_TOKEN');\nconst to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes());\nfrom_ts.setMinutes(to_ts.getMinutes() - 60);\nconst prefixEnv = env.get(\"AOP_STATION_NAME\");\nconst stationName = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n  ? \"A020_133_1141\"\n  : prefixEnv;\n\nconst body = {\n  \"timestamp\": {\n    \"from\": from_ts,\n    \"to\": to_ts\n  },\n  \"metricId\": [\n    stationName + \"_AAA_\" + \"Z01Bew01_BV01\",\n    stationName + \"_AAA_\" + \"Z01Tfq01_AV01\",\n    stationName + \"_AAA_\" + \"Z01Tfq01_AV02\",\n    stationName + \"_AAA_\" + \"Z01Tfq01_AV03\",\n    stationName + \"_AAA_\" + \"Z01Tfq02_AV01\",\n    stationName + \"_AAA_\" + \"Z01Tfq02_AV02\",\n    stationName + \"_AAA_\" + \"Z01Tfq02_AV03\",\n    stationName + \"_AAA_\" + \"Z01Tfq03_AV01\",\n    stationName + \"_AAA_\" + \"Z01Tfq03_AV02\",\n    stationName + \"_AAA_\" + \"Z01Tfq03_AV03\"\n  ],\n  \"limit\": 100,\n  \"skip\": 0\n}\n\nmsg.apiKey = apiKey;\nmsg.payload = body;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 450,
+            "y": 780,
+            "wires": [
+                [
+                    "9df99d20c154ebc5"
+                ]
+            ]
+        },
+        {
+            "id": "9df99d20c154ebc5",
+            "type": "http request",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "method": "POST",
+            "ret": "txt",
+            "paytoqs": "ignore",
+            "url": "https://api.muv.digital/v1/query/68d23ed2115f2fa209181001/raw",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [
+                {
+                    "keyType": "other",
+                    "keyValue": "accept",
+                    "valueType": "other",
+                    "valueValue": "application/json"
+                },
+                {
+                    "keyType": "other",
+                    "keyValue": "x-api-key",
+                    "valueType": "msg",
+                    "valueValue": "apiKey"
+                }
+            ],
+            "x": 610,
+            "y": 780,
+            "wires": [
+                [
+                    "7643a11e2b76f9a3"
+                ]
+            ]
+        },
+        {
+            "id": "7643a11e2b76f9a3",
+            "type": "json",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "property": "payload",
+            "action": "",
+            "pretty": false,
+            "x": 750,
+            "y": 780,
+            "wires": [
+                [
+                    "35f8787783b10c1b"
+                ]
+            ]
+        },
+        {
+            "id": "35f8787783b10c1b",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set Modbus data",
+            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value }).pop();\n    const metricId = metric.metricId;\n    const sendScaled = (registerStart, scale) => {\n        const factor = scale === 0 ? 1 : 1 / scale;\n        node.send({\n            payload: {\n                value: Math.round(data * factor),\n                fc: 6,\n                unitid: 1,\n                address: registerStart,\n                quantity: 1\n            }\n        });\n    };\n\n    if (metricId.includes(\"Z01Bew01_BV01\")) {\n        sendScaled(13000, 1);\n    } else if (metricId.includes(\"Z01Tfq01_AV01\")) {\n        sendScaled(13001, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV02\")) {\n        sendScaled(13002, 0.01);\n    } else if (metricId.includes(\"Z01Tfq01_AV03\")) {\n        sendScaled(13003, 1);\n    } else if (metricId.includes(\"Z01Tfq02_AV01\")) {\n        sendScaled(13004, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV02\")) {\n        sendScaled(13005, 0.01);\n    } else if (metricId.includes(\"Z01Tfq02_AV03\")) {\n        sendScaled(13006, 1);\n    } else if (metricId.includes(\"Z01Tfq03_AV01\")) {\n        sendScaled(13007, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV02\")) {\n        sendScaled(13008, 0.01);\n    } else if (metricId.includes(\"Z01Tfq03_AV03\")) {\n        sendScaled(13009, 1);\n    }\n});\n\nnode.done();",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 910,
+            "y": 780,
+            "wires": [
+                [
+                    "cd2745a79f1ea105",
+                    "36fab5165d37a178"
+                ]
+            ]
+        },
+        {
+            "id": "3ff538c20b8671de",
+            "type": "inject",
+            "z": "627c657139d5bff3",
+            "name": "MUV API interval (Monzoon)",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "600",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "30",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 230,
+            "y": 780,
+            "wires": [
+                [
+                    "cd2aa68ff3c58593"
+                ]
+            ]
+        },
+        {
+            "id": "804b594b9c48d2fa",
+            "type": "comment",
+            "z": "627c657139d5bff3",
+            "name": "Monzoon -> Belimo ",
+            "info": "",
+            "x": 170,
+            "y": 740,
+            "wires": []
+        },
+        {
+            "id": "089953662ad86f0a",
+            "type": "http request",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "method": "POST",
+            "ret": "txt",
+            "paytoqs": "ignore",
+            "url": "https://api.muv.digital/v1/query/693035bf6a0e1456a414a7c8/raw",
+            "tls": "",
+            "persist": false,
+            "proxy": "",
+            "insecureHTTPParser": false,
+            "authType": "",
+            "senderr": false,
+            "headers": [
+                {
+                    "keyType": "other",
+                    "keyValue": "accept",
+                    "valueType": "other",
+                    "valueValue": "application/json"
+                },
+                {
+                    "keyType": "other",
+                    "keyValue": "x-api-key",
+                    "valueType": "msg",
+                    "valueValue": "apiKey"
+                }
+            ],
+            "x": 530,
+            "y": 980,
+            "wires": [
+                [
+                    "269b52818902fee7"
+                ]
+            ]
+        },
+        {
+            "id": "1df01b6773dee8e8",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Build query",
+            "func": "const apiKey = env.get('MUV_API_TOKEN');\nconst to_ts = new Date();\nconst from_ts = new Date();\nto_ts.setMinutes(to_ts.getMinutes());\nfrom_ts.setMinutes(to_ts.getMinutes() - 60);\nconst prefixEnv = env.get(\"AOP_STATION_NAME\");\nconst stationName = prefixEnv === null || prefixEnv === undefined || prefixEnv === \"\"\n  ? \"XXX\"\n  : prefixEnv;\n\nconst body = {\n  \"timestamp\": {\n    \"from\": from_ts,\n    \"to\": to_ts\n  },\n  \"metricId\": [\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV01\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV11\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV03\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV13\",\n    stationName + \"_AAZ_\" + \"Z01Sol01_AV05\",\n    stationName + \"_AAZ_\" + \"ZulReg01_AV01\",\n    stationName + \"_AAZ_\" + \"ZulReg01_AV02\",\n    stationName + \"_AAZ_\" + \"WrgReg01_AV01\",\n    stationName + \"_AAZ_\" + \"AnlSch01_MV90\",\n    stationName + \"_AAZ_\" + \"AulReg01_AV02\",\n    stationName + \"_AAZ_\" + \"AulKlp01_AV01\",\n    stationName + \"_AAZ_\" + \"FolKlp01_AV01\",\n    stationName + \"_AAZ_\" + \"UmlKlp01_AV01\",\n    stationName + \"_AAZ_\" + \"ZulVen01_AV01\",\n    stationName + \"_AAZ_\" + \"FolVen01_AV01\",\n    stationName + \"_AAZ_\" + \"WrgMot01_AV01\",\n    stationName + \"_AAZ_\" + \"LueVtl01_AV01\",\n    stationName + \"_AAZ_\" + \"LkuVtl01_AV01\",\n    stationName + \"_AAZ_\" + \"VarSet01_AV01\",\n    stationName + \"_AAZ_\" + \"VarSet02_AV01\",\n    stationName + \"_AAZ_\" + \"SteSet01_AV01\",\n    stationName + \"_AAZ_\" + \"SteSet02_AV01\",\n    stationName + \"_AAZ_\" + \"SteSet03_AV01\"\n  ],\n  \"limit\": 100,\n  \"skip\": 0\n}\n\nmsg.apiKey = apiKey;\nmsg.payload = body;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 370,
+            "y": 980,
+            "wires": [
+                [
+                    "089953662ad86f0a"
+                ]
+            ]
+        },
+        {
+            "id": "269b52818902fee7",
+            "type": "json",
+            "z": "627c657139d5bff3",
+            "name": "",
+            "property": "payload",
+            "action": "",
+            "pretty": false,
+            "x": 670,
+            "y": 980,
+            "wires": [
+                [
+                    "a2397c6d09af0746"
+                ]
+            ]
+        },
+        {
+            "id": "c9203a26fbd23017",
+            "type": "comment",
+            "z": "627c657139d5bff3",
+            "name": "Predict -> Belimo ",
+            "info": "",
+            "x": 160,
+            "y": 940,
+            "wires": []
+        },
+        {
+            "id": "a2397c6d09af0746",
+            "type": "function",
+            "z": "627c657139d5bff3",
+            "name": "Set Modbus data",
+            "func": "msg.payload.results.forEach(metric => {\n    const data = metric.timeseries.map(object => { return object.value });\n    if (data.length > 0) {\n        const lastValue = data.pop();\n        const metricId = metric.metricId;\n        const sendScaled = (register, scale) => {\n            const factor = scale === 0 ? 1 : 1 / scale; // safety for scale 0\n            node.send({\n                payload: {\n                    value: Math.round(lastValue * factor),\n                    fc: 6,\n                    unitid: 1,\n                    address: register,\n                    quantity: 1\n                }\n            });\n        };\n\n        if (metricId.includes(\"SAT_Sp_C\")) {\n            sendScaled(10405, 0.01);\n        } else if (metricId.includes(\"SAV_Sp_m3h\")) {\n            sendScaled(10406, 1);\n        } else if (metricId.includes(\"Z01Sol01_AV01\")) {\n            sendScaled(10400, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV11\")) {\n            sendScaled(10401, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV03\")) {\n            sendScaled(10402, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV13\")) {\n            sendScaled(10403, 0.01);\n        } else if (metricId.includes(\"Z01Sol01_AV05\")) {\n            sendScaled(10404, 1);\n        } else if (metricId.includes(\"ZulReg01_AV01\")) {\n            sendScaled(10405, 0.01);\n        } else if (metricId.includes(\"ZulReg01_AV02\")) {\n            sendScaled(10406, 1);\n        } else if (metricId.includes(\"WrgReg01_AV01\")) {\n            sendScaled(10407, 0.01);\n        } else if (metricId.includes(\"AnlSch01_MV90\")) {\n            sendScaled(10408, 1);\n        } else if (metricId.includes(\"AulReg01_AV02\")) {\n            sendScaled(10409, 1);\n        } else if (metricId.includes(\"AulKlp01_AV01\")) {\n            sendScaled(10410, 0.01);\n        } else if (metricId.includes(\"FolKlp01_AV01\")) {\n            sendScaled(10411, 0.01);\n        } else if (metricId.includes(\"UmlKlp01_AV01\")) {\n            sendScaled(10412, 0.01);\n        } else if (metricId.includes(\"ZulVen01_AV01\")) {\n            sendScaled(10413, 0.01);\n        } else if (metricId.includes(\"FolVen01_AV01\")) {\n            sendScaled(10414, 0.01);\n        } else if (metricId.includes(\"WrgMot01_AV01\")) {\n            sendScaled(10415, 0.01);\n        } else if (metricId.includes(\"LueVtl01_AV01\")) {\n            sendScaled(10416, 0.01);\n        } else if (metricId.includes(\"LkuVtl01_AV01\")) {\n            sendScaled(10417, 0.01);\n        } else if (metricId.includes(\"VarSet01_AV01\")) {\n            sendScaled(10418, 0.01);\n        } else if (metricId.includes(\"VarSet02_AV01\")) {\n            sendScaled(10419, 0.01);\n        } else if (metricId.includes(\"SteSet01_AV01\")) {\n            sendScaled(10420, 1);\n        } else if (metricId.includes(\"SteSet02_AV01\")) {\n            sendScaled(10421, 1);\n        } else if (metricId.includes(\"SteSet03_AV01\")) {\n            sendScaled(10422, 1);\n        }\n    }\n});\n\nnode.done();",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 830,
+            "y": 980,
+            "wires": [
+                [
+                    "cd2745a79f1ea105",
+                    "36fab5165d37a178"
+                ]
+            ]
+        },
+        {
+            "id": "819743d383e153c9",
+            "type": "inject",
+            "z": "627c657139d5bff3",
+            "name": "MUV API interval",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "300",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "30",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 190,
+            "y": 980,
+            "wires": [
+                [
+                    "1df01b6773dee8e8"
+                ]
+            ]
+        },
+        {
+            "id": "27c30e68f384d3c7",
+            "type": "debug",
+            "z": "627c657139d5bff3",
+            "name": "debug 1",
+            "active": true,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "false",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 760,
+            "y": 1140,
+            "wires": []
+        }
+    ],
+    "configs": [
+        {
+            "id": "gqmprqh7vfckb8jv",
+            "type": "modbus-client",
+            "z": "627c657139d5bff3",
+            "name": "Belimo",
+            "clienttype": "tcp",
+            "bufferCommands": true,
+            "stateLogEnabled": false,
+            "queueLogEnabled": false,
+            "failureLogEnabled": true,
+            "tcpHost": "192.168.1.61",
+            "tcpPort": "502",
+            "tcpType": "DEFAULT",
+            "serialPort": "/dev/ttyUSB",
+            "serialType": "RTU-BUFFERD",
+            "serialBaudrate": "9600",
+            "serialDatabits": "8",
+            "serialStopbits": "1",
+            "serialParity": "none",
+            "serialConnectionDelay": "100",
+            "serialAsciiResponseStartDelimiter": "0x3A",
+            "unit_id": 1,
+            "commandDelay": 100,
+            "clientTimeout": 1000,
+            "reconnectOnTimeout": true,
+            "reconnectTimeout": 2000,
+            "parallelUnitIdsAllowed": true,
+            "showErrors": true,
+            "showWarnings": true,
+            "showLogs": true
+        }
+    ]
+}
