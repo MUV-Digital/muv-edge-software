@@ -261,7 +261,7 @@
                     "t": "set",
                     "p": "payload",
                     "pt": "msg",
-                    "to": "{\"SYSTEM-0\":0,\"COMMUNICATION_ERROR\":false,\"BELIMO_COMMUNICATION_ERROR\":false,\"AOP_COMMUNICATION_ERROR\":false,\"MUV_API_COMMUNICATION_ERROR\":false}",
+                    "to": "{\"SYSTEM-0\":0,\"COMMUNICATION_ERROR\":false,\"AOP_COMMUNICATION_ERROR\":false,\"MUV_API_COMMUNICATION_ERROR\":false}",
                     "tot": "json"
                 }
             ],
