@@ -93,7 +93,7 @@
             "type": "function",
             "z": "bc067cfa2e6f865f",
             "name": "Set channel parameters",
-            "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\n\nmsg.payload = {};\n\nreturn message",
+            "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\n\nmsg.payload = {};\n\nreturn msg",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
@@ -546,14 +546,14 @@
             "rules": [
                 {
                     "t": "set",
-                    "p": "birdge.image.metrics.COMMUNICATION_ERROR",
+                    "p": "bridge.image.metrics.COMMUNICATION_ERROR",
                     "pt": "flow",
                     "to": "true",
                     "tot": "bool"
                 },
                 {
                     "t": "set",
-                    "p": "birdge.image.metrics.SYSTEM-0",
+                    "p": "bridge.image.metrics.SYSTEM-0",
                     "pt": "flow",
                     "to": "2",
                     "tot": "num"
@@ -580,14 +580,14 @@
             "rules": [
                 {
                     "t": "set",
-                    "p": "birdge.image.metrics.COMMUNICATION_ERROR",
+                    "p": "bridge.image.metrics.COMMUNICATION_ERROR",
                     "pt": "flow",
                     "to": "false",
                     "tot": "bool"
                 },
                 {
                     "t": "set",
-                    "p": "birdge.image.metrics.SYSTEM-0",
+                    "p": "bridge.image.metrics.SYSTEM-0",
                     "pt": "flow",
                     "to": "0",
                     "tot": "num"
