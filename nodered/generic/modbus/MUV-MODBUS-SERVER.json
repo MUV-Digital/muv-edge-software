@@ -1,0 +1,455 @@
+{
+    "id": "bc067cfa2e6f865f",
+    "label": "123131541564561561",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "61d12c1e01d77703",
+            "type": "getflows",
+            "z": "bc067cfa2e6f865f",
+            "name": "",
+            "x": 280,
+            "y": 80,
+            "wires": [
+                [
+                    "7baf74ebbb5ea42e"
+                ]
+            ]
+        },
+        {
+            "id": "dc1297d1ef414f81",
+            "type": "inject",
+            "z": "bc067cfa2e6f865f",
+            "name": "Startup",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "3",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 120,
+            "y": 80,
+            "wires": [
+                [
+                    "61d12c1e01d77703"
+                ]
+            ]
+        },
+        {
+            "id": "7baf74ebbb5ea42e",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Init",
+            "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\nbridge.error = false;\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 410,
+            "y": 80,
+            "wires": [
+                [
+                    "38a34f0776cc25ab"
+                ]
+            ]
+        },
+        {
+            "id": "38a34f0776cc25ab",
+            "type": "switch",
+            "z": "bc067cfa2e6f865f",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 1,
+            "x": 560,
+            "y": 80,
+            "wires": [
+                [
+                    "e0d7c3ae8cbd878e"
+                ]
+            ]
+        },
+        {
+            "id": "e0d7c3ae8cbd878e",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Set channel parameters",
+            "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\n\nmsg.payload = {};\n\nreturn message",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 770,
+            "y": 80,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "21800cc3860d7edc",
+            "type": "modbus-server",
+            "z": "bc067cfa2e6f865f",
+            "name": "Modbus Gateway",
+            "logEnabled": false,
+            "hostname": "0.0.0.0",
+            "serverPort": "502",
+            "responseDelay": 100,
+            "delayUnit": "ms",
+            "coilsBufferSize": 10000,
+            "holdingBufferSize": 10000,
+            "inputBufferSize": 10000,
+            "discreteBufferSize": 10000,
+            "showErrors": true,
+            "showStatusActivities": true,
+            "x": 890,
+            "y": 400,
+            "wires": [
+                [],
+                [],
+                [],
+                [],
+                []
+            ]
+        },
+        {
+            "id": "20b32b23c2b76b78",
+            "type": "inject",
+            "z": "bc067cfa2e6f865f",
+            "name": "",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "1800",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "10",
+            "topic": "",
+            "payload": "{}",
+            "payloadType": "json",
+            "x": 110,
+            "y": 180,
+            "wires": [
+                [
+                    "163d412a706b8360"
+                ]
+            ]
+        },
+        {
+            "id": "098c87e61c0b33d3",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Subscribe to commands for this bridge",
+            "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/modbusBridge/holding\"\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 210,
+            "y": 340,
+            "wires": [
+                [
+                    "ad560dac62cb8565"
+                ]
+            ]
+        },
+        {
+            "id": "163d412a706b8360",
+            "type": "switch",
+            "z": "bc067cfa2e6f865f",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "null"
+                },
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 2,
+            "x": 140,
+            "y": 240,
+            "wires": [
+                [
+                    "cc6a514cca865745"
+                ],
+                [
+                    "098c87e61c0b33d3",
+                    "3108e620ccdc99a5",
+                    "99dde30a954bd0ad",
+                    "99cd075e7fce1055"
+                ]
+            ]
+        },
+        {
+            "id": "cc6a514cca865745",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Error",
+            "func": "node.warn(\"The bridge configuration is wrong!\")\nnode.done()",
+            "outputs": 0,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 310,
+            "y": 240,
+            "wires": []
+        },
+        {
+            "id": "ad560dac62cb8565",
+            "type": "mqtt in",
+            "z": "bc067cfa2e6f865f",
+            "name": "holding",
+            "topic": "",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "de96f526d294fb46",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 1,
+            "x": 450,
+            "y": 340,
+            "wires": [
+                [
+                    "57fab4aaa0480599"
+                ]
+            ]
+        },
+        {
+            "id": "a0d8442d252ef0ba",
+            "type": "mqtt in",
+            "z": "bc067cfa2e6f865f",
+            "name": "coils",
+            "topic": "",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "de96f526d294fb46",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 1,
+            "x": 450,
+            "y": 380,
+            "wires": [
+                [
+                    "8bb808ad812d1198"
+                ]
+            ]
+        },
+        {
+            "id": "97f12b5110fedb2a",
+            "type": "mqtt in",
+            "z": "bc067cfa2e6f865f",
+            "name": "input",
+            "topic": "",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "de96f526d294fb46",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 1,
+            "x": 450,
+            "y": 420,
+            "wires": [
+                [
+                    "d2c21f3b00fc65ce"
+                ]
+            ]
+        },
+        {
+            "id": "9ad3c0154d239995",
+            "type": "mqtt in",
+            "z": "bc067cfa2e6f865f",
+            "name": "discrete",
+            "topic": "",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "de96f526d294fb46",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 1,
+            "x": 450,
+            "y": 460,
+            "wires": [
+                [
+                    "745ca95759e5a0df"
+                ]
+            ]
+        },
+        {
+            "id": "3108e620ccdc99a5",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Subscribe to commands for this bridge",
+            "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/modbusBridge/coils\"\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 210,
+            "y": 380,
+            "wires": [
+                [
+                    "a0d8442d252ef0ba"
+                ]
+            ]
+        },
+        {
+            "id": "99dde30a954bd0ad",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Subscribe to commands for this bridge",
+            "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/modbusBridge/input\"\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 210,
+            "y": 420,
+            "wires": [
+                [
+                    "97f12b5110fedb2a"
+                ]
+            ]
+        },
+        {
+            "id": "99cd075e7fce1055",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Subscribe to commands for this bridge",
+            "func": "msg.action = \"subscribe\";\nmsg.topic = {\n    \"qos\": 2,\n    \"topic\": \"bridge/command/modbusBridge/discrete\"\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 210,
+            "y": 460,
+            "wires": [
+                [
+                    "9ad3c0154d239995"
+                ]
+            ]
+        },
+        {
+            "id": "57fab4aaa0480599",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Preapre write",
+            "func": "msg.payload = {\n    'value': msg.payload.value,\n    'register': 'holding',\n    'address': msg.payload.address,\n    'disableMsgOutput': 0\n};\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 610,
+            "y": 340,
+            "wires": [
+                [
+                    "21800cc3860d7edc"
+                ]
+            ]
+        },
+        {
+            "id": "8bb808ad812d1198",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Preapre write",
+            "func": "msg.payload = {\n    'value': msg.payload.value,\n    'register': 'coils',\n    'address': msg.payload.address,\n    'disableMsgOutput': 0\n};\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 610,
+            "y": 380,
+            "wires": [
+                [
+                    "21800cc3860d7edc"
+                ]
+            ]
+        },
+        {
+            "id": "d2c21f3b00fc65ce",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Preapre write",
+            "func": "msg.payload = {\n    'value': msg.payload.value,\n    'register': 'input',\n    'address': msg.payload.address,\n    'disableMsgOutput': 0\n};\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 610,
+            "y": 420,
+            "wires": [
+                [
+                    "21800cc3860d7edc"
+                ]
+            ]
+        },
+        {
+            "id": "745ca95759e5a0df",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Preapre write",
+            "func": "msg.payload = {\n    'value': msg.payload.value,\n    'register': 'discrete',\n    'address': msg.payload.address,\n    'disableMsgOutput': 0\n};\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 610,
+            "y": 460,
+            "wires": [
+                [
+                    "21800cc3860d7edc"
+                ]
+            ]
+        }
+    ]
+}
