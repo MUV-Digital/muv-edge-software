@@ -103,7 +103,9 @@
             "x": 770,
             "y": 80,
             "wires": [
-                []
+                [
+                    "9477ce58556dced6"
+                ]
             ]
         },
         {
@@ -122,8 +124,8 @@
             "discreteBufferSize": 10000,
             "showErrors": true,
             "showStatusActivities": true,
-            "x": 890,
-            "y": 400,
+            "x": 870,
+            "y": 720,
             "wires": [
                 [],
                 [],
@@ -149,8 +151,8 @@
             "topic": "",
             "payload": "{}",
             "payloadType": "json",
-            "x": 110,
-            "y": 180,
+            "x": 90,
+            "y": 500,
             "wires": [
                 [
                     "163d412a706b8360"
@@ -169,8 +171,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 210,
-            "y": 340,
+            "x": 190,
+            "y": 660,
             "wires": [
                 [
                     "ad560dac62cb8565"
@@ -197,8 +199,8 @@
             "checkall": "true",
             "repair": false,
             "outputs": 2,
-            "x": 140,
-            "y": 240,
+            "x": 120,
+            "y": 560,
             "wires": [
                 [
                     "cc6a514cca865745"
@@ -223,8 +225,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 310,
-            "y": 240,
+            "x": 290,
+            "y": 560,
             "wires": []
         },
         {
@@ -240,8 +242,8 @@
             "rap": true,
             "rh": 0,
             "inputs": 1,
-            "x": 450,
-            "y": 340,
+            "x": 430,
+            "y": 660,
             "wires": [
                 [
                     "57fab4aaa0480599"
@@ -261,8 +263,8 @@
             "rap": true,
             "rh": 0,
             "inputs": 1,
-            "x": 450,
-            "y": 380,
+            "x": 430,
+            "y": 700,
             "wires": [
                 [
                     "8bb808ad812d1198"
@@ -282,8 +284,8 @@
             "rap": true,
             "rh": 0,
             "inputs": 1,
-            "x": 450,
-            "y": 420,
+            "x": 430,
+            "y": 740,
             "wires": [
                 [
                     "d2c21f3b00fc65ce"
@@ -303,8 +305,8 @@
             "rap": true,
             "rh": 0,
             "inputs": 1,
-            "x": 450,
-            "y": 460,
+            "x": 430,
+            "y": 780,
             "wires": [
                 [
                     "745ca95759e5a0df"
@@ -323,8 +325,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 210,
-            "y": 380,
+            "x": 190,
+            "y": 700,
             "wires": [
                 [
                     "a0d8442d252ef0ba"
@@ -343,8 +345,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 210,
-            "y": 420,
+            "x": 190,
+            "y": 740,
             "wires": [
                 [
                     "97f12b5110fedb2a"
@@ -363,8 +365,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 210,
-            "y": 460,
+            "x": 190,
+            "y": 780,
             "wires": [
                 [
                     "9ad3c0154d239995"
@@ -383,8 +385,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 610,
-            "y": 340,
+            "x": 590,
+            "y": 660,
             "wires": [
                 [
                     "21800cc3860d7edc"
@@ -403,8 +405,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 610,
-            "y": 380,
+            "x": 590,
+            "y": 700,
             "wires": [
                 [
                     "21800cc3860d7edc"
@@ -423,8 +425,8 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 610,
-            "y": 420,
+            "x": 590,
+            "y": 740,
             "wires": [
                 [
                     "21800cc3860d7edc"
@@ -443,12 +445,183 @@
             "initialize": "",
             "finalize": "",
             "libs": [],
-            "x": 610,
-            "y": 460,
+            "x": 590,
+            "y": 780,
             "wires": [
                 [
                     "21800cc3860d7edc"
                 ]
+            ]
+        },
+        {
+            "id": "55e28d24786def29",
+            "type": "flogger",
+            "z": "bc067cfa2e6f865f",
+            "name": "Error",
+            "logfile": "bridge.log",
+            "inputchoice": "fullmsg",
+            "inputobject": "payload",
+            "inputobjectType": "msg",
+            "inputmoustache": "Recieved payload {{payload}} and topic {{topic}}",
+            "loglevel": "ERROR",
+            "logconfig": "2c6b06edb20118d0",
+            "sendpane": true,
+            "x": 630,
+            "y": 200,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "ce677d51c9b61b88",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "set error",
+            "func": "msg.payload = {\n    \"payload\" : msg.payload,\n    \"error\" : msg.error\n};\n\nif (msg._error){\n    msg.payload._error = msg._error;\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 300,
+            "y": 200,
+            "wires": [
+                [
+                    "aa26baae3244e9d7"
+                ]
+            ]
+        },
+        {
+            "id": "725d8504b864ac70",
+            "type": "catch",
+            "z": "bc067cfa2e6f865f",
+            "name": "",
+            "scope": null,
+            "uncaught": false,
+            "x": 160,
+            "y": 200,
+            "wires": [
+                [
+                    "ce677d51c9b61b88"
+                ]
+            ]
+        },
+        {
+            "id": "aa26baae3244e9d7",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Set log file name",
+            "func": "msg.logfile = \"bridge-\" + env.get(\"NR_FLOW_NAME\") + \".log\"\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 470,
+            "y": 200,
+            "wires": [
+                [
+                    "55e28d24786def29",
+                    "97caa694e44beb7d"
+                ]
+            ]
+        },
+        {
+            "id": "2a955bf5cb7d7659",
+            "type": "comment",
+            "z": "bc067cfa2e6f865f",
+            "name": "---- Handle errors",
+            "info": "",
+            "x": 120,
+            "y": 160,
+            "wires": []
+        },
+        {
+            "id": "97caa694e44beb7d",
+            "type": "change",
+            "z": "bc067cfa2e6f865f",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "birdge.image.metrics.COMMUNICATION_ERROR",
+                    "pt": "flow",
+                    "to": "true",
+                    "tot": "bool"
+                },
+                {
+                    "t": "set",
+                    "p": "birdge.image.metrics.SYSTEM-0",
+                    "pt": "flow",
+                    "to": "2",
+                    "tot": "num"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 660,
+            "y": 160,
+            "wires": [
+                [
+                    "1613946bebae8d46"
+                ]
+            ]
+        },
+        {
+            "id": "9477ce58556dced6",
+            "type": "change",
+            "z": "bc067cfa2e6f865f",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "birdge.image.metrics.COMMUNICATION_ERROR",
+                    "pt": "flow",
+                    "to": "false",
+                    "tot": "bool"
+                },
+                {
+                    "t": "set",
+                    "p": "birdge.image.metrics.SYSTEM-0",
+                    "pt": "flow",
+                    "to": "0",
+                    "tot": "num"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1000,
+            "y": 80,
+            "wires": [
+                [
+                    "1613946bebae8d46"
+                ]
+            ]
+        },
+        {
+            "id": "1613946bebae8d46",
+            "type": "function",
+            "z": "bc067cfa2e6f865f",
+            "name": "Set sensor value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1280,
+            "y": 440,
+            "wires": [
+                []
             ]
         }
     ]
