@@ -1,0 +1,295 @@
+{
+    "id": "36b29e1b40bf3421",
+    "label": "665dcbb50a937de2c2a6c33b",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "g3wcoj91uzj68id2",
+            "type": "mqtt out",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "topic": "cloud/upstream/data",
+            "qos": "2",
+            "retain": "false",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 2080,
+            "y": 120,
+            "wires": []
+        },
+        {
+            "id": "5hkuzhrpkza018xs",
+            "type": "function",
+            "z": "36b29e1b40bf3421",
+            "name": "Set Static value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1250,
+            "y": 120,
+            "wires": [
+                [
+                    "6578pzc3plhy6dgl",
+                    "aad9b897a594a271"
+                ]
+            ]
+        },
+        {
+            "id": "cqk99m7ukpia5c6w",
+            "type": "inject",
+            "z": "36b29e1b40bf3421",
+            "name": "Startup",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "3",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 140,
+            "y": 60,
+            "wires": [
+                [
+                    "ka7ckhhs1t2w1rkq"
+                ]
+            ]
+        },
+        {
+            "id": "ka7ckhhs1t2w1rkq",
+            "type": "getflows",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "x": 280,
+            "y": 60,
+            "wires": [
+                [
+                    "nqjle6ln7ovk8v94"
+                ]
+            ]
+        },
+        {
+            "id": "nqjle6ln7ovk8v94",
+            "type": "function",
+            "z": "36b29e1b40bf3421",
+            "name": "Init",
+            "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
+            "outputs": 1,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 410,
+            "y": 60,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "v6ar5e330mv579si",
+            "type": "switch",
+            "z": "36b29e1b40bf3421",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 1,
+            "x": 280,
+            "y": 120,
+            "wires": [
+                [
+                    "t8oy2m33ydyut45o"
+                ]
+            ]
+        },
+        {
+            "id": "k18vq5m25mei47wh",
+            "type": "udp in",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "iface": "",
+            "port": "1111",
+            "ipv": "udp4",
+            "multicast": "false",
+            "group": "",
+            "datatype": "buffer",
+            "x": 120,
+            "y": 120,
+            "wires": [
+                [
+                    "v6ar5e330mv579si"
+                ]
+            ]
+        },
+        {
+            "id": "t8oy2m33ydyut45o",
+            "type": "json",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "property": "payload",
+            "action": "",
+            "pretty": false,
+            "x": 430,
+            "y": 120,
+            "wires": [
+                [
+                    "oih5g00frqvub1zn"
+                ]
+            ]
+        },
+        {
+            "id": "oih5g00frqvub1zn",
+            "type": "function",
+            "z": "36b29e1b40bf3421",
+            "name": "filter values",
+            "func": "const sensor = msg.payload.params[\"em:0\"];\nif(sensor){\n    const keys = Object.keys(sensor);\n    msg.payload = {};\n\n    flow.get(\"bridge.image.protocols\").forEach(dataPoint => {\n        const matching = keys.find(property => property === dataPoint.id);\n        if (matching !== undefined && typeof sensor[dataPoint.id] === 'number') {\n            msg.payload[dataPoint.id] = sensor[dataPoint.id];\n        }\n    });\n\n    return msg;\n}\n\nnode.done();",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 770,
+            "y": 120,
+            "wires": [
+                [
+                    "ls01aqjsxjegkavy"
+                ]
+            ]
+        },
+        {
+            "id": "ls01aqjsxjegkavy",
+            "type": "change",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload[\"SYSTEM-0\"]",
+                    "pt": "msg",
+                    "to": "0",
+                    "tot": "num"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 990,
+            "y": 120,
+            "wires": [
+                [
+                    "5hkuzhrpkza018xs"
+                ]
+            ]
+        },
+        {
+            "id": "6578pzc3plhy6dgl",
+            "type": "delay",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "pauseType": "rate",
+            "timeout": "5",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "10",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": true,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1880,
+            "y": 120,
+            "wires": [
+                [
+                    "g3wcoj91uzj68id2"
+                ]
+            ]
+        },
+        {
+            "id": "6362f4b46e441801",
+            "type": "csv",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "sep": ",",
+            "hdrin": "",
+            "hdrout": "none",
+            "multi": "one",
+            "ret": "\\n",
+            "temp": "",
+            "skip": "0",
+            "strings": true,
+            "include_empty_strings": "",
+            "include_null_values": "",
+            "x": 1910,
+            "y": 200,
+            "wires": [
+                [
+                    "e2ada63a7384d9f0"
+                ]
+            ]
+        },
+        {
+            "id": "e2ada63a7384d9f0",
+            "type": "file",
+            "z": "36b29e1b40bf3421",
+            "name": "",
+            "filename": "/log/measurement.csv",
+            "filenameType": "str",
+            "appendNewline": false,
+            "createDir": false,
+            "overwriteFile": "false",
+            "encoding": "none",
+            "x": 2080,
+            "y": 200,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "aad9b897a594a271",
+            "type": "function",
+            "z": "36b29e1b40bf3421",
+            "name": "add timestamp",
+            "func": "msg.payload.timestamp = new Date(Date.now()).toLocaleString('de-CH');\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 1760,
+            "y": 200,
+            "wires": [
+                [
+                    "6362f4b46e441801"
+                ]
+            ]
+        }
+    ]
+}

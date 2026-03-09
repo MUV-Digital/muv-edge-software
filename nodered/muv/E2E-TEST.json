@@ -1,0 +1,1556 @@
+{
+    "id": "eb0e073b35540785",
+    "label": "654896d61cc334f21f654a29",
+    "disabled": false,
+    "info": "",
+    "env": [],
+    "nodes": [
+        {
+            "id": "yg2k6y8hflcn5uis",
+            "type": "mqtt out",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "topic": "cloud/upstream/data",
+            "qos": "2",
+            "retain": "true",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 1140,
+            "y": 2000,
+            "wires": []
+        },
+        {
+            "id": "antf5qvkl9u40d1e",
+            "type": "inject",
+            "z": "eb0e073b35540785",
+            "name": "Startup",
+            "props": [
+                {
+                    "p": "payload"
+                }
+            ],
+            "repeat": "",
+            "crontab": "",
+            "once": true,
+            "onceDelay": "3",
+            "topic": "",
+            "payload": "",
+            "payloadType": "date",
+            "x": 180,
+            "y": 100,
+            "wires": [
+                [
+                    "iver6bkxyebsjk5z"
+                ]
+            ]
+        },
+        {
+            "id": "iver6bkxyebsjk5z",
+            "type": "getflows",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "x": 340,
+            "y": 100,
+            "wires": [
+                [
+                    "6ag4ynmk30wi5y7u"
+                ]
+            ]
+        },
+        {
+            "id": "6ag4ynmk30wi5y7u",
+            "type": "function",
+            "z": "eb0e073b35540785",
+            "name": "Init",
+            "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === msg.payload.find(flow => flow.id === msg.thisflow).label;\n})\nbridge.image.metrics = {};\n\nflow.set(\"bridge\", bridge);\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 470,
+            "y": 100,
+            "wires": [
+                [
+                    "2rklnmbx8w2npl7o"
+                ]
+            ]
+        },
+        {
+            "id": "d49cdnl7xa13sbh1",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "---- Connections initialization",
+            "info": "",
+            "x": 140,
+            "y": 40,
+            "wires": []
+        },
+        {
+            "id": "2rklnmbx8w2npl7o",
+            "type": "switch",
+            "z": "eb0e073b35540785",
+            "name": "Config correct",
+            "property": "bridge.image.controller",
+            "propertyType": "flow",
+            "rules": [
+                {
+                    "t": "istype",
+                    "v": "object",
+                    "vt": "object"
+                }
+            ],
+            "checkall": "true",
+            "repair": false,
+            "outputs": 1,
+            "x": 620,
+            "y": 100,
+            "wires": [
+                [
+                    "kubrugys06ej46gz"
+                ]
+            ]
+        },
+        {
+            "id": "kubrugys06ej46gz",
+            "type": "function",
+            "z": "eb0e073b35540785",
+            "name": "Set channel parameters",
+            "func": "const controllerParameter = flow.get(\"bridge.image.controller\");\nconst protocols = flow.get(\"bridge.image.protocols\");\nvar channel = global.get(\"hardware.interface.serial.channels\").concat(global.get(\"hardware.interface.tcp.channels\")).find(channel => channel.id === controllerParameter.channel);\n\nif (channel && controllerParameter && protocols) {\n    if (channel.connectorType == \"TCP\") {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"tcpHost\": controllerParameter.tcpHost,\n            \"tcpPort\": controllerParameter.tcpPort,\n            \"tcpType\": controllerParameter.tcpType ? controllerParameter.tcpType : \"DEFAULT\",\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    } else {\n        msg.payload = {\n            \"connectorType\": controllerParameter.connectorType ? controllerParameter.connectorType : channel.connectorType,\n            \"serialPort\": controllerParameter.serialPort ? controllerParameter.serialPort : channel.serialPort,\n            \"serialBaudrate\": controllerParameter.serialBaudrate ? controllerParameter.serialBaudrate : 19200,\n            \"serialDatabits\": controllerParameter.serialDatabits ? controllerParameter.serialDatabits : 8,\n            \"serialStopbits\": controllerParameter.serialStopbits ? controllerParameter.serialStopbits : 1,\n            \"serialParity\": controllerParameter.serialParity ? controllerParameter.serialParity : \"none\",\n            \"serialType\": controllerParameter.serialType ? controllerParameter.serialType : \"RTU-BUFFERD\",\n            \"serialConnectionDelay\": controllerParameter.serialConnectionDelay ? controllerParameter.serialConnectionDelay : 100,\n            \"unitId\": controllerParameter.unitId ? controllerParameter.unitId : 1,\n            \"commandDelay\": controllerParameter.commandDelay ? controllerParameter.commandDelay : 5,\n            \"clientTimeout\": controllerParameter.clientTimeout ? controllerParameter.clientTimeout : 1000,\n            \"reconnectTimeout\": controllerParameter.reconnectTimeout ? controllerParameter.reconnectTimeout : 2000\n        };\n    }\n    node.send(msg);\n} else {\n    node.warn(\"Invalid channel configuration!\");\n}\n\nnode.done()\n",
+            "outputs": 1,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 850,
+            "y": 100,
+            "wires": [
+                [
+                    "d4n88g4bil9ofm7w"
+                ]
+            ]
+        },
+        {
+            "id": "pstbdgxwltx09j3c",
+            "type": "mqtt out",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "topic": "cloud/upstream/error",
+            "qos": "2",
+            "retain": "true",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "de96f526d294fb46",
+            "x": 1140,
+            "y": 1940,
+            "wires": []
+        },
+        {
+            "id": "kg1ki5u6vnijnmw7",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "---- Start Test Cases",
+            "info": "",
+            "x": 110,
+            "y": 200,
+            "wires": []
+        },
+        {
+            "id": "43lr9o10cnsb27wi",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "---- Update Metrics",
+            "info": "",
+            "x": 110,
+            "y": 1900,
+            "wires": []
+        },
+        {
+            "id": "z674cpkza4xr1jsd",
+            "type": "link in",
+            "z": "eb0e073b35540785",
+            "name": "Update Metrics",
+            "links": [
+                "3wcumolrc7abwjpz",
+                "0bd1ce70d3164464",
+                "xlam54c5gw4j32l9",
+                "clq34ql3cfcpsa46",
+                "q4c6dtk9f5p2u1iu",
+                "1ypi0mey3buvl189",
+                "2e9ox9hiehxpjubc",
+                "px3ywqtgcaqwnesx",
+                "lrenkwr398kz3jwx",
+                "euwtxowe0swpmaic",
+                "uqococ1bn6nvhehy"
+            ],
+            "x": 95,
+            "y": 1940,
+            "wires": [
+                [
+                    "hinvn0mxx793v3mb"
+                ]
+            ]
+        },
+        {
+            "id": "hinvn0mxx793v3mb",
+            "type": "function",
+            "z": "eb0e073b35540785",
+            "name": "Set sensor value on bridge",
+            "func": "var cloudBridge = global.get(\"cloud.bridges\").find(bridge => {\n    return bridge.id === flow.get(\"bridge\").id\n})\n\nfor (var propertyName in msg.payload) {\n    if (typeof msg.payload[propertyName] === \"number\") {\n        // Round to 2 decimal\n        msg.payload[propertyName] = Math.round((msg.payload[propertyName] + Number.EPSILON) * 100) / 100\n    }\n    flow.get(\"bridge\").image.metrics[propertyName] = msg.payload[propertyName];\n}\n\ncloudBridge.image.metrics = flow.get(\"bridge\").image.metrics;\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 260,
+            "y": 1940,
+            "wires": [
+                [
+                    "pstbdgxwltx09j3c",
+                    "yg2k6y8hflcn5uis"
+                ]
+            ]
+        },
+        {
+            "id": "vpi035etz1m9yx2n",
+            "type": "flogger",
+            "z": "eb0e073b35540785",
+            "name": "Error",
+            "logfile": "bridge.log",
+            "inputchoice": "fullmsg",
+            "inputobject": "payload",
+            "inputobjectType": "msg",
+            "inputmoustache": "Recieved payload {{payload}} and topic {{topic}}",
+            "loglevel": "ERROR",
+            "logconfig": "2c6b06edb20118d0",
+            "sendpane": true,
+            "x": 610,
+            "y": 2400,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "zv4ehp3laed2l5j7",
+            "type": "function",
+            "z": "eb0e073b35540785",
+            "name": "set error",
+            "func": "msg.payload = {\n    \"payload\" : msg.payload,\n    \"error\" : msg.error\n};\n\nif (msg._error){\n    msg.payload._error = msg._error;\n}\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 280,
+            "y": 2400,
+            "wires": [
+                [
+                    "nxwearhmiyxz58t1"
+                ]
+            ]
+        },
+        {
+            "id": "a6xf4vyr2ofx0c37",
+            "type": "catch",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "scope": null,
+            "uncaught": false,
+            "x": 140,
+            "y": 2400,
+            "wires": [
+                [
+                    "zv4ehp3laed2l5j7"
+                ]
+            ]
+        },
+        {
+            "id": "nxwearhmiyxz58t1",
+            "type": "function",
+            "z": "eb0e073b35540785",
+            "name": "Set log file name",
+            "func": "msg.logfile = \"bridge-\" + env.get(\"NR_FLOW_NAME\") + \".log\"\n\nreturn msg;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 450,
+            "y": 2400,
+            "wires": [
+                [
+                    "vpi035etz1m9yx2n"
+                ]
+            ]
+        },
+        {
+            "id": "3wcumolrc7abwjpz",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 21",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 140
+        },
+        {
+            "id": "cg97znsm8qq9806t",
+            "type": "function",
+            "z": "eb0e073b35540785",
+            "name": "Send Response",
+            "func": "var bridge = global.get(\"cloud.bridges\").find(bridge => bridge.id === flow.get(\"bridge.id\"));\nif (bridge) {\n    msg.topic = bridge.uplink.endpoint.url + \"/command/bridge/update\";\n    msg.payload = { response: {} };\n    msg.payload.response = bridge.updateRequest.response;\n    msg.payload.response.status = \"ERROR\";\n    msg.payload.response.error = \"Bridge publish failed\";\n    \n    return msg;\n}\n\nnode.done();",
+            "outputs": 1,
+            "timeout": "",
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 280,
+            "y": 280,
+            "wires": [
+                [
+                    "x8ytsowws5883hk9",
+                    "wkobtvfnd3ua2siz"
+                ]
+            ]
+        },
+        {
+            "id": "wkobtvfnd3ua2siz",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 22",
+            "mode": "link",
+            "links": [
+                "0892516bb5295768"
+            ],
+            "x": 1165,
+            "y": 280
+        },
+        {
+            "id": "jhp3cfu5bcj88zhn",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "2",
+            "info": "",
+            "x": 70,
+            "y": 240,
+            "wires": []
+        },
+        {
+            "id": "fh4m11ggyvpcphm3",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 280,
+            "wires": [
+                [
+                    "cg97znsm8qq9806t"
+                ]
+            ]
+        },
+        {
+            "id": "d4n88g4bil9ofm7w",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "simulationData initial values",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData",
+                    "pt": "flow",
+                    "to": "{\"SIM-0\":0,\"SIM-1\":0,\"SIM-2\":false,\"SIM-11\":\"off\",\"SIM-4\":false,\"SIM-5\":\"\",\"SIM-6\":0,\"SIM-97\":\"\",\"SIM-98\":\"\",\"SIM-99\":\"\"}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 220,
+            "y": 140,
+            "wires": [
+                [
+                    "e7bmm66cxz7q4ghz"
+                ]
+            ]
+        },
+        {
+            "id": "8wh5vwnjfxo9jziu",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 400,
+            "wires": [
+                [
+                    "obg5exa6nwm1tq1k"
+                ]
+            ]
+        },
+        {
+            "id": "xlam54c5gw4j32l9",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 23",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 400
+        },
+        {
+            "id": "ffshjxj9n9m2wjbx",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "3",
+            "info": "",
+            "x": 70,
+            "y": 360,
+            "wires": []
+        },
+        {
+            "id": "thcbyyfj7yrz67m1",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 660,
+            "y": 140,
+            "wires": [
+                [
+                    "3wcumolrc7abwjpz",
+                    "fh4m11ggyvpcphm3"
+                ]
+            ]
+        },
+        {
+            "id": "x8ytsowws5883hk9",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 2",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 2",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Events Tab",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "FAILED Bridge Update Event visible. ",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 430,
+            "y": 320,
+            "wires": [
+                [
+                    "clq34ql3cfcpsa46",
+                    "8wh5vwnjfxo9jziu"
+                ]
+            ]
+        },
+        {
+            "id": "clq34ql3cfcpsa46",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 24",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 320
+        },
+        {
+            "id": "obg5exa6nwm1tq1k",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 3",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 3",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Monitoring SIM 4-6, check Events Tab.",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "SIM-4,SIM-5,SIM-6 Error TRUE, Events visible",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-4",
+                    "pt": "flow",
+                    "to": "true",
+                    "tot": "bool"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-5",
+                    "pt": "flow",
+                    "to": "ERROR TRUE",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-6",
+                    "pt": "flow",
+                    "to": "1",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 290,
+            "y": 400,
+            "wires": [
+                [
+                    "xlam54c5gw4j32l9",
+                    "exkay3rpgo1z7zkd"
+                ]
+            ]
+        },
+        {
+            "id": "exkay3rpgo1z7zkd",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 500,
+            "wires": [
+                [
+                    "r48hr6z3s4zexl13"
+                ]
+            ]
+        },
+        {
+            "id": "q4c6dtk9f5p2u1iu",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 25",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 500
+        },
+        {
+            "id": "np2n9n5j7p6q1ajq",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "4",
+            "info": "",
+            "x": 70,
+            "y": 460,
+            "wires": []
+        },
+        {
+            "id": "r48hr6z3s4zexl13",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 4",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 4",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Monitoring SIM 4-6, check Events Tab.",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": " SIM-4,SIM-5,SIM-6 Error FALSE, Events visible",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-4",
+                    "pt": "flow",
+                    "to": "false",
+                    "tot": "bool"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-5",
+                    "pt": "flow",
+                    "to": "ERROR FALSE",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-6",
+                    "pt": "flow",
+                    "to": "0",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 290,
+            "y": 500,
+            "wires": [
+                [
+                    "q4c6dtk9f5p2u1iu",
+                    "9bzizuqs7xye6tu5",
+                    "2d506srfebhf5yx5"
+                ]
+            ]
+        },
+        {
+            "id": "2d506srfebhf5yx5",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 700,
+            "wires": [
+                [
+                    "gfaw1r97g1dkiek3"
+                ]
+            ]
+        },
+        {
+            "id": "1ypi0mey3buvl189",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 26",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 700
+        },
+        {
+            "id": "duhvyir7nemh0p11",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "5",
+            "info": "",
+            "x": 70,
+            "y": 660,
+            "wires": []
+        },
+        {
+            "id": "gfaw1r97g1dkiek3",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 5",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 5",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Monitoring SIM-0",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "SIM-0 50 °C",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-0",
+                    "pt": "flow",
+                    "to": "50",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 290,
+            "y": 700,
+            "wires": [
+                [
+                    "1ypi0mey3buvl189",
+                    "jc8u3fmwgwdz1ijv",
+                    "2htqsza004jss04y"
+                ]
+            ]
+        },
+        {
+            "id": "e7bmm66cxz7q4ghz",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 1",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 1",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Events Tab",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "Sucessful Bridge Update event visible",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 450,
+            "y": 140,
+            "wires": [
+                [
+                    "thcbyyfj7yrz67m1"
+                ]
+            ]
+        },
+        {
+            "id": "2htqsza004jss04y",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 940,
+            "wires": [
+                [
+                    "9f23vnfe4dyxvu1b"
+                ]
+            ]
+        },
+        {
+            "id": "2e9ox9hiehxpjubc",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 27",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 940
+        },
+        {
+            "id": "xwyw25oxui38vknn",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "6",
+            "info": "",
+            "x": 70,
+            "y": 900,
+            "wires": []
+        },
+        {
+            "id": "9f23vnfe4dyxvu1b",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 6",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 6",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check SIM-0 Monitoring",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "SIM-0 40 °C",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-0",
+                    "pt": "flow",
+                    "to": "40",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 290,
+            "y": 940,
+            "wires": [
+                [
+                    "2e9ox9hiehxpjubc",
+                    "xuco18x5d1fe1j1z",
+                    "9unjvpzx0g7h8uxn"
+                ]
+            ]
+        },
+        {
+            "id": "9unjvpzx0g7h8uxn",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 1140,
+            "wires": [
+                [
+                    "r10w4nvlbg4fhg9z"
+                ]
+            ]
+        },
+        {
+            "id": "px3ywqtgcaqwnesx",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 28",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 1140
+        },
+        {
+            "id": "i83nl65faowtef1l",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "7",
+            "info": "",
+            "x": 70,
+            "y": 1100,
+            "wires": []
+        },
+        {
+            "id": "r10w4nvlbg4fhg9z",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 7",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 7",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check SIM-0 Monitoring, check SIM-0 Analytics",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "M: SIM-0 40 °C, A: 50,40,10 curve.",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-0",
+                    "pt": "flow",
+                    "to": "10",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 290,
+            "y": 1140,
+            "wires": [
+                [
+                    "px3ywqtgcaqwnesx",
+                    "n5lmq9k24j2yj79i",
+                    "ll5scgxx21y36tt3"
+                ]
+            ]
+        },
+        {
+            "id": "ll5scgxx21y36tt3",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 120,
+            "y": 1360,
+            "wires": [
+                [
+                    "xerm3oli6zerubm6"
+                ]
+            ]
+        },
+        {
+            "id": "lrenkwr398kz3jwx",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 29",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 1360
+        },
+        {
+            "id": "1hp2jmx13xd6wtge",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "8",
+            "info": "",
+            "x": 70,
+            "y": 1320,
+            "wires": []
+        },
+        {
+            "id": "xerm3oli6zerubm6",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 8",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 8",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Monitoring SIM-1, SIM-2, SIM-11",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "SIM-1:ON,  SIM-2:ON,  SIM-11:ON.",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-1",
+                    "pt": "flow",
+                    "to": "1",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-2",
+                    "pt": "flow",
+                    "to": "true",
+                    "tot": "bool"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-11",
+                    "pt": "flow",
+                    "to": "on",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 290,
+            "y": 1360,
+            "wires": [
+                [
+                    "lrenkwr398kz3jwx",
+                    "4hv8eqe2h7f31wqq",
+                    "tmcc8niugjzj13ck"
+                ]
+            ]
+        },
+        {
+            "id": "iodoabcndoju5q1n",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "simulationData initial values",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData",
+                    "pt": "flow",
+                    "to": "{\"SIM-0\":0,\"SIM-1\":0,\"SIM-2\":false,\"SIM-11\":\"off\",\"SIM-4\":false,\"SIM-5\":\"\",\"SIM-6\":0,\"SIM-97\":\"\",\"SIM-98\":\"\",\"SIM-99\":\"\"}",
+                    "tot": "json"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 1800,
+            "y": 180,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "xbhwmykmjillt4ky",
+            "type": "link in",
+            "z": "eb0e073b35540785",
+            "name": "reset to initial values",
+            "links": [
+                "9bzizuqs7xye6tu5",
+                "4hv8eqe2h7f31wqq",
+                "jc8u3fmwgwdz1ijv",
+                "n5lmq9k24j2yj79i",
+                "qkb0uf8i4yv96ett"
+            ],
+            "x": 1415,
+            "y": 180,
+            "wires": [
+                [
+                    "5adgsx1a6wpofmai"
+                ]
+            ]
+        },
+        {
+            "id": "9bzizuqs7xye6tu5",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 30",
+            "mode": "link",
+            "links": [
+                "xbhwmykmjillt4ky"
+            ],
+            "x": 475,
+            "y": 540
+        },
+        {
+            "id": "jc8u3fmwgwdz1ijv",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 31",
+            "mode": "link",
+            "links": [
+                "xbhwmykmjillt4ky"
+            ],
+            "x": 475,
+            "y": 760
+        },
+        {
+            "id": "xuco18x5d1fe1j1z",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 32",
+            "mode": "link",
+            "links": [],
+            "x": 475,
+            "y": 980
+        },
+        {
+            "id": "n5lmq9k24j2yj79i",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 33",
+            "mode": "link",
+            "links": [
+                "xbhwmykmjillt4ky"
+            ],
+            "x": 485,
+            "y": 1200
+        },
+        {
+            "id": "tmcc8niugjzj13ck",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 140,
+            "y": 1560,
+            "wires": [
+                [
+                    "i3qyt3d3fh8xyaa9"
+                ]
+            ]
+        },
+        {
+            "id": "euwtxowe0swpmaic",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 34",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 1560
+        },
+        {
+            "id": "ewhgpluwnqgwna2k",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "9",
+            "info": "",
+            "x": 70,
+            "y": 1520,
+            "wires": []
+        },
+        {
+            "id": "i3qyt3d3fh8xyaa9",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 9",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-97",
+                    "pt": "flow",
+                    "to": "Step 9",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-98",
+                    "pt": "flow",
+                    "to": "Check Monitoring SIM-1, SIM-2, SIM-11",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "SIM-1:OFF,  SIM-2:OFF,  SIM-11:OFF",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-1",
+                    "pt": "flow",
+                    "to": "0",
+                    "tot": "num"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-2",
+                    "pt": "flow",
+                    "to": "false",
+                    "tot": "bool"
+                },
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-11",
+                    "pt": "flow",
+                    "to": "off",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 270,
+            "y": 1560,
+            "wires": [
+                [
+                    "euwtxowe0swpmaic",
+                    "df8p6kzgixh8e9h3",
+                    "qkb0uf8i4yv96ett"
+                ]
+            ]
+        },
+        {
+            "id": "4hv8eqe2h7f31wqq",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 35",
+            "mode": "link",
+            "links": [
+                "xbhwmykmjillt4ky"
+            ],
+            "x": 485,
+            "y": 1440
+        },
+        {
+            "id": "5adgsx1a6wpofmai",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "2",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 1560,
+            "y": 180,
+            "wires": [
+                [
+                    "iodoabcndoju5q1n"
+                ]
+            ]
+        },
+        {
+            "id": "df8p6kzgixh8e9h3",
+            "type": "delay",
+            "z": "eb0e073b35540785",
+            "name": "",
+            "pauseType": "delay",
+            "timeout": "60",
+            "timeoutUnits": "seconds",
+            "rate": "1",
+            "nbRateUnits": "1",
+            "rateUnits": "second",
+            "randomFirst": "1",
+            "randomLast": "5",
+            "randomUnits": "seconds",
+            "drop": false,
+            "allowrate": false,
+            "outputs": 1,
+            "x": 140,
+            "y": 1720,
+            "wires": [
+                [
+                    "9qipjpexaeebmfk1"
+                ]
+            ]
+        },
+        {
+            "id": "uqococ1bn6nvhehy",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 36",
+            "mode": "link",
+            "links": [
+                "z674cpkza4xr1jsd",
+                "30637b139d6d629f"
+            ],
+            "x": 1165,
+            "y": 1720
+        },
+        {
+            "id": "nh9kd994rl0kmayd",
+            "type": "comment",
+            "z": "eb0e073b35540785",
+            "name": "END OF TEST",
+            "info": "",
+            "x": 100,
+            "y": 1680,
+            "wires": []
+        },
+        {
+            "id": "9qipjpexaeebmfk1",
+            "type": "change",
+            "z": "eb0e073b35540785",
+            "name": "Step 10",
+            "rules": [
+                {
+                    "t": "set",
+                    "p": "simulationData.SIM-99",
+                    "pt": "flow",
+                    "to": "END",
+                    "tot": "str"
+                },
+                {
+                    "t": "set",
+                    "p": "payload",
+                    "pt": "msg",
+                    "to": "simulationData",
+                    "tot": "flow"
+                }
+            ],
+            "action": "",
+            "property": "",
+            "from": "",
+            "to": "",
+            "reg": false,
+            "x": 280,
+            "y": 1720,
+            "wires": [
+                [
+                    "uqococ1bn6nvhehy"
+                ]
+            ]
+        },
+        {
+            "id": "qkb0uf8i4yv96ett",
+            "type": "link out",
+            "z": "eb0e073b35540785",
+            "name": "link out 37",
+            "mode": "link",
+            "links": [
+                "xbhwmykmjillt4ky"
+            ],
+            "x": 485,
+            "y": 1600
+        }
+    ]
+}
