@@ -1203,9 +1203,7 @@
                     "xkmig6mfwurwk9a8",
                     "08097c7e36c521c8",
                     "37102e6e7da7489e",
-                    "bvj4e5imyh6px7eb",
-                    "d4966521044f99b2"
-                ]
+                    "bvj4e5imyh6px7eb"                ]
             ]
         },
         {
@@ -1503,22 +1501,6 @@
                     "08097c7e36c521c8"
                 ]
             ]
-        },
-        {
-            "id": "d4966521044f99b2",
-            "type": "debug",
-            "z": "1d3a1a884ec3d0ab",
-            "name": "debug 1",
-            "active": true,
-            "tosidebar": true,
-            "console": false,
-            "tostatus": false,
-            "complete": "false",
-            "statusVal": "",
-            "statusType": "auto",
-            "x": 860,
-            "y": 1240,
-            "wires": []
         }
     ]
 }
