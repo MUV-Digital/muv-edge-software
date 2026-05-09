@@ -33,10 +33,10 @@
                     "p": "payload"
                 }
             ],
-            "repeat": "",
+            "repeat": "30",
             "crontab": "",
             "once": true,
-            "onceDelay": "3",
+            "onceDelay": "30",
             "topic": "",
             "payload": "",
             "payloadType": "date",
