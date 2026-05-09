@@ -6,14 +6,6 @@
     "env": [],
     "nodes": [
         {
-            "id": "66ea02fb8381dca6",
-            "type": "tab",
-            "label": "69e773014b0ec5ca3fe2c8da",
-            "disabled": false,
-            "info": "",
-            "env": []
-        },
-        {
             "id": "42nucwzntzg2nmrx",
             "type": "mqtt out",
             "z": "66ea02fb8381dca6",
