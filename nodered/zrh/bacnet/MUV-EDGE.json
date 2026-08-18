@@ -1087,6 +1087,7 @@
             "groupExportDeviceCount": "10",
             "maxConcurrentDeviceRead": 3,
             "maxConcurrentSinglePointRead": 10,
+            "concurrentTaskDelay": "10",
             "x": 600,
             "y": 460,
             "wires": [
