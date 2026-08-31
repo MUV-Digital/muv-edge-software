@@ -149,7 +149,7 @@
                     "vt": "str"
                 }
             ],
-            "repeat": "120",
+            "repeat": "60",
             "crontab": "",
             "once": true,
             "onceDelay": "30",
