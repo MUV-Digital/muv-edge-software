@@ -1022,7 +1022,7 @@
             "type": "function",
             "z": "dc06564fd8ca9fda",
             "name": "Set Bacnet parameters",
-            "func": "msg.devices = [\n    {\n        \"deviceId\": parseInt(flow.get(\"bridge.image.controller.unitId\")),\n        \"network\": null,\n        \"ipAddress\": flow.get(\"bridge.image.controller.tcpHost\"),\n        \"macAddress\": null,\n        \"segmentation\": 0,\n        \"maxApdu\": 1476,\n        \"vendorId\": 865,\n        \"deviceName\": \"CBOX\"\n    }\n]\n\n\nreturn msg;",
+            "func": "msg.devices = [\n    {\n        \"deviceId\": parseInt(flow.get(\"bridge.image.controller.unitId\")),\n        \"network\": null,\n        \"ipAddress\": flow.get(\"bridge.image.controller.tcpHost\"),\n        \"macAddress\": null,\n        \"segmentation\": 0,\n        \"maxApdu\": 1476,\n        \"vendorId\": 865,\n        \"deviceName\": \"BACnet Device\"\n    }\n]\n\n\nreturn msg;",
             "outputs": 1,
             "timeout": "",
             "noerr": 0,
