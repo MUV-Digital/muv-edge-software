@@ -1203,7 +1203,7 @@
             "timeoutUnits": "seconds",
             "rate": "1",
             "nbRateUnits": "30",
-            "rateUnits": "second",
+            "rateUnits": "minute",
             "randomFirst": "1",
             "randomLast": "5",
             "randomUnits": "seconds",
@@ -1214,8 +1214,7 @@
             "y": 580,
             "wires": [
                 [
-                    "vqwl06wzbabtetnw",
-                    "48dl3olsxpgqie8r"
+                    "vqwl06wzbabtetnw"
                 ]
             ]
         },
@@ -1261,7 +1260,8 @@
             "wires": [
                 [
                     "xtfcdza7bku82g4y",
-                    "zdtxwerasb6h1v6k"
+                    "zdtxwerasb6h1v6k",
+                    "48dl3olsxpgqie8r"
                 ],
                 []
             ]

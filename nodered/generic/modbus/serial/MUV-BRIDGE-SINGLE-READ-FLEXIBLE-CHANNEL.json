@@ -112,7 +112,8 @@
                 [
                     "b7wnw4nip5gh89v6",
                     "ltqftrzmk3zuo6d5",
-                    "kus8h95gzgg7e1eb"
+                    "kus8h95gzgg7e1eb",
+                    "mlo0numjeuoiznyh"
                 ],
                 []
             ]
@@ -1323,7 +1324,7 @@
             "timeoutUnits": "seconds",
             "rate": "1",
             "nbRateUnits": "30",
-            "rateUnits": "second",
+            "rateUnits": "minute",
             "randomFirst": "1",
             "randomLast": "5",
             "randomUnits": "seconds",
@@ -1334,8 +1335,7 @@
             "y": 580,
             "wires": [
                 [
-                    "qt7xvwvezfwss9co",
-                    "mlo0numjeuoiznyh"
+                    "qt7xvwvezfwss9co"
                 ]
             ]
         },
